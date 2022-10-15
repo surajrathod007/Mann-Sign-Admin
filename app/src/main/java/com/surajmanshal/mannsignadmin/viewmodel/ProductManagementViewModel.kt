@@ -18,23 +18,29 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class ProductManagementViewModel : ViewModel() {
-    private val repository = Repository()
-    private val _sizes = MutableLiveData<List<Size>>()
-    val sizes : LiveData<List<Size>> get() = _sizes
-    private val _materials = MutableLiveData<List<Material>>()
-    val materials : LiveData<List<Material>> get() = _materials
-    private val _languages = MutableLiveData<List<Language>>()
-    val languages  : LiveData<List<Language>> get() = _languages
-    private val _subCategories = MutableLiveData<List<SubCategory>>()
-    val subCategories: LiveData<List<SubCategory>> get() = _subCategories
-    private val _serverResponse = MutableLiveData<SimpleResponse>()
-    val serverResponse : LiveData<SimpleResponse> get() = _serverResponse
 
+    private val repository = Repository()
+    // -------------- LIVE DATA -------------------------------------------
+    private val _sizes = MutableLiveData<List<Size>>()
+    val sizes : LiveData<List<Size>> get() = _sizes                                        //SIZE
+    private val _materials = MutableLiveData<List<Material>>()
+    val materials : LiveData<List<Material>> get() = _materials                         //MATERIALS
+    private val _languages = MutableLiveData<List<Language>>()
+    val languages  : LiveData<List<Language>> get() = _languages                        // LANGUAGES
+    private val _subCategories = MutableLiveData<List<SubCategory>>()
+    val subCategories: LiveData<List<SubCategory>> get() = _subCategories               //CATEGORIES
+    private val _serverResponse = MutableLiveData<SimpleResponse>()
+    val serverResponse : LiveData<SimpleResponse> get() = _serverResponse               //SERVER RESPONSE
+    private val _posters = MutableLiveData<List<Product>>()
+    val posters : LiveData<List<Product>> get() = _posters                              // POSTERS
+
+    // -------------- DATA SETUP FUNCTIONS -------------------------------------------
     suspend fun setupViewModelDataMembers(){
         CoroutineScope(Dispatchers.IO).launch { getSizes() }
         CoroutineScope(Dispatchers.IO).launch { getMaterials() }
         CoroutineScope(Dispatchers.IO).launch { getLanguages() }
         CoroutineScope(Dispatchers.IO).launch { getSubCategories() }
+        CoroutineScope(Dispatchers.IO).launch { getPosters() }
     }
 
     private suspend fun getSizes(){
@@ -99,15 +105,19 @@ class ProductManagementViewModel : ViewModel() {
         }catch (e : Exception){
             println("$e")
         }
+    }
 
-       /* response.enqueue(object : Callback<SimpleResponse> {
-            override fun onResponse(call: Call<SimpleResponse>, response: Response<SimpleResponse>) {
+    suspend fun getPosters(){
+        val response = repository.fetchPosters()
+        println("Response is $response")
+        response.enqueue(object : Callback<List<Product>> {
+            override fun onResponse(call: Call<List<Product>>, response: Response<List<Product>>) {
                 println("Inner Response is $response")
-                response.body()?.let { _serverResponse.value = it }
+                response.body()?.let { _posters.value = it }
             }
-            override fun onFailure(call: Call<SimpleResponse>, t: Throwable) {
+            override fun onFailure(call: Call<List<Product>>, t: Throwable) {
                 println("Failure is $t")
             }
-        })*/
+        })
     }
 }

@@ -8,6 +8,8 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import android.widget.GridLayout
@@ -17,7 +19,6 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.forEach
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.google.android.material.textfield.TextInputEditText
@@ -29,6 +30,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.lang.Exception
+import androidx.lifecycle.Observer
 
 class ProductManagementActivity : AppCompatActivity() {
     private lateinit var _binding : ActivityProductManagementBinding
@@ -40,6 +42,7 @@ class ProductManagementActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = ActivityProductManagementBinding.inflate(layoutInflater)
         vm = ViewModelProvider(this).get(ProductManagementViewModel::class.java)
+        var selectedCategory = 0
         CoroutineScope(Dispatchers.IO).launch {
             vm.setupViewModelDataMembers()
         }
@@ -56,7 +59,7 @@ class ProductManagementActivity : AppCompatActivity() {
                         materials = getSelectedMaterialsIds(gvMaterials)
                         languages = getSelectedLanguagesIds(gvLanguages)
                         typeId = Constants.TYPE_POSTER
-                        subCategory = getSubCategoryId()
+                        subCategory = selectedCategory
                         category = vm.subCategories.value?.get(binding.categorySpinner.selectedItemPosition)?.mainCategoryId
                         posterDetails = Poster(
                             title = textOf(etTitle),
@@ -69,11 +72,17 @@ class ProductManagementActivity : AppCompatActivity() {
                     vm.addProduct(mProduct)
                 }
             }
+            categorySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                    selectedCategory = vm.subCategories.value?.get(p2)!!.id
+                }
+                override fun onNothingSelected(p0: AdapterView<*>?) {}
+            }
         }
 
         // Observers
         vm.sizes.observe(this, Observer{
-           setupSizesViews()
+            setupSizesViews()
         })
         vm.materials.observe(this, Observer{
             setupMaterialViews()
@@ -96,10 +105,6 @@ class ProductManagementActivity : AppCompatActivity() {
 
     private fun textOf(et: TextInputEditText): String {
         return et.text.toString()
-    }
-
-    private fun getSubCategoryId(): Int? {
-        return vm.subCategories.value?.get(binding.categorySpinner.selectedItemPosition)?.id
     }
 
     override fun onDestroy() {
