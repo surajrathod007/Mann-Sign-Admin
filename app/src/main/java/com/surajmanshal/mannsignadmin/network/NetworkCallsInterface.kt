@@ -3,6 +3,7 @@ package com.surajmanshal.mannsignadmin.network
 import androidx.room.Query
 import com.surajmanshal.mannsignadmin.data.model.Language
 import com.surajmanshal.mannsignadmin.data.model.Material
+import com.surajmanshal.mannsignadmin.data.model.Size
 import com.surajmanshal.mannsignadmin.data.model.SubCategory
 import retrofit2.Call
 import retrofit2.http.GET
@@ -17,4 +18,9 @@ interface NetworkCallsInterface {
 
     @GET("subcategories")
     fun fetchSubCategories() : Call<List<SubCategory>>
+
+    @GET("sizes")
+    fun fetchSystemSizes() : Call<List<Size>>
+
+    // todo : post req to add new size by admin
 }

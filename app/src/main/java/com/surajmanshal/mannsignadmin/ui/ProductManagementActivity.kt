@@ -36,6 +36,9 @@ class ProductManagementActivity : AppCompatActivity() {
         }
 
         // Observers
+        vm.sizes.observe(this, Observer{
+           setupSizesViews()
+        })
         vm.materials.observe(this, Observer{
             setupMaterialViews()
         })
@@ -58,6 +61,11 @@ class ProductManagementActivity : AppCompatActivity() {
         return checkBox
     }
 
+    fun setupSizesViews(){
+        vm.sizes.value?.forEach {
+            binding.gvSizes.addView(createCheckBox("${it.width} x ${it.height}"))
+        }
+    }
     fun setupMaterialViews(){
         vm.materials.value?.forEach {
             binding.gvMaterials.addView(createCheckBox(it.name))

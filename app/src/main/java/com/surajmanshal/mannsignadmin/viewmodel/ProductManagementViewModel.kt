@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.surajmanshal.mannsignadmin.data.model.Language
 import com.surajmanshal.mannsignadmin.data.model.Material
+import com.surajmanshal.mannsignadmin.data.model.Size
 import com.surajmanshal.mannsignadmin.data.model.SubCategory
 import com.surajmanshal.mannsignadmin.network.NetworkService
 import com.surajmanshal.mannsignadmin.repository.Repository
@@ -17,6 +18,8 @@ import retrofit2.Response
 
 class ProductManagementViewModel : ViewModel() {
     private val repository = Repository()
+    private val _sizes = MutableLiveData<List<Size>>()
+    val sizes : LiveData<List<Size>> get() = _sizes
     private val _materials = MutableLiveData<List<Material>>()
     val materials : LiveData<List<Material>> get() = _materials
     private val _languages = MutableLiveData<List<Language>>()
@@ -25,15 +28,24 @@ class ProductManagementViewModel : ViewModel() {
     val subCategories: LiveData<List<SubCategory>> get() = _subCategories
 
     suspend fun setupViewModelDataMembers(){
-        CoroutineScope(Dispatchers.IO).launch {
-            getMaterials()
-        }
-        CoroutineScope(Dispatchers.IO).launch {
-            getLanguages()
-        }
-        CoroutineScope(Dispatchers.IO).launch {
-            getSubCategories()
-        }
+        CoroutineScope(Dispatchers.IO).launch { getSizes() }
+        CoroutineScope(Dispatchers.IO).launch { getMaterials() }
+        CoroutineScope(Dispatchers.IO).launch { getLanguages() }
+        CoroutineScope(Dispatchers.IO).launch { getSubCategories() }
+    }
+
+    private suspend fun getSizes(){
+        val response = repository.fetchSizes()
+        println("Response is $response")
+        response.enqueue(object : Callback<List<Size>> {
+            override fun onResponse(call: Call<List<Size>>, response: Response<List<Size>>) {
+                println("Inner Response is $response")
+                response.body()?.let { _sizes.value = it }
+            }
+            override fun onFailure(call: Call<List<Size>>, t: Throwable) {
+                println("Failure is $t")
+            }
+        })
     }
     private suspend fun getMaterials(){
         val response = repository.fetchMaterials()
@@ -76,5 +88,6 @@ class ProductManagementViewModel : ViewModel() {
             }
         })
     }
+
 
 }

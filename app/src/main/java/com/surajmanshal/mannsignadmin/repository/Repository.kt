@@ -12,4 +12,6 @@ class Repository() {
     fun fetchLanguages() = NetworkService.networkInstance.fetchLanguages()
 
     fun fetchSubCategories() = NetworkService.networkInstance.fetchSubCategories()
+
+    fun fetchSizes() = NetworkService.networkInstance.fetchSystemSizes()
 }
