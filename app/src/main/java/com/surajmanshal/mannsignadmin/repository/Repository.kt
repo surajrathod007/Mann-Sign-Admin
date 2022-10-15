@@ -1,6 +1,8 @@
 package com.surajmanshal.mannsignadmin.repository
 
+import com.google.android.material.progressindicator.AnimatorDurationScaleProvider
 import com.surajmanshal.mannsignadmin.data.model.Material
+import com.surajmanshal.mannsignadmin.data.model.Product
 import com.surajmanshal.mannsignadmin.network.NetworkService
 import retrofit2.Call
 import retrofit2.Callback
@@ -14,4 +16,6 @@ class Repository() {
     fun fetchSubCategories() = NetworkService.networkInstance.fetchSubCategories()
 
     fun fetchSizes() = NetworkService.networkInstance.fetchSystemSizes()
+
+    fun sendProduct(product: Product) = NetworkService.networkInstance.sendProduct(product)
 }

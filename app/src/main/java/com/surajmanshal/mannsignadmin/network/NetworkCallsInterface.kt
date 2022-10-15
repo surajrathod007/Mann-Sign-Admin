@@ -1,12 +1,11 @@
 package com.surajmanshal.mannsignadmin.network
 
 import androidx.room.Query
-import com.surajmanshal.mannsignadmin.data.model.Language
-import com.surajmanshal.mannsignadmin.data.model.Material
-import com.surajmanshal.mannsignadmin.data.model.Size
-import com.surajmanshal.mannsignadmin.data.model.SubCategory
+import com.surajmanshal.mannsignadmin.data.model.*
+import com.surajmanshal.response.SimpleResponse
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.POST
 
 interface NetworkCallsInterface {
 
@@ -22,5 +21,6 @@ interface NetworkCallsInterface {
     @GET("sizes")
     fun fetchSystemSizes() : Call<List<Size>>
 
-    // todo : post req to add new size by admin
+    @POST("product/add")
+    fun sendProduct(product: Product) : SimpleResponse
 }

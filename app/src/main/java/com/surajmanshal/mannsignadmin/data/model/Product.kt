@@ -13,5 +13,4 @@ data class Product(
     var subCategory: Int? = null,
     var boardDetails: ACPBoard? = null,
     var bannerDetails: Banner? = null,
-
     )

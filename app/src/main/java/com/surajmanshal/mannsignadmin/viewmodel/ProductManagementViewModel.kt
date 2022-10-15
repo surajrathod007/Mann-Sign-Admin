@@ -3,10 +3,7 @@ package com.surajmanshal.mannsignadmin.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.surajmanshal.mannsignadmin.data.model.Language
-import com.surajmanshal.mannsignadmin.data.model.Material
-import com.surajmanshal.mannsignadmin.data.model.Size
-import com.surajmanshal.mannsignadmin.data.model.SubCategory
+import com.surajmanshal.mannsignadmin.data.model.*
 import com.surajmanshal.mannsignadmin.network.NetworkService
 import com.surajmanshal.mannsignadmin.repository.Repository
 import kotlinx.coroutines.CoroutineScope
@@ -47,6 +44,7 @@ class ProductManagementViewModel : ViewModel() {
             }
         })
     }
+
     private suspend fun getMaterials(){
         val response = repository.fetchMaterials()
         println("Response is $response")
@@ -89,5 +87,7 @@ class ProductManagementViewModel : ViewModel() {
         })
     }
 
+    fun addProduct(product: Product){
 
+    }
 }

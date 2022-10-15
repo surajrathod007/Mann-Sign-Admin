@@ -18,4 +18,8 @@ object Constants {
     const val CHANGE_BASE_PRICE = 0
     const val CHANGE_MATERIAL_PRICE = 1
     const val CHANGE_DELIVERY_PRICE = 2
+
+    // Permission Codes
+    const val CHOOSE_IMAGE = 101
+    const val READ_EXTERNAL_STORAGE = 102
 }
