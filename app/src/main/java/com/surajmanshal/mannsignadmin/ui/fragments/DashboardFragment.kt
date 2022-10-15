@@ -1,11 +1,15 @@
 package com.surajmanshal.mannsignadmin.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.databinding.adapters.ViewBindingAdapter.setOnClick
 import com.surajmanshal.mannsignadmin.R
+import com.surajmanshal.mannsignadmin.ui.ProductManagementActivity
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -35,7 +39,11 @@ class DashboardFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_dashboard, container, false)
+        val view = inflater.inflate(R.layout.fragment_dashboard, container, false)
+        view.findViewById<Button>(R.id.button).setOnClickListener{
+            startActivity(Intent(activity, ProductManagementActivity::class.java))
+        }
+        return view
     }
 
     companion object {
