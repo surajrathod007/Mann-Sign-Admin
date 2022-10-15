@@ -2,12 +2,14 @@ package com.surajmanshal.mannsignadmin.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.surajmanshal.mannsignadmin.R
 import com.surajmanshal.mannsignadmin.data.model.Material
+import com.surajmanshal.mannsignadmin.data.model.SubCategory
 import com.surajmanshal.mannsignadmin.databinding.ActivityProductManagementBinding
 import com.surajmanshal.mannsignadmin.network.NetworkService
 import com.surajmanshal.mannsignadmin.repository.Repository
@@ -77,8 +79,10 @@ class ProductManagementActivity : AppCompatActivity() {
         }
     }
     fun setupSubcategoryViews(){
-        // Todo : Spinner setup is required
+        val list = mutableListOf<String>()
+        vm.subCategories.value?.forEach {
+            list.add(it.name)
+        }
+        binding.categorySpinner.adapter = ArrayAdapter(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,list)
     }
-
-
 }
