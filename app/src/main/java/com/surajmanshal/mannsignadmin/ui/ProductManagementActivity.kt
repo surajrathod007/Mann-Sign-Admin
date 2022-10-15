@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.forEach
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
@@ -50,7 +51,7 @@ class ProductManagementActivity : AppCompatActivity() {
             btnAddProduct.setOnClickListener {
                 mProduct.also{
                     with(it) {
-                        images = listOf(Image(0, ""))
+                        images = listOf(Image(1, ""))
                         sizes = getSelectedSizes(gvSizes)
                         materials = getSelectedMaterialsIds(gvMaterials)
                         languages = getSelectedLanguagesIds(gvLanguages)
@@ -64,8 +65,9 @@ class ProductManagementActivity : AppCompatActivity() {
                         )
                     }
                 }
-                vm.addProduct(mProduct)
-                Toast.makeText(this@ProductManagementActivity, "added", Toast.LENGTH_SHORT).show()
+                CoroutineScope(Dispatchers.IO).launch {
+                    vm.addProduct(mProduct)
+                }
             }
         }
 
@@ -81,6 +83,13 @@ class ProductManagementActivity : AppCompatActivity() {
         })
         vm.subCategories.observe(this, Observer{
             setupSubcategoryViews()
+        })
+        vm.serverResponse.observe(this, Observer {
+            if (it.success){
+                Toast.makeText(this@ProductManagementActivity, "Added Successfully", Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(this@ProductManagementActivity, it.message, Toast.LENGTH_SHORT).show()
+            }
         })
 
     }
@@ -160,28 +169,28 @@ class ProductManagementActivity : AppCompatActivity() {
 
     fun getSelectedSizes(container : GridLayout): List<Size> {
         val list = mutableListOf<Size>()
-        for (i in 0..container.childCount){
-            val option = container.getChildAt(i) as CheckBox
+        container.forEach {
+            val option = it as CheckBox
             if (option.isChecked)
-                list.add(vm.sizes.value!!.get(i))
+                list.add(vm.sizes.value!!.get(container.indexOfChild(option)))
         }
         return list
     }
     fun getSelectedMaterialsIds(container : GridLayout): List<Int> {
         val list = mutableListOf<Int>()
-        for (i in 0..container.childCount){
-            val option = container.getChildAt(i) as CheckBox
+        container.forEach {
+            val option = it as CheckBox
             if (option.isChecked)
-                list.add(vm.materials.value!!.get(i).id)
+                list.add(vm.materials.value!!.get(container.indexOfChild(option)).id)
         }
         return list
     }
     fun getSelectedLanguagesIds(container : GridLayout): List<Int> {
         val list = mutableListOf<Int>()
-        for (i in 0..container.childCount){
-            val option = container.getChildAt(i) as CheckBox
+        container.forEach {
+            val option = it as CheckBox
             if (option.isChecked)
-                list.add(vm.languages.value!!.get(i).id)
+                list.add(vm.languages.value!!.get(container.indexOfChild(option)).id)
         }
         return list
     }

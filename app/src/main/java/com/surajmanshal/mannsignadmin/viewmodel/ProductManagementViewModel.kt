@@ -1,14 +1,18 @@
 package com.surajmanshal.mannsignadmin.viewmodel
 
+import android.content.Context
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.surajmanshal.mannsignadmin.data.model.*
 import com.surajmanshal.mannsignadmin.network.NetworkService
 import com.surajmanshal.mannsignadmin.repository.Repository
+import com.surajmanshal.response.SimpleResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -23,6 +27,8 @@ class ProductManagementViewModel : ViewModel() {
     val languages  : LiveData<List<Language>> get() = _languages
     private val _subCategories = MutableLiveData<List<SubCategory>>()
     val subCategories: LiveData<List<SubCategory>> get() = _subCategories
+    private val _serverResponse = MutableLiveData<SimpleResponse>()
+    val serverResponse : LiveData<SimpleResponse> get() = _serverResponse
 
     suspend fun setupViewModelDataMembers(){
         CoroutineScope(Dispatchers.IO).launch { getSizes() }
@@ -87,7 +93,21 @@ class ProductManagementViewModel : ViewModel() {
         })
     }
 
-    fun addProduct(product: Product){
+    suspend fun  addProduct(product: Product) {
+        try {
+            _serverResponse.value = repository.sendProduct(product)
+        }catch (e : Exception){
+            println("$e")
+        }
 
+       /* response.enqueue(object : Callback<SimpleResponse> {
+            override fun onResponse(call: Call<SimpleResponse>, response: Response<SimpleResponse>) {
+                println("Inner Response is $response")
+                response.body()?.let { _serverResponse.value = it }
+            }
+            override fun onFailure(call: Call<SimpleResponse>, t: Throwable) {
+                println("Failure is $t")
+            }
+        })*/
     }
 }
