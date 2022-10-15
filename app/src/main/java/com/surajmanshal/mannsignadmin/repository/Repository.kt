@@ -12,5 +12,7 @@ class Repository() {
 
     fun fetchSizes() = NetworkService.networkInstance.fetchSystemSizes()
 
+    fun fetchAllOrders() = NetworkService.networkInstance.fetchAllOrders()
+
     suspend fun sendProduct(product: Product) = NetworkService.networkInstance.sendProduct(product)
 }

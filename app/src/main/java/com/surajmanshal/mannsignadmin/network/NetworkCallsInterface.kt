@@ -10,6 +10,9 @@ import retrofit2.http.POST
 
 interface NetworkCallsInterface {
 
+    @GET("order/getall")
+    fun fetchAllOrders() : Call<List<Order>>
+
     @GET("materials")
     fun fetchMaterials() : Call<List<Material>>
 
