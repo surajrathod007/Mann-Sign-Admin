@@ -30,10 +30,11 @@ class OrdersFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_orders,container,false)
 
 
-        setupViewPager()
+        //setupViewPager()
         return binding.root
     }
 
+    /*
     fun setupViewPager(){
 
         val fragmentList = listOf(AllOrdersFragment(),PendingOrdersFragment(),ProcessingOrdersFragment(),ReadyOrdersFragment(),DeliveredOrdersFragment(),CanceledOrdersFragment())
@@ -69,5 +70,7 @@ class OrdersFragment : Fragment() {
 
     }
 
+
+     */
 
 }

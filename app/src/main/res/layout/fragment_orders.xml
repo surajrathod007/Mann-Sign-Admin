@@ -12,6 +12,7 @@
         android:layout_height="match_parent"
         tools:context=".ui.fragments.OrdersFragment">
 
+        <!--
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -31,6 +32,97 @@
                 android:layout_height="match_parent"/>
 
         </LinearLayout>
+        -->
+
+        <HorizontalScrollView
+            android:padding="10dp"
+            android:scrollbars="none"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:padding="10dp"
+                    android:id="@+id/txtAllOrders"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:clickable="true"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:text="All Orders"
+                    android:background="@drawable/textview_background"
+                    android:foreground="?attr/selectableItemBackground"/>
+
+                <TextView
+                    android:padding="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/txtPendingOrders"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:clickable="true"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:text="Pending Orders"
+                    android:background="@drawable/textview_background"
+                    android:foreground="?attr/selectableItemBackground"/>
+
+                <TextView
+                    android:padding="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/txtProcessingOrders"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:clickable="true"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:text="Processing Orders"
+                    android:background="@drawable/textview_background"
+                    android:foreground="?attr/selectableItemBackground"/>
+
+                <TextView
+                    android:padding="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/txtReadyOrders"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:clickable="true"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:text="Ready Orders"
+                    android:background="@drawable/textview_background"
+                    android:foreground="?attr/selectableItemBackground"/>
+
+                <TextView
+                    android:padding="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/txtDeliveredOrders"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:clickable="true"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:text="Delivered Orders"
+                    android:background="@drawable/textview_background"
+                    android:foreground="?attr/selectableItemBackground"/>
+
+                <TextView
+                    android:padding="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/txtCanceledOrders"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:clickable="true"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:text="Canceled Orders"
+                    android:background="@drawable/textview_background"
+                    android:foreground="?attr/selectableItemBackground"/>
+            </LinearLayout>
+
+
+        </HorizontalScrollView>
 
     </FrameLayout>
 </layout>
