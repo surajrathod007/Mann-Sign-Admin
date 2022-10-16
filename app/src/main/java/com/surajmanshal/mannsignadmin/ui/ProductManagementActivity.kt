@@ -4,6 +4,9 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -31,12 +34,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.lang.Exception
 import androidx.lifecycle.Observer
+import com.imagekit.android.ImageKit
+import com.imagekit.android.ImageKitCallback
+import com.imagekit.android.entity.TransformationPosition
+import com.imagekit.android.entity.UploadError
+import com.imagekit.android.entity.UploadResponse
 
 class ProductManagementActivity : AppCompatActivity() {
     private lateinit var _binding : ActivityProductManagementBinding
     private val binding get() = _binding
     private lateinit var vm : ProductManagementViewModel
     private val mProduct = Product(0)
+    private lateinit var Image : Uri
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,13 +57,14 @@ class ProductManagementActivity : AppCompatActivity() {
         }
         with(binding){
             setContentView(root)
+            Glide.with(this@ProductManagementActivity).load("https://ik.imagekit.io/eobmcqpoq/GREEN_NITA_ysnIaZNQz.png?ik-sdk-version=javascript-1.4.3&updatedAt=1665844404231").into(ivProduct)
             ivProduct.setOnClickListener {
                 chooseImage()
             }
             btnAddProduct.setOnClickListener {
                 mProduct.also{
                     with(it) {
-                        images = listOf(Image(1, ""))
+                        images = setupImage()
                         sizes = getSelectedSizes(gvSizes)
                         materials = getSelectedMaterialsIds(gvMaterials)
                         languages = getSelectedLanguagesIds(gvLanguages)
@@ -103,6 +113,53 @@ class ProductManagementActivity : AppCompatActivity() {
 
     }
 
+    private fun setupImage(): List<Image>? {
+
+        val iv = ImageKit.init(
+            context = applicationContext,
+            publicKey = "public_IoFy5RW0jJHjOHclZKbR+rv8CpQ=",
+            urlEndpoint = "https://ik.imagekit.io/eobmcqpoq",
+            transformationPosition = TransformationPosition.PATH,
+            authenticationEndpoint = "https://b194-49-34-175-236.in.ngrok.io/key"
+        )
+
+        // https://ik.imagekit.io/your_imagekit_id/default-image.jpg?tr=h-400.00,ar-3-2
+
+       val uploading = ImageKit.getInstance().uploader().upload(getBitmapFromView(binding.ivProduct),"mannSignApp",
+           useUniqueFilename = true,
+           tags = arrayOf("pictures"),
+           folder = "/",
+           isPrivateFile =  false,
+           customCoordinates = "",
+           responseFields = ""
+            , imageKitCallback = object: ImageKitCallback {
+                override fun onSuccess(uploadResponse: UploadResponse) {
+                    Toast.makeText(this@ProductManagementActivity, "Uploaded", Toast.LENGTH_SHORT).show()
+                }
+                override fun onError(uploadError: UploadError) {
+                    Toast.makeText(this@ProductManagementActivity, "$uploadError", Toast.LENGTH_SHORT).show()
+                }
+            }
+       )
+
+        val url = ImageKit.getInstance()
+            .url(urlEndpoint = "https://ik.imagekit.io/eobmcqpoq",
+                path = Image.path.toString(),
+                transformationPosition = TransformationPosition.QUERY
+            )
+            .height(400)
+            .aspectRatio(3, 2)
+            .create()
+        return listOf(Image(100,url,"uploadded img"))
+    }
+
+    private fun getBitmapFromView(view : View): Bitmap {
+        val bitmap = Bitmap.createBitmap(view.width,view.height,Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        view.draw(canvas)
+        return bitmap
+    }
+
     private fun textOf(et: TextInputEditText): String {
         return et.text.toString()
     }
@@ -130,6 +187,7 @@ class ProductManagementActivity : AppCompatActivity() {
                     try{
                         val selectedImageUri = data.data!!
                         // todo:  storeImgOnServer(selectedImageUri)
+                        Image = selectedImageUri
 
                         Glide.with(this).load(selectedImageUri).into(binding.ivProduct)
                     }catch(e : Exception){

@@ -85,4 +85,7 @@ dependencies {
     //retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
+
+    // ImageKit
+    implementation 'com.github.imagekit-developer:imagekit-android:2.0.1'
 }
