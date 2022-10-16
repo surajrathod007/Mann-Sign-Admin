@@ -66,7 +66,6 @@ class OrdersFragment : Fragment() {
                 if (!it) {
                     binding.loading.visibility = View.GONE
                 }
-
                 if (it) {
                     binding.loading.visibility = View.VISIBLE
                 }
