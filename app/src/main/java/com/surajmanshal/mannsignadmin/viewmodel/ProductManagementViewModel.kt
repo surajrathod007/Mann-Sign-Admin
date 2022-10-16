@@ -13,6 +13,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.MultipartBody.Part
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -31,8 +32,13 @@ class ProductManagementViewModel : ViewModel() {
     val subCategories: LiveData<List<SubCategory>> get() = _subCategories               //CATEGORIES
     private val _serverResponse = MutableLiveData<SimpleResponse>()
     val serverResponse : LiveData<SimpleResponse> get() = _serverResponse               //SERVER RESPONSE
+    private val _imageUploadResponse = MutableLiveData<SimpleResponse>()
+    val imageUploadResponse : LiveData<SimpleResponse> get() = _imageUploadResponse     // IMAGE UPLOADING PROGRESS
+    private val _productUploadResponse = MutableLiveData<SimpleResponse>()
+    val productUploadResponse : LiveData<SimpleResponse> get() = _productUploadResponse  // PRODUCT UPLOADING PROGRESS
     private val _posters = MutableLiveData<List<Product>>()
     val posters : LiveData<List<Product>> get() = _posters                              // POSTERS
+
 
     // -------------- DATA SETUP FUNCTIONS -------------------------------------------
     suspend fun setupViewModelDataMembers(){
@@ -101,7 +107,9 @@ class ProductManagementViewModel : ViewModel() {
 
     suspend fun  addProduct(product: Product) {
         try {
-            _serverResponse.value = repository.sendProduct(product)
+            val response = repository.sendProduct(product)
+            _serverResponse.postValue(response)
+            _productUploadResponse.postValue(response)
         }catch (e : Exception){
             println("$e")
         }
@@ -119,5 +127,14 @@ class ProductManagementViewModel : ViewModel() {
                 println("Failure is $t")
             }
         })
+    }
+    suspend fun sendImage(part: Part){
+        try {
+            val response = repository.uploadImage(part)
+            _serverResponse.postValue(response)
+            _imageUploadResponse.postValue(response)
+        }catch (e : Exception){
+            println("$e ${serverResponse.value?.message}")
+        }
     }
 }

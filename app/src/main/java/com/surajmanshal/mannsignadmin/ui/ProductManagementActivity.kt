@@ -16,10 +16,10 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import android.widget.GridLayout
-import android.widget.GridView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.core.content.ContextCompat
 import androidx.core.view.forEach
 import androidx.lifecycle.ViewModelProvider
@@ -34,18 +34,24 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.lang.Exception
 import androidx.lifecycle.Observer
-import com.imagekit.android.ImageKit
-import com.imagekit.android.ImageKitCallback
-import com.imagekit.android.entity.TransformationPosition
-import com.imagekit.android.entity.UploadError
-import com.imagekit.android.entity.UploadResponse
+import com.google.gson.Gson
+import com.google.gson.internal.LinkedTreeMap
+import com.google.gson.reflect.TypeToken
+import com.surajmanshal.response.SimpleResponse
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import org.json.JSONObject
+import java.io.File
+import java.io.FileOutputStream
 
 class ProductManagementActivity : AppCompatActivity() {
     private lateinit var _binding : ActivityProductManagementBinding
     private val binding get() = _binding
     private lateinit var vm : ProductManagementViewModel
     private val mProduct = Product(0)
-    private lateinit var Image : Uri
+    private lateinit var imageUri : Uri
+    val mImages = mutableListOf<Image>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,7 +70,7 @@ class ProductManagementActivity : AppCompatActivity() {
             btnAddProduct.setOnClickListener {
                 mProduct.also{
                     with(it) {
-                        images = setupImage()
+//                        val uploadedImages = setupImage()
                         sizes = getSelectedSizes(gvSizes)
                         materials = getSelectedMaterialsIds(gvMaterials)
                         languages = getSelectedLanguagesIds(gvLanguages)
@@ -76,9 +82,14 @@ class ProductManagementActivity : AppCompatActivity() {
                             short_desc = textOf(etShortDescription),
                             long_desc = textOf(etLongDescription)
                         )
+//                        if(uploadedImages.isNotEmpty()) images = uploadedImages else return@setOnClickListener
                     }
                 }
                 CoroutineScope(Dispatchers.IO).launch {
+                    setupImage()
+                    mProduct.also {
+                        it.images = mImages
+                    }
                     vm.addProduct(mProduct)
                 }
             }
@@ -104,71 +115,43 @@ class ProductManagementActivity : AppCompatActivity() {
             setupSubcategoryViews()
         })
         vm.serverResponse.observe(this, Observer {
-            if (it.success){
-                Toast.makeText(this@ProductManagementActivity, "Added Successfully", Toast.LENGTH_SHORT).show()
-            }else{
-                Toast.makeText(this@ProductManagementActivity, it.message, Toast.LENGTH_SHORT).show()
-            }
+            Toast.makeText(this@ProductManagementActivity, it.message, Toast.LENGTH_SHORT).show()
+        })
+        vm.productUploadResponse.observe(this, Observer {
+            // todo : show some loading/progress ui
+        })
+        vm.imageUploadResponse.observe(this, Observer { response ->
+            // todo : show some loading/progress ui
+            val data = response.data as LinkedTreeMap<String,Any>
+            mImages.add(Image(id = data["id"].toString().toDouble().toInt(), url = data["url"].toString(), description = data["description"].toString()))
         })
 
-    }
-
-    private fun setupImage(): List<Image>? {
-
-        val iv = ImageKit.init(
-            context = applicationContext,
-            publicKey = "public_IoFy5RW0jJHjOHclZKbR+rv8CpQ=",
-            urlEndpoint = "https://ik.imagekit.io/eobmcqpoq",
-            transformationPosition = TransformationPosition.PATH,
-            authenticationEndpoint = "https://b194-49-34-175-236.in.ngrok.io/key"
-        )
-
-        // https://ik.imagekit.io/your_imagekit_id/default-image.jpg?tr=h-400.00,ar-3-2
-
-       val uploading = ImageKit.getInstance().uploader().upload(getBitmapFromView(binding.ivProduct),"mannSignApp",
-           useUniqueFilename = true,
-           tags = arrayOf("pictures"),
-           folder = "/",
-           isPrivateFile =  false,
-           customCoordinates = "",
-           responseFields = ""
-            , imageKitCallback = object: ImageKitCallback {
-                override fun onSuccess(uploadResponse: UploadResponse) {
-                    Toast.makeText(this@ProductManagementActivity, "Uploaded", Toast.LENGTH_SHORT).show()
-                }
-                override fun onError(uploadError: UploadError) {
-                    Toast.makeText(this@ProductManagementActivity, "$uploadError", Toast.LENGTH_SHORT).show()
-                }
-            }
-       )
-
-        val url = ImageKit.getInstance()
-            .url(urlEndpoint = "https://ik.imagekit.io/eobmcqpoq",
-                path = Image.path.toString(),
-                transformationPosition = TransformationPosition.QUERY
-            )
-            .height(400)
-            .aspectRatio(3, 2)
-            .create()
-        return listOf(Image(100,url,"uploadded img"))
-    }
-
-    private fun getBitmapFromView(view : View): Bitmap {
-        val bitmap = Bitmap.createBitmap(view.width,view.height,Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(bitmap)
-        view.draw(canvas)
-        return bitmap
-    }
-
-    private fun textOf(et: TextInputEditText): String {
-        return et.text.toString()
     }
 
     override fun onDestroy() {
         super.onDestroy()
     }
 
+
     // Utilities
+    private suspend fun setupImage() {
+
+        val dir = applicationContext.filesDir
+        val file = File(dir, "image.png")
+
+        val outputStream = FileOutputStream(file)
+        contentResolver.openInputStream(imageUri)?.copyTo(outputStream)
+
+        val requestBody = RequestBody.create(MediaType.parse("image/jpg"),file)
+        val part = MultipartBody.Part.createFormData("product",file.name,requestBody)
+        println("${part.body().contentType()}" +"}")
+
+        vm.sendImage(part)
+    }
+
+    private fun textOf(et: TextInputEditText): String {
+        return et.text.toString()
+    }
     private fun chooseImage(){
         if(ContextCompat.checkSelfPermission(this,Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
             val storageIntent = Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
@@ -187,7 +170,7 @@ class ProductManagementActivity : AppCompatActivity() {
                     try{
                         val selectedImageUri = data.data!!
                         // todo:  storeImgOnServer(selectedImageUri)
-                        Image = selectedImageUri
+                        imageUri = selectedImageUri
 
                         Glide.with(this).load(selectedImageUri).into(binding.ivProduct)
                     }catch(e : Exception){
