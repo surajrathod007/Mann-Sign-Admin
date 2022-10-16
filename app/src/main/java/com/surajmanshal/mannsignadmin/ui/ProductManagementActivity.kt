@@ -4,20 +4,24 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import android.widget.GridLayout
-import android.widget.GridView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.core.content.ContextCompat
 import androidx.core.view.forEach
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.google.android.material.textfield.TextInputEditText
@@ -29,51 +33,77 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.lang.Exception
+import androidx.lifecycle.Observer
+import com.google.gson.Gson
+import com.google.gson.internal.LinkedTreeMap
+import com.google.gson.reflect.TypeToken
+import com.surajmanshal.response.SimpleResponse
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import org.json.JSONObject
+import java.io.File
+import java.io.FileOutputStream
 
 class ProductManagementActivity : AppCompatActivity() {
     private lateinit var _binding : ActivityProductManagementBinding
     private val binding get() = _binding
     private lateinit var vm : ProductManagementViewModel
     private val mProduct = Product(0)
+    private lateinit var imageUri : Uri
+    val mImages = mutableListOf<Image>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityProductManagementBinding.inflate(layoutInflater)
         vm = ViewModelProvider(this).get(ProductManagementViewModel::class.java)
+        var selectedCategory = 0
         CoroutineScope(Dispatchers.IO).launch {
             vm.setupViewModelDataMembers()
         }
         with(binding){
             setContentView(root)
+            Glide.with(this@ProductManagementActivity).load("https://ik.imagekit.io/eobmcqpoq/GREEN_NITA_ysnIaZNQz.png?ik-sdk-version=javascript-1.4.3&updatedAt=1665844404231").into(ivProduct)
             ivProduct.setOnClickListener {
                 chooseImage()
             }
             btnAddProduct.setOnClickListener {
                 mProduct.also{
                     with(it) {
-                        images = listOf(Image(1, ""))
+//                        val uploadedImages = setupImage()
                         sizes = getSelectedSizes(gvSizes)
                         materials = getSelectedMaterialsIds(gvMaterials)
                         languages = getSelectedLanguagesIds(gvLanguages)
                         typeId = Constants.TYPE_POSTER
-                        subCategory = getSubCategoryId()
+                        subCategory = selectedCategory
                         category = vm.subCategories.value?.get(binding.categorySpinner.selectedItemPosition)?.mainCategoryId
                         posterDetails = Poster(
                             title = textOf(etTitle),
                             short_desc = textOf(etShortDescription),
                             long_desc = textOf(etLongDescription)
                         )
+//                        if(uploadedImages.isNotEmpty()) images = uploadedImages else return@setOnClickListener
                     }
                 }
                 CoroutineScope(Dispatchers.IO).launch {
+                    setupImage()
+                    mProduct.also {
+                        it.images = mImages
+                    }
                     vm.addProduct(mProduct)
                 }
+            }
+            categorySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                    selectedCategory = vm.subCategories.value?.get(p2)!!.id
+                }
+                override fun onNothingSelected(p0: AdapterView<*>?) {}
             }
         }
 
         // Observers
         vm.sizes.observe(this, Observer{
-           setupSizesViews()
+            setupSizesViews()
         })
         vm.materials.observe(this, Observer{
             setupMaterialViews()
@@ -85,28 +115,43 @@ class ProductManagementActivity : AppCompatActivity() {
             setupSubcategoryViews()
         })
         vm.serverResponse.observe(this, Observer {
-            if (it.success){
-                Toast.makeText(this@ProductManagementActivity, "Added Successfully", Toast.LENGTH_SHORT).show()
-            }else{
-                Toast.makeText(this@ProductManagementActivity, it.message, Toast.LENGTH_SHORT).show()
-            }
+            Toast.makeText(this@ProductManagementActivity, it.message, Toast.LENGTH_SHORT).show()
+        })
+        vm.productUploadResponse.observe(this, Observer {
+            // todo : show some loading/progress ui
+        })
+        vm.imageUploadResponse.observe(this, Observer { response ->
+            // todo : show some loading/progress ui
+            val data = response.data as LinkedTreeMap<String,Any>
+            mImages.add(Image(id = data["id"].toString().toDouble().toInt(), url = data["url"].toString(), description = data["description"].toString()))
         })
 
-    }
-
-    private fun textOf(et: TextInputEditText): String {
-        return et.text.toString()
-    }
-
-    private fun getSubCategoryId(): Int? {
-        return vm.subCategories.value?.get(binding.categorySpinner.selectedItemPosition)?.id
     }
 
     override fun onDestroy() {
         super.onDestroy()
     }
 
+
     // Utilities
+    private suspend fun setupImage() {
+
+        val dir = applicationContext.filesDir
+        val file = File(dir, "image.png")
+
+        val outputStream = FileOutputStream(file)
+        contentResolver.openInputStream(imageUri)?.copyTo(outputStream)
+
+        val requestBody = RequestBody.create(MediaType.parse("image/jpg"),file)
+        val part = MultipartBody.Part.createFormData("product",file.name,requestBody)
+        println("${part.body().contentType()}" +"}")
+
+        vm.sendImage(part)
+    }
+
+    private fun textOf(et: TextInputEditText): String {
+        return et.text.toString()
+    }
     private fun chooseImage(){
         if(ContextCompat.checkSelfPermission(this,Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
             val storageIntent = Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
@@ -125,6 +170,7 @@ class ProductManagementActivity : AppCompatActivity() {
                     try{
                         val selectedImageUri = data.data!!
                         // todo:  storeImgOnServer(selectedImageUri)
+                        imageUri = selectedImageUri
 
                         Glide.with(this).load(selectedImageUri).into(binding.ivProduct)
                     }catch(e : Exception){
