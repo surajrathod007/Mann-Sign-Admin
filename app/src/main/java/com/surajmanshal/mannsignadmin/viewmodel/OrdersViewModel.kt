@@ -17,9 +17,11 @@ import retrofit2.Response
 
 class OrdersViewModel : ViewModel() {
     private val repository = Repository()
-    private val _allOrders = MutableLiveData<List<Order>>()
+    private val _allOrders = MutableLiveData<List<Order>>(emptyList())
     val allOrders : LiveData<List<Order>> get() = _allOrders
 
+    val isEmptyList = MutableLiveData<Boolean>(false)
+    val isLoading = MutableLiveData<Boolean>(true)
     suspend fun setupViewModelDataMembers(){
         CoroutineScope(Dispatchers.IO).launch { getAllOrders() }
     }
@@ -32,16 +34,25 @@ class OrdersViewModel : ViewModel() {
     fun getAllOrders() {
         val v = NetworkService.networkInstance.fetchAllOrders()
 
+
         v.enqueue(object : Callback<List<Order>?> {
             override fun onResponse(call: Call<List<Order>?>, response: Response<List<Order>?>) {
                 response.body().let {
                     _allOrders.value = it
+                    if(it.isNullOrEmpty()){
+                        isEmptyList.postValue(true)
+                    }
                 }
+                isLoading.postValue(false)
             }
             override fun onFailure(call: Call<List<Order>?>, t: Throwable) {
                 TODO("Not yet implemented")
+                isLoading.postValue(false)
             }
         })
+
+
+
     }
 
 }

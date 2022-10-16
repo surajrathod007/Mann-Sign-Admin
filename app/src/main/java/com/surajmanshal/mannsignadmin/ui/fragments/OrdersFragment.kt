@@ -1,5 +1,6 @@
 package com.surajmanshal.mannsignadmin.ui.fragments
 
+import android.app.ProgressDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -43,24 +44,47 @@ class OrdersFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_orders,container,false)
 
-        CoroutineScope(Dispatchers.IO).launch {
-            viewModel.setupViewModelDataMembers()
+
+        if(NetworkService.checkForInternet(requireContext())){
+            CoroutineScope(Dispatchers.IO).launch {
+                viewModel.setupViewModelDataMembers()
+            }
+
+            viewModel.allOrders.observe(viewLifecycleOwner) {
+                if (it.isNotEmpty()) {
+                    binding.rvOrders.adapter = OrdersAdapter(requireContext(), it)
+                }
+            }
+
+            viewModel.isEmptyList.observe(viewLifecycleOwner) {
+                if (it) {
+                    Toast.makeText(requireContext(), "No Orders", Toast.LENGTH_LONG).show()
+                }
+            }
+
+            viewModel.isLoading.observe(viewLifecycleOwner) {
+                if (!it) {
+                    binding.loading.visibility = View.GONE
+                }
+
+                if (it) {
+                    binding.loading.visibility = View.VISIBLE
+                }
+            }
+            binding.txtAllOrders.setOnClickListener {
+                viewModel.isLoading.postValue(true)
+                //Toast.makeText(requireContext(),"${viewModel.allOrders.value}",Toast.LENGTH_LONG).show()
+                viewModel.getAllOrders()
+                binding.rvOrders.adapter = OrdersAdapter(requireContext(),viewModel.allOrders.value!!)
+            }
+
+            binding.txtConfirmedOrders.setOnClickListener {
+                viewModel.filterOrder(Constants.ORDER_CONFIRMED)
+            }
+        }else{
+            Toast.makeText(requireContext(),"No Internet Connection",Toast.LENGTH_LONG).show()
         }
 
-        viewModel.allOrders.observe(viewLifecycleOwner,{
-            if(!it.isNullOrEmpty())
-            binding.rvOrders.adapter = OrdersAdapter(requireContext(),it)
-        })
-
-        binding.txtAllOrders.setOnClickListener {
-            //Toast.makeText(requireContext(),"${viewModel.allOrders.value}",Toast.LENGTH_LONG).show()
-            viewModel.getAllOrders()
-            binding.rvOrders.adapter = OrdersAdapter(requireContext(),viewModel.allOrders.value!!)
-        }
-
-        binding.txtConfirmedOrders.setOnClickListener {
-            viewModel.filterOrder(Constants.ORDER_CONFIRMED)
-        }
 
         return binding.root
     }
