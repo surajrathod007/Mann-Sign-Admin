@@ -28,12 +28,11 @@ import retrofit2.Response
 
 class OrdersFragment : Fragment() {
 
-
     lateinit var binding: FragmentOrdersBinding
     lateinit var viewModel : OrdersViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         viewModel = ViewModelProvider(requireActivity()).get(OrdersViewModel::class.java)
     }
 
@@ -49,6 +48,7 @@ class OrdersFragment : Fragment() {
         }
 
         viewModel.allOrders.observe(viewLifecycleOwner,{
+            if(!it.isNullOrEmpty())
             binding.rvOrders.adapter = OrdersAdapter(requireContext(),it)
         })
 
