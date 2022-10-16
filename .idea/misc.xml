@@ -6,11 +6,12 @@
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.179" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/drawable/textview_background.xml" value="0.172" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/activity_main.xml" value="0.2552083333333333" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/activity_order_details.xml" value="0.2552083333333333" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/fragment_all_orders.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/fragment_canceled_orders.xml" value="0.2552083333333333" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/fragment_dashboard.xml" value="0.2552083333333333" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/fragment_delivered_orders.xml" value="0.2552083333333333" />
-        <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/fragment_orders.xml" value="0.25" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/fragment_orders.xml" value="0.22" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/fragment_pending_orders.xml" value="0.24114583333333334" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/fragment_processing_orders.xml" value="0.2552083333333333" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/fragment_ready_orders.xml" value="0.2552083333333333" />
@@ -24,12 +25,5 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
-  </component>
-  <component name="SuppressABINotification">
-    <option name="modulesWithSuppressedNotConfigured">
-      <set>
-        <option value="Mann_Sign_Admin.app" />
-      </set>
-    </option>
   </component>
 </project>
