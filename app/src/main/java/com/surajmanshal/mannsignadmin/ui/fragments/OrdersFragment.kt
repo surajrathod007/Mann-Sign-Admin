@@ -82,11 +82,9 @@ class OrdersFragment : Fragment(), View.OnClickListener {
                 }
             }
 
-
         } else {
             Toast.makeText(requireContext(), "No Internet Connection", Toast.LENGTH_LONG).show()
         }
-
 
         return binding.root
     }
@@ -132,7 +130,6 @@ class OrdersFragment : Fragment(), View.OnClickListener {
                         requireContext(),
                         viewModel.allOrders.value!!.filter { it.orderStatus == Constants.ORDER_CANCELED })
                 }
-
             }
         }
 

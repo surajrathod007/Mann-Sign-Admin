@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import com.surajmanshal.mannsignadmin.R
+import com.surajmanshal.mannsignadmin.data.model.Order
 import com.surajmanshal.mannsignadmin.databinding.ActivityOrderDetailsBinding
 
 class OrderDetailsActivity : AppCompatActivity() {
 
     lateinit var spinner : Spinner
     var status = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val i = intent

@@ -1,5 +1,7 @@
 package com.surajmanshal.mannsignadmin.data.model
 
+import java.io.Serializable
+
 data class Order(
     val orderId : String,
     val emailId : String,
@@ -11,4 +13,4 @@ data class Order(
     val orderStatus : Int = 0,
     val paymentStatus : Int = 0,
     val total : Float,
-)
+) : Serializable
