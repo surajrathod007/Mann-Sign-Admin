@@ -33,7 +33,8 @@ class OrdersViewModel : ViewModel() {
     }
 
     fun filterOrder(status : Int){
-        val list = _allOrders.value?.filter { it.orderStatus == Constants.ORDER_CONFIRMED }
+
+        val list = _allOrders.value?.filter { it.orderStatus == status }
         _allOrders.value = list!!
     }
 
