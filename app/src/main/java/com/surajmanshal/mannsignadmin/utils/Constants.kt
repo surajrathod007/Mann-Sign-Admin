@@ -1,5 +1,7 @@
 package com.surajmanshal.mannsignadmin.utils
 
+import com.surajmanshal.mannsignadmin.URL
+
 object Constants {
     const val TYPE_POSTER = 1
     const val TYPE_BANNER = 2
@@ -22,4 +24,9 @@ object Constants {
     // Permission Codes
     const val CHOOSE_IMAGE = 101
     const val READ_EXTERNAL_STORAGE = 102
+
+    fun urlMaker(imageurl :String): String {
+        val fileName = imageurl.substringAfter("http://localhost:8700/images/")
+        return URL.IMAGE_PATH+ fileName
+    }
 }

@@ -9,7 +9,9 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.databinding.adapters.ViewBindingAdapter.setOnClick
 import com.surajmanshal.mannsignadmin.R
+import com.surajmanshal.mannsignadmin.ui.CategoryManagementActivity
 import com.surajmanshal.mannsignadmin.ui.ProductManagementActivity
+import com.surajmanshal.mannsignadmin.ui.ProductsActivity
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -41,7 +43,7 @@ class DashboardFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_dashboard, container, false)
         view.findViewById<Button>(R.id.button).setOnClickListener{
-            startActivity(Intent(activity, ProductManagementActivity::class.java))
+            startActivity(Intent(activity, ProductsActivity::class.java))
         }
         return view
     }

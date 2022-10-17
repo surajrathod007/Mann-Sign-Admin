@@ -3,22 +3,28 @@ package com.surajmanshal.mannsignadmin.repository
 import com.surajmanshal.mannsignadmin.data.model.Product
 import com.surajmanshal.mannsignadmin.network.NetworkService
 import okhttp3.MultipartBody
-import retrofit2.http.Multipart
+import okhttp3.ResponseBody
+import retrofit2.Call
+import java.io.File
 
 class Repository() {
-    fun fetchMaterials() = NetworkService.networkInstance.fetchMaterials()
+    private val server = NetworkService.networkInstance
+    fun fetchMaterials() = server.fetchMaterials()
 
-    fun fetchLanguages() = NetworkService.networkInstance.fetchLanguages()
+    fun fetchLanguages() = server.fetchLanguages()
 
-    fun fetchSubCategories() = NetworkService.networkInstance.fetchSubCategories()
+    fun fetchSubCategories() = server.fetchSubCategories()
 
-    fun fetchSizes() = NetworkService.networkInstance.fetchSystemSizes()
+    fun fetchCategory() = server.fetchCategories()
 
-    fun fetchAllOrders() = NetworkService.networkInstance.fetchAllOrders()
+    fun fetchSizes() = server.fetchSystemSizes()
 
-    suspend fun sendProduct(product: Product) = NetworkService.networkInstance.sendProduct(product)
+    fun fetchAllOrders() = server.fetchAllOrders()
 
-    fun fetchPosters() = NetworkService.networkInstance.fetchAllPosters()
+    suspend fun sendProduct(product: Product) = server.sendProduct(product)
 
-    suspend fun uploadImage(part : MultipartBody.Part) = NetworkService.networkInstance.uploadImage(part)
+    fun fetchPosters() = server.fetchAllPosters()
+
+    suspend fun uploadImage(part : MultipartBody.Part) = server.uploadImage(part)
+
 }
