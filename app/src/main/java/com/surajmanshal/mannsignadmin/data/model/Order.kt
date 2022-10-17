@@ -1,5 +1,6 @@
 package com.surajmanshal.mannsignadmin.data.model
 
+import android.os.Parcelable
 import java.io.Serializable
 
 data class Order(

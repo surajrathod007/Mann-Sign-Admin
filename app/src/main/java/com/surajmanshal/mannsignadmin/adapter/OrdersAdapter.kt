@@ -2,6 +2,7 @@ package com.surajmanshal.mannsignadmin.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,7 +41,7 @@ class OrdersAdapter(val context: Context, val orders: List<Order>) :
         holder.itemView.setOnClickListener {
             val i = Intent(it.context,OrderDetailsActivity::class.java)
             i.putExtra("status",order.orderStatus)
-            it.context.startActivity(i)
+            it.context.startActivity(i,Bundle())
         }
 
         when (order.orderStatus) {

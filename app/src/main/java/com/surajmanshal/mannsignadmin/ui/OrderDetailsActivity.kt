@@ -11,6 +11,7 @@ import com.surajmanshal.mannsignadmin.databinding.ActivityOrderDetailsBinding
 class OrderDetailsActivity : AppCompatActivity() {
 
     lateinit var spinner : Spinner
+    lateinit var paymentStatusSpinner : Spinner
     var status = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,8 +20,16 @@ class OrderDetailsActivity : AppCompatActivity() {
         status = i.getIntExtra("status",0)
         setContentView(R.layout.activity_order_details)
         spinner = findViewById(R.id.spOrderStatus)
-        setupSpinner()
+        paymentStatusSpinner = findViewById(R.id.spOrderPaymentStatus)
 
+        setupSpinner()
+        setUpPaymentStatus()
+
+    }
+
+    private fun setUpPaymentStatus() {
+        val adp = ArrayAdapter(this@OrderDetailsActivity,android.R.layout.simple_spinner_item,resources.getStringArray(R.array.order_payment_status))
+        paymentStatusSpinner.adapter = adp
     }
 
     private fun setupSpinner() {

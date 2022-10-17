@@ -6,6 +6,7 @@ import android.os.Bundle
 import com.surajmanshal.mannsignadmin.ui.ProductManagementActivity
 import com.surajmanshal.mannsignadmin.adapter.MainViewPagerAdapter
 import com.surajmanshal.mannsignadmin.databinding.ActivityMainBinding
+import com.surajmanshal.mannsignadmin.ui.OrderDetailsActivity
 import com.surajmanshal.mannsignadmin.ui.fragments.DashboardFragment
 import com.surajmanshal.mannsignadmin.ui.fragments.OrdersFragment
 import com.surajmanshal.mannsignadmin.ui.fragments.ReportsFragment
