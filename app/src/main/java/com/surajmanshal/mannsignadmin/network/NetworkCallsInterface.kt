@@ -4,17 +4,9 @@ import com.surajmanshal.mannsignadmin.data.model.*
 import com.surajmanshal.response.SimpleResponse
 import okhttp3.MultipartBody
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Headers
-import retrofit2.http.Multipart
-import retrofit2.http.POST
-import retrofit2.http.Part
+import retrofit2.http.*
 
 interface NetworkCallsInterface {
-
-    @GET("order/getall")
-    fun fetchAllOrders() : Call<List<Order>>
 
     @GET("materials")
     fun fetchMaterials() : Call<List<Material>>
@@ -35,7 +27,20 @@ interface NetworkCallsInterface {
     @GET("product/posters")
     fun fetchAllPosters() : Call<List<Product>>
 
+    @GET("order/getall")
+    fun fetchAllOrders() : Call<List<Order>>
+
     @Multipart
     @POST("image/upload")
     suspend fun uploadImage(@Part image : MultipartBody.Part) :SimpleResponse
+
+    @GET("size")
+    fun fetchSizeById(@Query("id") id:Int) : Call<Size>
+
+    @GET("material")
+    fun fetchMaterialById(@Query("id") id:Int) : Call<Material>
+
+    @GET("language")
+    fun fetchLanguageById(@Query("id") id:Int) : Call<Language>
+
 }

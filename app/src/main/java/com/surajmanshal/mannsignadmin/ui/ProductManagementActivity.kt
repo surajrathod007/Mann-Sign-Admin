@@ -38,6 +38,7 @@ import com.google.gson.Gson
 import com.google.gson.internal.LinkedTreeMap
 import com.google.gson.reflect.TypeToken
 import com.surajmanshal.response.SimpleResponse
+import kotlinx.coroutines.coroutineScope
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -71,6 +72,9 @@ class ProductManagementActivity : AppCompatActivity() {
                 mProduct.also{
                     with(it) {
 //                        val uploadedImages = setupImage()
+                        CoroutineScope(Dispatchers.IO).launch {
+                            setupImage()
+                        }
                         sizes = getSelectedSizes(gvSizes)
                         materials = getSelectedMaterialsIds(gvMaterials)
                         languages = getSelectedLanguagesIds(gvLanguages)
@@ -84,13 +88,6 @@ class ProductManagementActivity : AppCompatActivity() {
                         )
 //                        if(uploadedImages.isNotEmpty()) images = uploadedImages else return@setOnClickListener
                     }
-                }
-                CoroutineScope(Dispatchers.IO).launch {
-                    setupImage()
-                    mProduct.also {
-                        it.images = mImages
-                    }
-                    vm.addProduct(mProduct)
                 }
             }
             categorySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
@@ -124,6 +121,12 @@ class ProductManagementActivity : AppCompatActivity() {
             // todo : show some loading/progress ui
             val data = response.data as LinkedTreeMap<String,Any>
             mImages.add(Image(id = data["id"].toString().toDouble().toInt(), url = data["url"].toString(), description = data["description"].toString()))
+            CoroutineScope(Dispatchers.IO).launch {
+                mProduct.also {
+                    it.images = mImages
+                }
+                vm.addProduct(mProduct)
+            }
         })
 
     }
