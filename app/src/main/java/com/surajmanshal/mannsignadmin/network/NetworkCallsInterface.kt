@@ -5,6 +5,7 @@ import com.surajmanshal.response.SimpleResponse
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
+import java.io.File
 
 interface NetworkCallsInterface {
 
@@ -42,5 +43,8 @@ interface NetworkCallsInterface {
 
     @GET("language")
     fun fetchLanguageById(@Query("id") id:Int) : Call<Language>
+
+    @GET("image/get")
+    fun fetchImageByName(@Query("name") name : String) : Call<File>
 
 }

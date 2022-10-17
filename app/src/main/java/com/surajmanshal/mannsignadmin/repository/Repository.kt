@@ -3,22 +3,30 @@ package com.surajmanshal.mannsignadmin.repository
 import com.surajmanshal.mannsignadmin.data.model.Product
 import com.surajmanshal.mannsignadmin.network.NetworkService
 import okhttp3.MultipartBody
-import retrofit2.http.Multipart
+import retrofit2.Call
+import java.io.File
 
 class Repository() {
-    fun fetchMaterials() = NetworkService.networkInstance.fetchMaterials()
+    private val server = NetworkService.networkInstance
+    fun fetchMaterials() = server.fetchMaterials()
 
-    fun fetchLanguages() = NetworkService.networkInstance.fetchLanguages()
+    fun fetchLanguages() = server.fetchLanguages()
 
-    fun fetchSubCategories() = NetworkService.networkInstance.fetchSubCategories()
+    fun fetchSubCategories() = server.fetchSubCategories()
 
-    fun fetchSizes() = NetworkService.networkInstance.fetchSystemSizes()
+    fun fetchSizes() = server.fetchSystemSizes()
 
-    fun fetchAllOrders() = NetworkService.networkInstance.fetchAllOrders()
+    fun fetchAllOrders() = server.fetchAllOrders()
 
-    suspend fun sendProduct(product: Product) = NetworkService.networkInstance.sendProduct(product)
+    suspend fun sendProduct(product: Product) = server.sendProduct(product)
 
-    fun fetchPosters() = NetworkService.networkInstance.fetchAllPosters()
+    fun fetchPosters() = server.fetchAllPosters()
 
-    suspend fun uploadImage(part : MultipartBody.Part) = NetworkService.networkInstance.uploadImage(part)
+    suspend fun uploadImage(part : MultipartBody.Part) = server.uploadImage(part)
+
+    fun fetchImage(url:String): Call<File> {
+        val filename = url.substringAfter("src/storage/images/")
+        println(filename)
+        return server.fetchImageByName(filename)
+    }
 }
