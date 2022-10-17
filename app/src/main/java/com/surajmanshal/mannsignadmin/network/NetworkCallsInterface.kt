@@ -3,6 +3,7 @@ package com.surajmanshal.mannsignadmin.network
 import com.surajmanshal.mannsignadmin.data.model.*
 import com.surajmanshal.response.SimpleResponse
 import okhttp3.MultipartBody
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 import java.io.File
@@ -17,6 +18,9 @@ interface NetworkCallsInterface {
 
     @GET("subcategories")
     fun fetchSubCategories() : Call<List<SubCategory>>
+
+    @GET("categories")
+    fun fetchCategories() : Call<List<Category>>
 
     @GET("sizes")
     fun fetchSystemSizes() : Call<List<Size>>
@@ -43,8 +47,5 @@ interface NetworkCallsInterface {
 
     @GET("language")
     fun fetchLanguageById(@Query("id") id:Int) : Call<Language>
-
-    @GET("image/get")
-    fun fetchImageByName(@Query("name") name : String) : Call<File>
 
 }

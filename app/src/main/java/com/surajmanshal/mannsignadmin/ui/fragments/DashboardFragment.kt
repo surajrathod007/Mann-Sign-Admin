@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.databinding.adapters.ViewBindingAdapter.setOnClick
 import com.surajmanshal.mannsignadmin.R
+import com.surajmanshal.mannsignadmin.ui.CategoryManagementActivity
 import com.surajmanshal.mannsignadmin.ui.ProductManagementActivity
 import com.surajmanshal.mannsignadmin.ui.ProductsActivity
 

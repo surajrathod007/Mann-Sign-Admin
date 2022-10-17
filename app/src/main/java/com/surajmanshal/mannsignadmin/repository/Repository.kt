@@ -3,6 +3,7 @@ package com.surajmanshal.mannsignadmin.repository
 import com.surajmanshal.mannsignadmin.data.model.Product
 import com.surajmanshal.mannsignadmin.network.NetworkService
 import okhttp3.MultipartBody
+import okhttp3.ResponseBody
 import retrofit2.Call
 import java.io.File
 
@@ -14,6 +15,8 @@ class Repository() {
 
     fun fetchSubCategories() = server.fetchSubCategories()
 
+    fun fetchCategory() = server.fetchCategories()
+
     fun fetchSizes() = server.fetchSystemSizes()
 
     fun fetchAllOrders() = server.fetchAllOrders()
@@ -24,9 +27,4 @@ class Repository() {
 
     suspend fun uploadImage(part : MultipartBody.Part) = server.uploadImage(part)
 
-    fun fetchImage(url:String): Call<File> {
-        val filename = url.substringAfter("src/storage/images/")
-        println(filename)
-        return server.fetchImageByName(filename)
-    }
 }
