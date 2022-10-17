@@ -1,5 +1,7 @@
 package com.surajmanshal.mannsignadmin.data.model
 
+import java.io.Serializable
+
 data class Variant(
     val variantId : Int? = null,
     val productId : Int,
@@ -7,4 +9,4 @@ data class Variant(
     val materialId : Int,
     val languageId : Int,
     val variantPrice : Float
-)
+) : Serializable

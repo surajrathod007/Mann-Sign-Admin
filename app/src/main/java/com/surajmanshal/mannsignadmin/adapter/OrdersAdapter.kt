@@ -41,7 +41,8 @@ class OrdersAdapter(val context: Context, val orders: List<Order>) :
         holder.itemView.setOnClickListener {
             val i = Intent(it.context,OrderDetailsActivity::class.java)
             i.putExtra("status",order.orderStatus)
-            it.context.startActivity(i,Bundle())
+            i.putExtra("order",order)
+            it.context.startActivity(i)
         }
 
         when (order.orderStatus) {

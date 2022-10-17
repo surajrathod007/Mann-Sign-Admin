@@ -1,5 +1,7 @@
 package com.surajmanshal.mannsignadmin.data.model
 
+import java.io.Serializable
+
 data class Product(
     val productId: Int,
     var images: List<Image>? = null,
@@ -13,4 +15,4 @@ data class Product(
     var subCategory: Int? = null,
     var boardDetails: ACPBoard? = null,
     var bannerDetails: Banner? = null,
-    )
+    ) : Serializable

@@ -2,6 +2,7 @@ package com.surajmanshal.mannsignadmin.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import com.surajmanshal.mannsignadmin.R
@@ -12,19 +13,35 @@ class OrderDetailsActivity : AppCompatActivity() {
 
     lateinit var spinner : Spinner
     lateinit var paymentStatusSpinner : Spinner
+    lateinit var binding: ActivityOrderDetailsBinding
     var status = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        binding = ActivityOrderDetailsBinding.inflate(layoutInflater)
         val i = intent
         status = i.getIntExtra("status",0)
-        setContentView(R.layout.activity_order_details)
+        val order = i.getSerializableExtra("order") as Order
+        setContentView(binding.root)
         spinner = findViewById(R.id.spOrderStatus)
         paymentStatusSpinner = findViewById(R.id.spOrderPaymentStatus)
 
         setupSpinner()
         setUpPaymentStatus()
+        setupOrderDetails(order)
 
+    }
+
+    private fun setupOrderDetails(order: Order) {
+        with(binding){
+            txtOrderIdDetails.text = order.orderId
+            txtOrderDateDetails.text = order.orderDate
+            txtOrderQuantityDetails.text = order.quantity.toString()
+            txtOrderTotalDetails.text = "$"+order.total.toString()
+            paymentStatusSpinner.setSelection(order.paymentStatus)
+            spinner.setSelection(order.orderStatus)
+        }
     }
 
     private fun setUpPaymentStatus() {
@@ -35,6 +52,6 @@ class OrderDetailsActivity : AppCompatActivity() {
     private fun setupSpinner() {
         val adp = ArrayAdapter(this@OrderDetailsActivity,android.R.layout.simple_spinner_item,resources.getStringArray(R.array.order_status_array))
         spinner.adapter = adp
-        spinner.setSelection(status)
+
     }
 }
