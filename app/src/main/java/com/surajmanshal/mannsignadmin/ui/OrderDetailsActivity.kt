@@ -6,7 +6,9 @@ import android.text.Editable
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import com.surajmanshal.mannsignadmin.R
+import com.surajmanshal.mannsignadmin.adapter.OrderItemsAdapter
 import com.surajmanshal.mannsignadmin.data.model.Order
+import com.surajmanshal.mannsignadmin.data.model.OrderItem
 import com.surajmanshal.mannsignadmin.databinding.ActivityOrderDetailsBinding
 
 class OrderDetailsActivity : AppCompatActivity() {
@@ -30,7 +32,12 @@ class OrderDetailsActivity : AppCompatActivity() {
         setupSpinner()
         setUpPaymentStatus()
         setupOrderDetails(order)
+        setupOrderItems(order.orderItems)
 
+    }
+
+    private fun setupOrderItems(orderItems: List<OrderItem>?) {
+        binding.rvOrderItems.adapter = OrderItemsAdapter(this@OrderDetailsActivity,orderItems!!)
     }
 
     private fun setupOrderDetails(order: Order) {

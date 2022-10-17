@@ -43,7 +43,9 @@
                     android:id="@+id/rvOrderItems"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp" />
+                    android:layout_margin="8dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/order_product_items_layout"/>
 
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
