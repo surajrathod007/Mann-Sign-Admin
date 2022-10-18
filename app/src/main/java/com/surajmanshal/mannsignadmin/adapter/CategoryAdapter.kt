@@ -2,9 +2,7 @@ package com.surajmanshal.mannsignadmin.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.surajmanshal.mannsignadmin.databinding.ActivityCategoryManagementBinding
 import com.surajmanshal.mannsignadmin.databinding.ItemCategoryCardBinding
 import com.surajmanshal.mannsignadmin.viewmodel.CategoryViewModel
 
@@ -26,7 +24,7 @@ class CategoryAdapter(val vm: CategoryViewModel) : RecyclerView.Adapter<Category
         with(holder){
             name.text = c.name
             btnDelete.setOnClickListener {
-                vm.alertDelete()
+                vm.onDeleteAlert(c)
             }
         }
     }

@@ -48,4 +48,7 @@ interface NetworkCallsInterface {
     @GET("language")
     fun fetchLanguageById(@Query("id") id:Int) : Call<Language>
 
+    @POST("category/delete")
+    suspend fun deleteCategory(@Query("id") id:Int) : SimpleResponse
+
 }

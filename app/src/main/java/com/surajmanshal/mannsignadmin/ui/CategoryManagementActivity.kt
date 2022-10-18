@@ -10,6 +10,9 @@ import com.surajmanshal.mannsignadmin.adapter.CategoryAdapter
 import com.surajmanshal.mannsignadmin.databinding.ActivityCategoryManagementBinding
 import com.surajmanshal.mannsignadmin.ui.fragments.AdapterActivity
 import com.surajmanshal.mannsignadmin.viewmodel.CategoryViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class CategoryManagementActivity : AdapterActivity() {
     private lateinit var _binding : ActivityCategoryManagementBinding
@@ -26,15 +29,17 @@ class CategoryManagementActivity : AdapterActivity() {
 
         with(binding){
             btnCancel.setOnClickListener {
-                vm.deletionCancelOrDone()
+                vm.onDeletionCancelOrDone()
             }
             alertDialog.setOnClickListener {
-                vm.deletionCancelOrDone()
+                vm.onDeletionCancelOrDone()
             }
             btnDelete.setOnClickListener {
                 // send delete request
-                Toast.makeText(this@CategoryManagementActivity, "Deleted", Toast.LENGTH_SHORT).show()
-                vm.deletionCancelOrDone()
+                CoroutineScope(Dispatchers.IO).launch{
+                    vm.deletionCategory.value?.let { it1 -> vm.deleteCategory(it1) }
+                }
+                vm.onDeletionCancelOrDone()
             }
         }
         vm.categories.observe(this, Observer {
@@ -42,6 +47,9 @@ class CategoryManagementActivity : AdapterActivity() {
         })
         vm.isDeleting.observe(this, Observer {
              binding.alertDialog.visibility = if (it) View.VISIBLE else View.GONE
+        })
+        vm.serverResponse.observe(this, Observer {
+            Toast.makeText(this@CategoryManagementActivity, it.message, Toast.LENGTH_SHORT).show()
         })
     }
 }

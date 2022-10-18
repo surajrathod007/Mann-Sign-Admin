@@ -27,4 +27,5 @@ class Repository() {
 
     suspend fun uploadImage(part : MultipartBody.Part) = server.uploadImage(part)
 
+    suspend fun deleteCategory(id : Int) = server.deleteCategory(id)
 }

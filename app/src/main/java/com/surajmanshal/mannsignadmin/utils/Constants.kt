@@ -25,8 +25,4 @@ object Constants {
     const val CHOOSE_IMAGE = 101
     const val READ_EXTERNAL_STORAGE = 102
 
-    fun urlMaker(imageurl :String): String {
-        val fileName = imageurl.substringAfter("http://localhost:8700/images/")
-        return URL.IMAGE_PATH+ fileName
-    }
 }
