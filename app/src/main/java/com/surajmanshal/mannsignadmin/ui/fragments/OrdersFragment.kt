@@ -89,6 +89,13 @@ class OrdersFragment : Fragment(), View.OnClickListener {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        CoroutineScope(Dispatchers.IO).launch {
+            viewModel.setupViewModelDataMembers()
+        }
+    }
+
     override fun onClick(v: View?) {
         if (v != null) {
             when (v.id) {
@@ -101,31 +108,57 @@ class OrdersFragment : Fragment(), View.OnClickListener {
                         OrdersAdapter(requireContext(), viewModel.allOrders.value!!)
                 }
                 R.id.txtPendingOrders -> {
+                    if (viewModel.allOrders.value!!.filter { it.orderStatus == Constants.ORDER_PENDING }
+                            .isEmpty())
+                        Toast.makeText(requireContext(), "No Pending Orders", Toast.LENGTH_SHORT)
+                            .show()
+
                     binding.rvOrders.adapter = OrdersAdapter(
                         requireContext(),
                         viewModel.allOrders.value!!.filter { it.orderStatus == Constants.ORDER_PENDING })
                 }
                 R.id.txtConfirmedOrders -> {
+                    if (viewModel.allOrders.value!!.filter { it.orderStatus == Constants.ORDER_CONFIRMED }
+                            .isEmpty())
+                        Toast.makeText(requireContext(), "No Confirmed Orders", Toast.LENGTH_SHORT)
+                            .show()
+
                     binding.rvOrders.adapter = OrdersAdapter(
                         requireContext(),
                         viewModel.allOrders.value!!.filter { it.orderStatus == Constants.ORDER_CONFIRMED })
                 }
                 R.id.txtProcessingOrders -> {
+                    if (viewModel.allOrders.value!!.filter { it.orderStatus == Constants.ORDER_PROCCESSING }
+                            .isEmpty())
+                        Toast.makeText(requireContext(), "No Processing Orders", Toast.LENGTH_SHORT)
+                            .show()
                     binding.rvOrders.adapter = OrdersAdapter(
                         requireContext(),
                         viewModel.allOrders.value!!.filter { it.orderStatus == Constants.ORDER_PROCCESSING })
                 }
                 R.id.txtReadyOrders -> {
+                    if (viewModel.allOrders.value!!.filter { it.orderStatus == Constants.ORDER_READY }
+                            .isEmpty())
+                        Toast.makeText(requireContext(), "No Ready Orders", Toast.LENGTH_SHORT)
+                            .show()
                     binding.rvOrders.adapter = OrdersAdapter(
                         requireContext(),
                         viewModel.allOrders.value!!.filter { it.orderStatus == Constants.ORDER_READY })
                 }
                 R.id.txtDeliveredOrders -> {
+                    if (viewModel.allOrders.value!!.filter { it.orderStatus == Constants.ORDER_DELIVERED }
+                            .isEmpty())
+                        Toast.makeText(requireContext(), "No Delivered Orders", Toast.LENGTH_SHORT)
+                            .show()
                     binding.rvOrders.adapter = OrdersAdapter(
                         requireContext(),
                         viewModel.allOrders.value!!.filter { it.orderStatus == Constants.ORDER_DELIVERED })
                 }
                 R.id.txtCanceledOrders -> {
+                    if (viewModel.allOrders.value!!.filter { it.orderStatus == Constants.ORDER_CANCELED }
+                            .isEmpty())
+                        Toast.makeText(requireContext(), "No Canceled Orders", Toast.LENGTH_SHORT)
+                            .show()
                     binding.rvOrders.adapter = OrdersAdapter(
                         requireContext(),
                         viewModel.allOrders.value!!.filter { it.orderStatus == Constants.ORDER_CANCELED })

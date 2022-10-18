@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="8dp"
     android:elevation="0dp"
     app:cardElevation="0dp"
-    app:strokeWidth="0.5dp"
-    app:strokeColor="@color/black">
+    app:strokeColor="@color/black"
+    android:foreground="?attr/selectableItemBackground"
+    android:clickable="true"
+    app:strokeWidth="0.5dp">
 
 
     <LinearLayout
@@ -19,46 +21,64 @@
         <ImageView
             android:id="@+id/imgProduct"
             android:layout_width="60dp"
-            android:layout_height="80dp"
-            android:src="@drawable/ic_launcher_background"
-            android:scaleType="centerCrop"/>
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_launcher_background" />
 
         <LinearLayout
-            android:layout_marginLeft="6dp"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
             android:gravity="center_vertical"
             android:orientation="vertical">
+
             <TextView
                 android:id="@+id/txtOrderItemTitle"
-                android:text="Safty poster with nothing"
-                android:fontFamily="@font/satoshi_medium"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/satoshi_medium"
+                android:text="Safty poster with nothing" />
+
             <TextView
                 android:id="@+id/txtOrderItemBasePrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/satoshi_medium"
-                android:text="$500"/>
+                android:text="$500" />
+
             <TextView
                 android:id="@+id/txtOrderItemQty"
-                android:text="Quantity : 5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/satoshi_medium"/>
+                android:fontFamily="@font/satoshi_medium"
+                android:text="Quantity : 5" />
+
+            <TextView
+                android:id="@+id/txtProductType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/textview_background"
+                android:fontFamily="@font/satoshi_bold"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingBottom="2dp"
+                android:text="Banner"
+                android:textColor="@color/black" />
 
         </LinearLayout>
 
         <TextView
-            android:layout_marginRight="6dp"
-            android:textColor="#58B814"
-            android:fontFamily="@font/satoshi_bold"
             android:id="@+id/txtOrderItemTotalPrice"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginRight="6dp"
+            android:fontFamily="@font/satoshi_bold"
             android:gravity="center|end"
             android:text="$600"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:textColor="#58B814"
+            android:textStyle="bold" />
 
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

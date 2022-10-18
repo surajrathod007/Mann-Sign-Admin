@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +24,7 @@ class OrdersAdapter(val context: Context, val orders: List<Order>) :
         val txtOrderEmailId = itemView.findViewById<TextView>(R.id.txtOrderEmailId)
         val txtOrderTotal = itemView.findViewById<TextView>(R.id.txtOrderTotal)
         val txtOrderStatus = itemView.findViewById<TextView>(R.id.txtOrderStatus)
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OrderViewHolder {
@@ -37,6 +39,7 @@ class OrdersAdapter(val context: Context, val orders: List<Order>) :
         holder.txtOrderDate.text = order.orderDate
         holder.txtOrderEmailId.text = order.emailId
         holder.txtOrderTotal.text = "$ ${order.total}"
+
 
         holder.itemView.setOnClickListener {
             val i = Intent(it.context,OrderDetailsActivity::class.java)

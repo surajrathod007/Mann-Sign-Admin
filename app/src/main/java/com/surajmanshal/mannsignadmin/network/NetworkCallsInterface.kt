@@ -35,6 +35,10 @@ interface NetworkCallsInterface {
     @GET("order/getall")
     fun fetchAllOrders() : Call<List<Order>>
 
+    @Headers("Content-Type: application/json")
+    @POST("order/update")
+    fun updateOrder(@Body order: Order) : Call<SimpleResponse>
+
     @Multipart
     @POST("image/upload")
     suspend fun uploadImage(@Part image : MultipartBody.Part) :SimpleResponse

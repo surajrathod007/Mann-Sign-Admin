@@ -1,5 +1,6 @@
 package com.surajmanshal.mannsignadmin.repository
 
+import com.surajmanshal.mannsignadmin.data.model.Order
 import com.surajmanshal.mannsignadmin.data.model.Product
 import com.surajmanshal.mannsignadmin.network.NetworkService
 import okhttp3.MultipartBody
@@ -20,6 +21,8 @@ class Repository() {
     fun fetchSizes() = server.fetchSystemSizes()
 
     fun fetchAllOrders() = server.fetchAllOrders()
+
+    suspend fun updateOrder(order: Order) = server.updateOrder(order)
 
     suspend fun sendProduct(product: Product) = server.sendProduct(product)
 
