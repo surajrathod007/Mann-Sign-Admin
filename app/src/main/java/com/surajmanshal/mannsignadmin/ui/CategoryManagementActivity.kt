@@ -7,6 +7,7 @@ import android.view.ViewManager
 import androidx.databinding.DataBindingUtil.setContentView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.surajmanshal.mannsignadmin.R
 import com.surajmanshal.mannsignadmin.adapter.CategoryAdapter
 import com.surajmanshal.mannsignadmin.adapter.ProductsAdapter
@@ -26,7 +27,8 @@ class CategoryManagementActivity : AdapterActivity() {
         setContentView(binding.root)
         vm = ViewModelProvider(this)[CategoryViewModel::class.java]
         vm.getCategories()
-        vm.categories.value?.let { setAdapterWithList(it,binding.rvCategories,CategoryAdapter(vm)) }
+        binding.rvCategories.layoutManager = LinearLayoutManager(this)
+//        vm.categories.value?.let { setAdapterWithList(it,binding.rvCategories,CategoryAdapter(vm)) }
 
         with(binding){
             btnCancel.setOnClickListener {
@@ -43,5 +45,4 @@ class CategoryManagementActivity : AdapterActivity() {
             setAdapterWithList(it,binding.rvCategories,CategoryAdapter(vm))
         })
     }
-
 }
