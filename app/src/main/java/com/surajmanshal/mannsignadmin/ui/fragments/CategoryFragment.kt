@@ -1,34 +1,47 @@
-package com.surajmanshal.mannsignadmin.ui
+package com.surajmanshal.mannsignadmin.ui.fragments
 
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.surajmanshal.mannsignadmin.R
 import com.surajmanshal.mannsignadmin.adapter.CategoryAdapter
 import com.surajmanshal.mannsignadmin.data.model.Category
 import com.surajmanshal.mannsignadmin.databinding.ActivityCategoryManagementBinding
+import com.surajmanshal.mannsignadmin.databinding.FragmentCategoryBinding
 import com.surajmanshal.mannsignadmin.viewmodel.CategoryViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class CategoryManagementActivity : AdapterActivity() {
-    private lateinit var _binding : ActivityCategoryManagementBinding
+
+class CategoryFragment : AdapterFragment() {
+
+    private lateinit var _binding : FragmentCategoryBinding
     val binding get() = _binding
     lateinit var vm : CategoryViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _binding = ActivityCategoryManagementBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-//        vm = ViewModelProvider(this)[CategoryViewModel::class.java]
-        /*vm.getCategories()
-        binding.rvCategories.layoutManager = LinearLayoutManager(this)
+        vm = ViewModelProvider(this)[CategoryViewModel::class.java]
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = inflater.inflate(R.layout.fragment_category, container, false)
+        _binding = FragmentCategoryBinding.bind(view)
+        vm.getCategories()
+        binding.rvCategories.layoutManager = LinearLayoutManager(activity)
 
 
         with(binding){
@@ -48,21 +61,21 @@ class CategoryManagementActivity : AdapterActivity() {
                 setupInputDialog().show()
             }
         }
-        vm.categories.observe(this, Observer {
-            setAdapterWithList(it,binding.rvCategories,CategoryAdapter(vm))
+        vm.categories.observe(viewLifecycleOwner, Observer {
+            setAdapterWithList(it,binding.rvCategories, CategoryAdapter(vm))
         })
-        vm.isDeleting.observe(this, Observer {
-             binding.alertDialog.visibility = if (it) View.VISIBLE else View.GONE
+        vm.isDeleting.observe(viewLifecycleOwner, Observer {
+            binding.alertDialog.visibility = if (it) View.VISIBLE else View.GONE
         })
-        vm.serverResponse.observe(this, Observer {
-            Toast.makeText(this@CategoryManagementActivity, it.message, Toast.LENGTH_SHORT).show()
-        })*/
+        vm.serverResponse.observe(viewLifecycleOwner, Observer {
+            Toast.makeText(activity, it.message, Toast.LENGTH_SHORT).show()
+        })
+        return binding.root
     }
-
-    /*private fun setupInputDialog(): AlertDialog.Builder {
-        val dialog = AlertDialog.Builder(this@CategoryManagementActivity)
+    private fun setupInputDialog(): AlertDialog.Builder {
+        val dialog = AlertDialog.Builder(activity)
         dialog.setTitle("Add New Category")
-        val etName = EditText(this@CategoryManagementActivity)
+        val etName = EditText(activity)
         dialog.setView(etName)
         dialog.setPositiveButton("Add", object : DialogInterface.OnClickListener {
             override fun onClick(p0: DialogInterface?, p1: Int) {
@@ -73,5 +86,6 @@ class CategoryManagementActivity : AdapterActivity() {
             }
         })
         return dialog
-    }*/
+    }
+
 }
