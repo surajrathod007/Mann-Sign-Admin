@@ -9,22 +9,19 @@
     android:orientation="vertical"
     app:cardBackgroundColor="@color/white"
     android:foreground="?attr/selectableItemBackground"
-    android:padding="12dp"
     app:cardElevation="0dp"
-    android:layout_marginHorizontal="8dp"
-    android:layout_marginTop="12dp"
     tools:context=".ui.CategoryManagementActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCategories"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:padding="12dp"/>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/alertDialog"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#99000000"
-        android:paddingVertical="24dp"
         android:visibility="gone">
 
     <LinearLayout

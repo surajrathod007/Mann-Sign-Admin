@@ -26,7 +26,7 @@ class CategoryAdapter(val vm: CategoryViewModel) : RecyclerView.Adapter<Category
         with(holder){
             name.text = c.name
             btnDelete.setOnClickListener {
-                Toast.makeText(it.context, "Clicked Delete", Toast.LENGTH_SHORT).show()
+                vm.alertDelete()
             }
         }
     }

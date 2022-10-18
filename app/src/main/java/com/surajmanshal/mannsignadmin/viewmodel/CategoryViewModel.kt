@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.surajmanshal.mannsignadmin.data.model.Category
-import com.surajmanshal.mannsignadmin.data.model.Product
 import com.surajmanshal.mannsignadmin.repository.Repository
 import retrofit2.Call
 import retrofit2.Callback
@@ -15,6 +14,8 @@ class CategoryViewModel:ViewModel() {
     // -------------- LIVE DATA -------------------------------------------
     private val _categories = MutableLiveData<List<Category>>()
     val categories: LiveData<List<Category>> get() = _categories
+    private val _isDeleting = MutableLiveData<Boolean>()
+    val isDeleting: LiveData<Boolean> get() = _isDeleting
 
     fun getCategories(){
         val response = repository.fetchCategory()
@@ -27,5 +28,11 @@ class CategoryViewModel:ViewModel() {
                 print(t.toString())
             }
         })
+    }
+    fun alertDelete(){
+        _isDeleting.value = true
+    }
+    fun deletionCancelOrDone(){
+        _isDeleting.value = false
     }
 }
