@@ -51,13 +51,28 @@ class CategoryViewModel:ViewModel() {
 
     suspend fun deleteCategory(category: Category){
         try {
-            val response = repository.deleteCategory(category.id)
+            val response = repository.deleteCategory(category.id!!)
             _serverResponse.postValue(response)
             deleteFromCategories(category)
 
         }catch (e : Exception){
             println("$e")
         }
+    }
+
+    suspend fun addNewCategory(category: Category){
+        try {
+            val response = repository.insertCategory(category)
+            _serverResponse.postValue(response)
+
+        }catch (e : Exception){
+            println("$e")
+        }
+    }
+
+    private fun addCategory(category: Category) {
+        _categories.value?.add(category)
+        refresh()
     }
 
     private fun addAllCategories(list : List<Category>){
