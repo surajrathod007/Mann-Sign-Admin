@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 class CategoryManagementActivity : AdapterActivity() {
     private lateinit var _binding : ActivityCategoryManagementBinding
     val binding get() = _binding
-    lateinit var vm : CategoryViewModel
+    /*lateinit var vm : CategoryViewModel*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

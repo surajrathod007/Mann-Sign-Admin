@@ -19,6 +19,8 @@ class Repository() {
 
     fun fetchCategory() = server.fetchCategories()
 
+    fun fetchSubcategories(id:Int) = server.fetchSubCategoriesOfCategory(id)
+
     fun fetchSizes() = server.fetchSystemSizes()
 
     fun fetchAllOrders() = server.fetchAllOrders()
@@ -33,5 +35,5 @@ class Repository() {
 
     suspend fun insertCategory(category: Category) = server.insertCategory(category)
 
-
+    suspend fun deleteSubCategory(id: Int) = server.deleteSubCategory(id)
 }

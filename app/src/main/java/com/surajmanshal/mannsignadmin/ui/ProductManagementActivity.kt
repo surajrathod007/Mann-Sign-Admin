@@ -58,7 +58,7 @@ class ProductManagementActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = ActivityProductManagementBinding.inflate(layoutInflater)
         vm = ViewModelProvider(this).get(ProductManagementViewModel::class.java)
-        var selectedCategory = 0
+        var selectedCategory : Int? = 0
         CoroutineScope(Dispatchers.IO).launch {
             vm.setupViewModelDataMembers()
         }

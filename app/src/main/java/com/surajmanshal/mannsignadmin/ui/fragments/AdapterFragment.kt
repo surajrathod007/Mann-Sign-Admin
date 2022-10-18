@@ -19,7 +19,7 @@ open class AdapterFragment : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_adapter, container, false)
     }
-    fun setAdapterWithList(list: List<Category>, recyclerView: RecyclerView, adapter : RecyclerView.Adapter<*>){
+    fun setAdapterWithList(list: List<Any>, recyclerView: RecyclerView, adapter : RecyclerView.Adapter<*>){
         if(!list.isEmpty()) recyclerView.adapter = adapter
     }
     companion object {

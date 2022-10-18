@@ -54,4 +54,13 @@ interface NetworkCallsInterface {
     @POST("category/insert")
     suspend fun insertCategory(@Body category: Category): SimpleResponse
 
+    @POST("subCategory/remove")
+    suspend fun deleteSubCategory(id: Int): SimpleResponse
+
+    @POST("subCategory/add")
+    suspend fun insertSubCategory(@Body category: SubCategory): SimpleResponse
+
+    @GET("category/subcategories")
+    fun fetchSubCategoriesOfCategory(@Query("id") id : Int) : Call<List<SubCategory>>
+
 }
