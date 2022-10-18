@@ -51,7 +51,7 @@ class ProductManagementActivity : AppCompatActivity() {
     private val binding get() = _binding
     private lateinit var vm : ProductManagementViewModel
     private val mProduct = Product(0)
-    private lateinit var imageUri : Uri
+    private var imageUri : Uri? =null
     val mImages = mutableListOf<Image>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,6 +73,7 @@ class ProductManagementActivity : AppCompatActivity() {
                     with(it) {
 //                        val uploadedImages = setupImage()
                         CoroutineScope(Dispatchers.IO).launch {
+                            if(imageUri==null) return@launch
                             setupImage()
                         }
                         sizes = getSelectedSizes(gvSizes)
@@ -143,7 +144,7 @@ class ProductManagementActivity : AppCompatActivity() {
         val file = File(dir, "image.png")
 
         val outputStream = FileOutputStream(file)
-        contentResolver.openInputStream(imageUri)?.copyTo(outputStream)
+        contentResolver.openInputStream(imageUri!!)?.copyTo(outputStream)
 
         val requestBody = RequestBody.create(MediaType.parse("image/jpg"),file)
         val part = MultipartBody.Part.createFormData("product",file.name,requestBody)
