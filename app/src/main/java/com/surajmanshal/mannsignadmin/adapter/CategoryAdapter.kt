@@ -1,26 +1,59 @@
 package com.surajmanshal.mannsignadmin.adapter
 
+import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.navigation.NavArgs
+import androidx.navigation.NavDirections
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.surajmanshal.mannsignadmin.databinding.ActivityCategoryManagementBinding
+import com.surajmanshal.mannsignadmin.R
+import com.surajmanshal.mannsignadmin.databinding.ItemCategoryCardBinding
+import com.surajmanshal.mannsignadmin.ui.fragments.CategoryFragment
 import com.surajmanshal.mannsignadmin.viewmodel.CategoryViewModel
 
-class CategoryAdapter(val vm: CategoryViewModel) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
-    class CategoryViewHolder(binding: ActivityCategoryManagementBinding):RecyclerView.ViewHolder(binding.root){
+open class CategoryAdapter(private val vm: CategoryViewModel) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
 
+    class CategoryViewHolder(binding: ItemCategoryCardBinding):RecyclerView.ViewHolder(binding.root){
+        val name = binding.tvCategory
+        val btnDelete = binding.ivDelete
+        val card = binding.root
     }
 
     override fun getItemCount(): Int {
-        return if( vm.categories.value!=null) vm.categories.value!!.size
-        else 0
+        /*return if( vm.categories.value!=null) vm.categories.value!!.size
+        else 0*/
+        return vm.categories.value!!.size
     }
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
-//        TODO("Not yet implemented")
+        val c = vm.categories.value!![position]
+        println(c)
+        Log.d("category","$c")
+        with(holder){
+            name.text = c.name
+            btnDelete.setOnClickListener {
+                vm.onDeleteAlert(c)
+            }
+            card.setOnClickListener {
+                val bundle =Bundle()
+                c.id?.let { it1 -> bundle.putInt("id", it1) }
+                Navigation.findNavController(it).navigate(R.id.action_categoryFragment_to_subCategoryFragment,bundle)
+//                Toast.makeText(it.context, "${c.id}", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
-        return CategoryViewHolder(ActivityCategoryManagementBinding.inflate(LayoutInflater.from(parent.context),parent,false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryAdapter.CategoryViewHolder {
+        return CategoryAdapter.CategoryViewHolder(
+            ItemCategoryCardBinding.inflate(
+                LayoutInflater.from(
+                    parent.context
+                ), parent, false
+            )
+        )
     }
 }

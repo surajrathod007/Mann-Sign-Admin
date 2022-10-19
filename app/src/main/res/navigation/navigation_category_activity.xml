@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_category_activity"
+    app:startDestination="@id/categoryFragment">
+
+    <fragment
+        android:id="@+id/categoryFragment"
+        android:name="com.surajmanshal.mannsignadmin.ui.fragments.CategoryFragment"
+        android:label="fragment_category"
+        tools:layout="@layout/fragment_category" >
+        <action
+            android:id="@+id/action_categoryFragment_to_subCategoryFragment"
+            app:destination="@id/subCategoryFragment" >
+            <argument
+                android:name="categoryId" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/subCategoryFragment"
+        android:name="com.surajmanshal.mannsignadmin.ui.fragments.SubCategoryFragment"
+        android:label="fragment_sub_category"
+        tools:layout="@layout/fragment_sub_category" />
+</navigation>
