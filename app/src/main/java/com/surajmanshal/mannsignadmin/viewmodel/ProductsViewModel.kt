@@ -20,7 +20,7 @@ class ProductsViewModel : ViewModel() {
         val response = repository.fetchPosters()
         response.enqueue(object : Callback<List<Product>> {
             override fun onResponse(call: Call<List<Product>>, response: Response<List<Product>>) {
-                response.body()?.let { _products.value }
+                response.body()?.let { _products.value = it}
             }
             override fun onFailure(call: Call<List<Product>>, t: Throwable) {
                 println(t.toString())
