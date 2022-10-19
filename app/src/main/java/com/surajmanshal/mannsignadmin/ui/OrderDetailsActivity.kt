@@ -38,6 +38,9 @@ class OrderDetailsActivity : AppCompatActivity() {
         spinner = findViewById(R.id.spOrderStatus)
         paymentStatusSpinner = findViewById(R.id.spOrderPaymentStatus)
 
+        CoroutineScope(Dispatchers.IO).launch {
+            vm.fetchUserByEmail(order.emailId)
+        }
         setupSpinner()
         setUpPaymentStatus()
         setupOrderDetails(order)
@@ -58,6 +61,17 @@ class OrderDetailsActivity : AppCompatActivity() {
                 vm.updateOrder(order)
             }
         }
+
+        vm.user.observe(this) {
+            with(binding) {
+                txtCustomerEmail.text = it.emailId
+                txtCustomerFirstName.text = it.firstName
+                txtCustomerLastName.text = it.lastName
+                txtCustomerPhoneNumber.text = it.phoneNumber
+                txtCustomerAddress.text = it.address
+                txtCustomerPinCode.text = it.pinCode.toString()
+            }
+        }
     }
 
 
@@ -66,14 +80,15 @@ class OrderDetailsActivity : AppCompatActivity() {
     }
 
     private fun setupOrderDetails(order: Order) {
+
         with(binding) {
             txtOrderIdDetails.text = order.orderId
             txtOrderDateDetails.text = order.orderDate
             txtOrderQuantityDetails.text = order.quantity.toString()
             txtOrderTotalDetails.text = "₹" + order.total.toString()
-            if(order.days !=null)
+            if (order.days != null)
                 edEstimatedDays.setText(order.days.toString())
-            if(!order.trackingUrl.isNullOrEmpty()){
+            if (!order.trackingUrl.isNullOrEmpty()) {
                 edTrackingUrl.setText(order.trackingUrl)
             }
             paymentStatusSpinner.setSelection(order.paymentStatus)

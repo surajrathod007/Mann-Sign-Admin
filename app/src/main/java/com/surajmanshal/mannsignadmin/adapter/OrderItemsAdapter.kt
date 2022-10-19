@@ -12,6 +12,7 @@ import com.surajmanshal.mannsignadmin.R
 import com.surajmanshal.mannsignadmin.data.model.Order
 import com.surajmanshal.mannsignadmin.data.model.OrderItem
 import com.surajmanshal.mannsignadmin.utils.Constants
+import com.surajmanshal.mannsignadmin.utils.Functions
 
 class OrderItemsAdapter(val context: Context, val orderItems: List<OrderItem>) :
     RecyclerView.Adapter<OrderItemsAdapter.OrderItemViewHolder>() {
@@ -40,7 +41,7 @@ class OrderItemsAdapter(val context: Context, val orderItems: List<OrderItem>) :
             txtOrderItemTotalPrice.text = "₹" + o.totalPrice.toString()
             with(o) {
                 val url = product?.images?.get(0)?.let {
-                    Constants.urlMaker(it.url)
+                    Functions.urlMaker(it.url)
                 }
                 Glide.with(imgProduct.context).load(url).into(imgProduct)
             }

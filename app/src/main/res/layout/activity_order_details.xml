@@ -52,7 +52,91 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp" />
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Customer Information"
+                    android:fontFamily="@font/satoshi_bold"
+                    android:gravity="center"/>
 
+                <GridLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:columnCount="2"
+                    android:rowCount="6"
+                    android:useDefaultMargins="true">
+
+                    <TextView
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="Email Id : " />
+
+                    <TextView
+                        android:id="@+id/txtCustomerEmail"
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="" />
+
+                    <TextView
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="First Name : " />
+
+                    <TextView
+                        android:id="@+id/txtCustomerFirstName"
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="" />
+
+                    <TextView
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="Last Name : " />
+
+                    <TextView
+                        android:id="@+id/txtCustomerLastName"
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="" />
+
+                    <TextView
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="Phone Number : " />
+
+                    <TextView
+                        android:id="@+id/txtCustomerPhoneNumber"
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="" />
+
+                    <TextView
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="Address : " />
+
+                    <TextView
+                        android:id="@+id/txtCustomerAddress"
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="" />
+
+                    <TextView
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="PinCode : " />
+
+                    <TextView
+                        android:id="@+id/txtCustomerPinCode"
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="" />
+
+
+                </GridLayout>
+
+
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Order Information"
+                    android:fontFamily="@font/satoshi_bold"
+                    android:gravity="center"/>
                 <GridLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

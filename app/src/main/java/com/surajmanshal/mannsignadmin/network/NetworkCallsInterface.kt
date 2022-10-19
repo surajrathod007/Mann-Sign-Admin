@@ -67,4 +67,7 @@ interface NetworkCallsInterface {
     @GET("category/subcategories")
     fun fetchSubCategoriesOfCategory(@Query("id") id : Int) : Call<List<SubCategory>>
 
+    @GET("user/get")
+    fun fetchUserByEmail(@Query("email") email : String) : Call<User>
+
 }

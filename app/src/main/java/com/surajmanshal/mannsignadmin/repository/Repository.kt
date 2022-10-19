@@ -39,4 +39,6 @@ class Repository() {
     suspend fun insertCategory(category: Category) = server.insertCategory(category)
 
     suspend fun deleteSubCategory(id: Int) = server.deleteSubCategory(id)
+
+    suspend fun fetchUserByEmail(email : String) = server.fetchUserByEmail(email)
 }

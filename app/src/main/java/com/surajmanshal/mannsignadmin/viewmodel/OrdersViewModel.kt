@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.surajmanshal.mannsignadmin.data.model.Order
+import com.surajmanshal.mannsignadmin.data.model.User
 import com.surajmanshal.mannsignadmin.network.NetworkService
 import com.surajmanshal.mannsignadmin.repository.Repository
 import com.surajmanshal.mannsignadmin.utils.Constants
@@ -26,6 +27,8 @@ class OrdersViewModel : ViewModel() {
     val isLoading = MutableLiveData<Boolean>(true)
     private val _serverResponse = MutableLiveData<SimpleResponse>()
     val serverResponse : LiveData<SimpleResponse> get() = _serverResponse
+    private val _user = MutableLiveData<User>()
+    val user : LiveData<User> get() = _user
 
     companion object {
         val repository = Repository()
@@ -98,5 +101,24 @@ class OrdersViewModel : ViewModel() {
 
     }
 
+    suspend fun fetchUserByEmail(email : String){
+
+        try {
+
+            val u = NetworkService.networkInstance.fetchUserByEmail(email)
+            u.enqueue(object : Callback<User?> {
+                override fun onResponse(call: Call<User?>, response: Response<User?>) {
+                    _user.postValue(response.body()!!)
+                }
+
+                override fun onFailure(call: Call<User?>, t: Throwable) {
+                    TODO("Not yet implemented")
+                }
+            })
+
+        }catch (e : Exception){
+            _serverResponse.postValue(SimpleResponse(true,"${e.message.toString()}"))
+        }
+    }
 
 }
