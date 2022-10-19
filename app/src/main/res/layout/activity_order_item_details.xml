@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.OrderItemDetailsActivity">
+
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:text="Product Details"
+                    android:gravity="center"
+                    android:fontFamily="@font/satoshi_bold"
+                    android:textColor="@color/black"
+                    android:textSize="26sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <ImageView
+                    android:id="@+id/imgOrderItem"
+                    android:layout_width="300dp"
+                    android:layout_height="300dp"
+                    android:src="@mipmap/ic_launcher"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    />
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp" />
+
+                <GridLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:columnCount="2"
+                    android:rowCount="8"
+                    android:useDefaultMargins="true">
+
+
+                    <TextView
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="Product Id : " />
+
+                    <TextView
+                        android:id="@+id/txtOrderItemDetailsId"
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="" />
+
+                    <TextView
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="Product Size : " />
+
+                    <TextView
+                        android:id="@+id/txtOrderItemDetailsSize"
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="" />
+
+                    <TextView
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="Product Material : " />
+
+                    <TextView
+                        android:id="@+id/txtOrderItemDetailsMaterial"
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="" />
+
+                    <TextView
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="Product Language : " />
+
+                    <TextView
+                        android:id="@+id/txtOrderItemDetailsLanguage"
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="" />
+
+                    <TextView
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="Product Base Qty : " />
+
+                    <TextView
+                        android:id="@+id/txtOrderItemDetailsQty"
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="" />
+
+                    <TextView
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="Product Base Price : " />
+
+                    <TextView
+                        android:id="@+id/txtOrderItemDetailsBasePrice"
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="" />
+
+                    <TextView
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="Variation Price : " />
+
+                    <TextView
+                        android:id="@+id/txtOrderItemDetailsVariantPrice"
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="" />
+
+                    <TextView
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="Product Total Price : " />
+
+                    <TextView
+                        android:id="@+id/txtOrderItemDetailsTotalPrice"
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="" />
+
+
+
+
+                </GridLayout>
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp" />
+
+                <TextView
+                    android:id="@+id/txtOrderItemDetailsProductType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:text="Product Type Details"/>
+
+
+                <GridLayout
+                    android:visibility="gone"
+                    android:id="@+id/gridPosterDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:columnCount="2"
+                    android:rowCount="3"
+                    android:useDefaultMargins="true">
+
+                    <TextView
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="Poster Title : " />
+
+                    <TextView
+                        android:id="@+id/txtOrderItemDetailsPosterTitle"
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="" />
+
+                    <TextView
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="Short Description : " />
+
+                    <TextView
+                        android:id="@+id/txtOrderItemDetailsPosterShort"
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="" />
+
+                    <TextView
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="Long Description : " />
+
+                    <TextView
+                        android:id="@+id/txtOrderItemDetailsPosterLong"
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="" />
+                </GridLayout>
+
+
+                <GridLayout
+                    android:visibility="gone"
+                    android:id="@+id/gridBannerDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:columnCount="2"
+                    android:rowCount="2"
+                    android:useDefaultMargins="true">
+
+                    <TextView
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="Banner Text : " />
+
+                    <TextView
+                        android:id="@+id/txtOrderItemDetailsBannerText"
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="" />
+
+                    <TextView
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="Banner Font : " />
+
+                    <TextView
+                        android:id="@+id/txtOrderItemDetailsBannerFont"
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="" />
+
+                </GridLayout>
+
+
+                <GridLayout
+                    android:visibility="gone"
+                    android:id="@+id/gridAcpDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:columnCount="2"
+                    android:rowCount="4"
+                    android:useDefaultMargins="true">
+
+                    <TextView
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="Board Text : " />
+
+                    <TextView
+                        android:id="@+id/txtOrderItemDetailsAcpText"
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="" />
+
+                    <TextView
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="Board Emboss : " />
+
+                    <TextView
+                        android:id="@+id/txtOrderItemDetailsAcpEmboss"
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="" />
+
+                    <TextView
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="Rgb Color : " />
+
+                    <TextView
+                        android:id="@+id/txtOrderItemDetailsAcpRgb"
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="" />
+
+                    <TextView
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="Board Font : " />
+
+                    <TextView
+                        android:id="@+id/txtOrderItemDetailsAcpFont"
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="" />
+
+                </GridLayout>
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp" />
+
+            </LinearLayout>
+
+
+        </androidx.core.widget.NestedScrollView>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
