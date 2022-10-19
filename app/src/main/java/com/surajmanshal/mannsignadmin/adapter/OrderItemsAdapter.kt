@@ -1,6 +1,7 @@
 package com.surajmanshal.mannsignadmin.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,8 @@ import com.bumptech.glide.Glide
 import com.surajmanshal.mannsignadmin.R
 import com.surajmanshal.mannsignadmin.data.model.Order
 import com.surajmanshal.mannsignadmin.data.model.OrderItem
+import com.surajmanshal.mannsignadmin.ui.OrderDetailsActivity
+import com.surajmanshal.mannsignadmin.ui.OrderItemDetailsActivity
 import com.surajmanshal.mannsignadmin.utils.Constants
 import com.surajmanshal.mannsignadmin.utils.Functions
 
@@ -54,6 +57,14 @@ class OrderItemsAdapter(val context: Context, val orderItems: List<OrderItem>) :
             }
             if (o.product!!.bannerDetails != null) {
                 txtProductType.text = "Banner"
+            }
+
+            itemView.setOnClickListener {
+
+                val i = Intent(it.context, OrderItemDetailsActivity::class.java)
+                i.putExtra("orderItem",o)
+                it.context.startActivity(i)
+
             }
         }
     }

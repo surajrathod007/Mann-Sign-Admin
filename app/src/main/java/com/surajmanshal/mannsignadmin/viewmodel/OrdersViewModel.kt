@@ -4,8 +4,7 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.surajmanshal.mannsignadmin.data.model.Order
-import com.surajmanshal.mannsignadmin.data.model.User
+import com.surajmanshal.mannsignadmin.data.model.*
 import com.surajmanshal.mannsignadmin.network.NetworkService
 import com.surajmanshal.mannsignadmin.repository.Repository
 import com.surajmanshal.mannsignadmin.utils.Constants
@@ -29,6 +28,16 @@ class OrdersViewModel : ViewModel() {
     val serverResponse : LiveData<SimpleResponse> get() = _serverResponse
     private val _user = MutableLiveData<User>()
     val user : LiveData<User> get() = _user
+
+    //orderitem size,language and materials
+    val _size = MutableLiveData<Size>()
+    val size : LiveData<Size> get() = _size
+
+    val _material = MutableLiveData<Material>()
+    val material : LiveData<Material> get() = _material
+
+    val _language = MutableLiveData<Language>()
+    val langauge : LiveData<Language> get() = _language
 
     companion object {
         val repository = Repository()
@@ -119,6 +128,51 @@ class OrdersViewModel : ViewModel() {
         }catch (e : Exception){
             _serverResponse.postValue(SimpleResponse(true,"${e.message.toString()}"))
         }
+    }
+
+
+    fun fetchOrderItemDetails(sid : Int,lid :  Int,mid : Int){
+
+        try{
+
+            val size = NetworkService.networkInstance.fetchSizeById(sid)
+
+            size.enqueue(object : Callback<Size?> {
+                override fun onResponse(call: Call<Size?>, response: Response<Size?>) {
+                    _size.postValue(response.body()!!)
+                }
+
+                override fun onFailure(call: Call<Size?>, t: Throwable) {
+                    _serverResponse.postValue(SimpleResponse(true,"Size fetch failure"))
+                }
+            })
+
+            val lan = NetworkService.networkInstance.fetchLanguageById(lid)
+            lan.enqueue(object : Callback<Language?> {
+                override fun onResponse(call: Call<Language?>, response: Response<Language?>) {
+                    _language.postValue(response.body()!!)
+                }
+
+                override fun onFailure(call: Call<Language?>, t: Throwable) {
+                    _serverResponse.postValue(SimpleResponse(true,"Language fetch failure"))
+                }
+            })
+
+            val mat = NetworkService.networkInstance.fetchMaterialById(mid)
+            mat.enqueue(object : Callback<Material?> {
+                override fun onResponse(call: Call<Material?>, response: Response<Material?>) {
+                    _material.postValue(response.body()!!)
+                }
+
+                override fun onFailure(call: Call<Material?>, t: Throwable) {
+                    _serverResponse.postValue(SimpleResponse(true,"Material fetch failure"))
+                }
+            })
+
+        }catch ( e : Exception){
+            _serverResponse.postValue(SimpleResponse(true,"${e.message}"))
+        }
+
     }
 
 }
