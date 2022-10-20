@@ -36,7 +36,7 @@ class OrdersAdapter(val context: Context, val orders: List<Order>) :
     override fun onBindViewHolder(holder: OrderViewHolder, position: Int) {
         val order = orders[position]
         holder.txtOrderTitle.text = order.orderId
-        holder.txtOrderDate.text = order.orderDate
+        holder.txtOrderDate.text = order.orderDate.toString()
         holder.txtOrderEmailId.text = order.emailId
         holder.txtOrderTotal.text = "$ ${order.total}"
 
