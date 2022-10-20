@@ -70,4 +70,7 @@ interface NetworkCallsInterface {
     @GET("user/get")
     fun fetchUserByEmail(@Query("email") email : String) : Call<User>
 
+    @GET("transaction/getall")   //not added in repo
+    fun fetchAllTransactions() : Call<List<Transaction>>
+
 }
