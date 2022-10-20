@@ -5,7 +5,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.PriceManagementActivity"
-    android:background="@color/teal_700">
+    tools:context=".ui.PriceManagementActivity">
+
+    <nl.joery.animatedbottombar.AnimatedBottomBar
+        android:id="@+id/animatedBottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0"
+        app:abb_tabs="@menu/pricing_menu"
+        app:abb_selectedTabType="icon"/>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="56dp"
+        app:layout_constraintTop_toBottomOf="@+id/animatedBottomBar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

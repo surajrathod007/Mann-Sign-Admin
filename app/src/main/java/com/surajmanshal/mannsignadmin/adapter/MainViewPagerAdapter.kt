@@ -12,5 +12,4 @@ class MainViewPagerAdapter(val fragments : List<Fragment>, activity : AppCompatA
     override fun createFragment(position: Int): Fragment {
         return fragments[position]
     }
-
 }
