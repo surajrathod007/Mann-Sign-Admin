@@ -54,7 +54,11 @@ class OrderDetailsActivity : AppCompatActivity() {
             order.also {
                 it.orderStatus = spinner.selectedItemPosition
                 it.paymentStatus = paymentStatusSpinner.selectedItemPosition
-                it.days = Integer.parseInt(binding.edEstimatedDays.text.toString())
+                if (binding.edEstimatedDays.text.isNullOrEmpty()) {
+                    it.days = 0
+                } else {
+                    it.days = Integer.parseInt(binding.edEstimatedDays.text.toString())
+                }
                 it.trackingUrl = binding.edTrackingUrl.text.toString()
             }
             CoroutineScope(Dispatchers.IO).launch {
@@ -83,7 +87,7 @@ class OrderDetailsActivity : AppCompatActivity() {
 
         with(binding) {
             txtOrderIdDetails.text = order.orderId
-            txtOrderDateDetails.text = order.orderDate
+            txtOrderDateDetails.text = order.orderDate.toString()
             txtOrderQuantityDetails.text = order.quantity.toString()
             txtOrderTotalDetails.text = "₹" + order.total.toString()
             if (order.days != null)
