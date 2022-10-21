@@ -1,9 +1,13 @@
 package com.surajmanshal.mannsignadmin.data.model
 
+import java.time.LocalDate
+
 data class Transaction(
-    val billId : String,
     val transactionId : String,
     val emailId : String,
-    val date : String,
-    val amount : Float
+    val mode : Int,
+    val deliveryCharge : Float,
+    val date : LocalDate,
+    val amount : Float,
+    val orderId : String
 )
