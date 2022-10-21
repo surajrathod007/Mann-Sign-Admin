@@ -4,11 +4,7 @@ import com.surajmanshal.mannsignadmin.data.model.Order
 import com.surajmanshal.mannsignadmin.data.model.Category
 import com.surajmanshal.mannsignadmin.data.model.Product
 import com.surajmanshal.mannsignadmin.network.NetworkService
-import com.surajmanshal.response.SimpleResponse
 import okhttp3.MultipartBody
-import okhttp3.ResponseBody
-import retrofit2.Call
-import java.io.File
 
 class Repository() {
     private val server = NetworkService.networkInstance
@@ -41,4 +37,8 @@ class Repository() {
     suspend fun deleteSubCategory(id: Int) = server.deleteSubCategory(id)
 
     suspend fun fetchUserByEmail(email : String) = server.fetchUserByEmail(email)
+
+    fun fetchProductTypes() = server.fetchProductTypes()
+
+    suspend fun updatePrice(typeId: Int, newPrice: Float, changeFor: Int) = server.updatePrice(typeId,newPrice,changeFor)
 }
