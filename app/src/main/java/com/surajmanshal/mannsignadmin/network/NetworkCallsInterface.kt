@@ -80,4 +80,7 @@ interface NetworkCallsInterface {
     @GET("area/getAll")
     fun fetchAreas(): Call<List<Area>>
 
+    @GET("transaction/getall")   //not added in repo
+    fun fetchAllTransactions() : Call<List<Transaction>>
+
 }
