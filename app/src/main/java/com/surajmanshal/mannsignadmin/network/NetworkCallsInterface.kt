@@ -77,4 +77,7 @@ interface NetworkCallsInterface {
     @POST("pricing/update")
     suspend fun updatePrice(@Query("id")typeId: Int,@Query("price") newPrice: Float,@Query("changeFor") changeFor: Int): SimpleResponse
 
+    @GET("area/getAll")
+    fun fetchAreas(): Call<List<Area>>
+
 }

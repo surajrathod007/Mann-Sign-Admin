@@ -12,11 +12,10 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import com.surajmanshal.mannsignadmin.R
 import com.surajmanshal.mannsignadmin.adapter.ProductPricingAdapter
-import com.surajmanshal.mannsignadmin.data.model.ProductType
 import com.surajmanshal.mannsignadmin.viewmodel.PricingViewModel
 
 
-class ProductFragment : Fragment() {
+class ProductPricingFragment : Fragment() {
 
     private var columnCount = 1
     private lateinit var vm : PricingViewModel
@@ -42,12 +41,10 @@ class ProductFragment : Fragment() {
                     else -> GridLayoutManager(context, columnCount)
                 }
                 vm.getProductTypes()
-                val t = ProductType(1,"Banner",350f)
-                val t2 = ProductType(1,"Board",500f)
-                adapter = ProductPricingAdapter(listOf(t,t2,t,t2,t2),vm)
+                adapter = ProductPricingAdapter(vm)
 
                 vm.productTypes.observe(viewLifecycleOwner, Observer {
-                    adapter = ProductPricingAdapter(it,vm)
+                    adapter = ProductPricingAdapter(vm)
                 })
                 vm.serverResponse.observe(viewLifecycleOwner, Observer {
                     Toast.makeText(activity, it.message, Toast.LENGTH_SHORT).show()
@@ -64,7 +61,7 @@ class ProductFragment : Fragment() {
 
         @JvmStatic
         fun newInstance(vm: PricingViewModel ,columnCount: Int = 1) =
-            ProductFragment().apply {
+            ProductPricingFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_COLUMN_COUNT, columnCount)
                     putSerializable("vm",vm)

@@ -1,24 +1,13 @@
 package com.surajmanshal.mannsignadmin.ui
 
-import android.app.AlertDialog
-import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.EditText
 import androidx.lifecycle.ViewModelProvider
-import com.surajmanshal.mannsignadmin.R
 import com.surajmanshal.mannsignadmin.adapter.MainViewPagerAdapter
-import com.surajmanshal.mannsignadmin.data.model.Category
-import com.surajmanshal.mannsignadmin.databinding.ActivityCategoryManagementBinding
 import com.surajmanshal.mannsignadmin.databinding.ActivityPriceManagementBinding
-import com.surajmanshal.mannsignadmin.ui.fragments.DashboardFragment
-import com.surajmanshal.mannsignadmin.ui.fragments.OrdersFragment
-import com.surajmanshal.mannsignadmin.ui.fragments.ProductFragment
-import com.surajmanshal.mannsignadmin.ui.fragments.ReportsFragment
+import com.surajmanshal.mannsignadmin.ui.fragments.MaterialPricingFragment
+import com.surajmanshal.mannsignadmin.ui.fragments.ProductPricingFragment
 import com.surajmanshal.mannsignadmin.viewmodel.PricingViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class PriceManagementActivity : AppCompatActivity() {
     private lateinit var _binding : ActivityPriceManagementBinding
@@ -33,7 +22,7 @@ class PriceManagementActivity : AppCompatActivity() {
 
     }
     fun setupViewPager(){
-        val fragmentList = listOf(ProductFragment.newInstance(vm))
+        val fragmentList = listOf(ProductPricingFragment.newInstance(vm),MaterialPricingFragment.newInstance(vm))
         binding.viewPager2.adapter = MainViewPagerAdapter(fragmentList,this)
         binding.animatedBottomBar.setupWithViewPager2(binding.viewPager2)
     }
