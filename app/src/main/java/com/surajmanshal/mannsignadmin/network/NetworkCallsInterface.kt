@@ -1,6 +1,7 @@
 package com.surajmanshal.mannsignadmin.network
 
 import com.surajmanshal.mannsignadmin.data.model.*
+import com.surajmanshal.mannsignadmin.utils.Constants
 import com.surajmanshal.response.SimpleResponse
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
@@ -69,6 +70,12 @@ interface NetworkCallsInterface {
 
     @GET("user/get")
     fun fetchUserByEmail(@Query("email") email : String) : Call<User>
+
+    @GET("productTypes")
+    fun fetchProductTypes(): Call<List<ProductType>>
+
+    @POST("pricing/update")
+    suspend fun updatePrice(@Query("id")typeId: Int,@Query("price") newPrice: Float,@Query("changeFor") changeFor: Int): SimpleResponse
 
     @GET("transaction/getall")   //not added in repo
     fun fetchAllTransactions() : Call<List<Transaction>>

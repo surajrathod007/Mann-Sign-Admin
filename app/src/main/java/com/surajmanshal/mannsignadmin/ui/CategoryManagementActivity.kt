@@ -26,52 +26,5 @@ class CategoryManagementActivity : AdapterActivity() {
         super.onCreate(savedInstanceState)
         _binding = ActivityCategoryManagementBinding.inflate(layoutInflater)
         setContentView(binding.root)
-//        vm = ViewModelProvider(this)[CategoryViewModel::class.java]
-        /*vm.getCategories()
-        binding.rvCategories.layoutManager = LinearLayoutManager(this)
-
-
-        with(binding){
-            btnCancel.setOnClickListener {
-                vm.onDeletionCancelOrDone()
-            }
-            alertDialog.setOnClickListener {
-                vm.onDeletionCancelOrDone()
-            }
-            btnDelete.setOnClickListener {
-                CoroutineScope(Dispatchers.IO).launch{
-                    vm.deletionCategory.value?.let { it1 -> vm.deleteCategory(it1) }
-                }
-                vm.onDeletionCancelOrDone()
-            }
-            btnAddCategory.setOnClickListener {
-                setupInputDialog().show()
-            }
-        }
-        vm.categories.observe(this, Observer {
-            setAdapterWithList(it,binding.rvCategories,CategoryAdapter(vm))
-        })
-        vm.isDeleting.observe(this, Observer {
-             binding.alertDialog.visibility = if (it) View.VISIBLE else View.GONE
-        })
-        vm.serverResponse.observe(this, Observer {
-            Toast.makeText(this@CategoryManagementActivity, it.message, Toast.LENGTH_SHORT).show()
-        })*/
     }
-
-    /*private fun setupInputDialog(): AlertDialog.Builder {
-        val dialog = AlertDialog.Builder(this@CategoryManagementActivity)
-        dialog.setTitle("Add New Category")
-        val etName = EditText(this@CategoryManagementActivity)
-        dialog.setView(etName)
-        dialog.setPositiveButton("Add", object : DialogInterface.OnClickListener {
-            override fun onClick(p0: DialogInterface?, p1: Int) {
-                CoroutineScope(Dispatchers.IO).launch {
-                    vm.addNewCategory(Category(name = etName.text.toString()))
-                    vm.getCategories()
-                }
-            }
-        })
-        return dialog
-    }*/
 }
