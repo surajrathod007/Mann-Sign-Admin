@@ -214,6 +214,14 @@
 
                 </GridLayout>
 
+                <com.google.android.material.button.MaterialButton
+                    android:layout_margin="8dp"
+                    android:id="@+id/btnGenerateInvoice"
+                    android:text="Generate Invoice"
+                    android:textAllCaps="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
 
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"

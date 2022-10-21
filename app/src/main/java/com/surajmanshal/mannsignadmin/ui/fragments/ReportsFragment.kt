@@ -1,18 +1,40 @@
 package com.surajmanshal.mannsignadmin.ui.fragments
 
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
+import com.itextpdf.io.image.ImageDataFactory
+import com.itextpdf.kernel.pdf.PdfDocument
+import com.itextpdf.kernel.pdf.PdfWriter
+import com.itextpdf.layout.Document
+import com.itextpdf.layout.element.Cell
+import com.itextpdf.layout.element.Image
+import com.itextpdf.layout.element.Paragraph
+import com.itextpdf.layout.element.Table
+import com.itextpdf.layout.properties.HorizontalAlignment
+import com.itextpdf.layout.properties.TextAlignment
+import com.itextpdf.layout.properties.VerticalAlignment
 import com.surajmanshal.mannsignadmin.R
 import com.surajmanshal.mannsignadmin.databinding.FragmentReportsBinding
 import com.surajmanshal.mannsignadmin.viewmodel.StatsViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
+import java.time.LocalDate
 
 class ReportsFragment : Fragment() {
 
@@ -22,6 +44,11 @@ class ReportsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         vm = ViewModelProvider(requireActivity()).get(StatsViewModel::class.java)
+
+    }
+
+    override fun onResume() {
+        super.onResume()
         CoroutineScope(Dispatchers.IO).launch {
             vm.setupViewModelDataMembers()
         }
@@ -36,8 +63,7 @@ class ReportsFragment : Fragment() {
         binding = FragmentReportsBinding.bind(view)
 
         vm.allOrders.observe(viewLifecycleOwner) {
-            if (!it.isNullOrEmpty())
-                binding.txtTotalOrders.text = it.size.toString()
+            binding.txtTotalOrders.text = it.size.toString()
         }
 
         vm.transactions.observe(viewLifecycleOwner) {
@@ -54,8 +80,12 @@ class ReportsFragment : Fragment() {
         vm.serverResponse.observe(viewLifecycleOwner){
             Toast.makeText(requireContext(),it.message,Toast.LENGTH_LONG).show()
         }
+
+
         return binding.root
     }
+
+
 
 
 }
