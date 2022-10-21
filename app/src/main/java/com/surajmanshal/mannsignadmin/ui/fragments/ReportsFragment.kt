@@ -27,6 +27,7 @@ import com.itextpdf.layout.properties.TextAlignment
 import com.itextpdf.layout.properties.VerticalAlignment
 import com.surajmanshal.mannsignadmin.R
 import com.surajmanshal.mannsignadmin.databinding.FragmentReportsBinding
+import com.surajmanshal.mannsignadmin.ui.ReportDetailsActivity
 import com.surajmanshal.mannsignadmin.viewmodel.StatsViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -81,6 +82,27 @@ class ReportsFragment : Fragment() {
             Toast.makeText(requireContext(),it.message,Toast.LENGTH_LONG).show()
         }
 
+        //card click listners
+        binding.cardTransaction.setOnClickListener {
+            val i = Intent(it.context,ReportDetailsActivity::class.java)
+            i.putExtra("index",1)
+            startActivity(i)
+        }
+        binding.cardOrders.setOnClickListener {
+            val i = Intent(it.context,ReportDetailsActivity::class.java)
+            i.putExtra("index",0)
+            startActivity(i)
+        }
+        binding.cardProducts.setOnClickListener {
+            val i = Intent(it.context,ReportDetailsActivity::class.java)
+            i.putExtra("index",2)
+            startActivity(i)
+        }
+        binding.cardUsers.setOnClickListener {
+            val i = Intent(it.context,ReportDetailsActivity::class.java)
+            i.putExtra("index",3)
+            startActivity(i)
+        }
 
         return binding.root
     }
