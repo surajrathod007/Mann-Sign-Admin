@@ -15,20 +15,22 @@
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/fragment_canceled_orders.xml" value="0.2552083333333333" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/fragment_dashboard.xml" value="0.2552083333333333" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/fragment_delivered_orders.xml" value="0.2552083333333333" />
-        <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/fragment_order_report.xml" value="0.2552083333333333" />
-        <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/fragment_orders.xml" value="0.22" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/fragment_order_report.xml" value="0.22" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/fragment_orders.xml" value="0.33" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/fragment_pending_orders.xml" value="0.24114583333333334" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/fragment_processing_orders.xml" value="0.2552083333333333" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/fragment_product_report.xml" value="0.24114583333333334" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/fragment_ready_orders.xml" value="0.2552083333333333" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/fragment_reports.xml" value="0.25" />
-        <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/fragment_transaction_report.xml" value="0.2" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/fragment_transaction_report.xml" value="0.33" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/fragment_user_report.xml" value="0.2552083333333333" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/item_order_layout.xml" value="0.5" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/order_item_layout.xml" value="0.33" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/order_product_items_layout.xml" value="0.33" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/transaction_item_layout.xml" value="0.33" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/menu/bottom_menu.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/menu/reports_menu.xml" value="0.2552083333333333" />
+        <entry key="..\:/Users/Asus/AppData/Local/Android/Sdk/platforms/android-32/data/res/layout/simple_spinner_dropdown_item.xml" value="0.2552083333333333" />
       </map>
     </option>
   </component>

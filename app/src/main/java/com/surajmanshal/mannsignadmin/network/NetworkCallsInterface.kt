@@ -80,7 +80,10 @@ interface NetworkCallsInterface {
     @GET("transaction/getall")   //not added in repo
     fun fetchAllTransactions() : Call<List<Transaction>>
 
-    @POST("transaction/filter")
+    @POST("transaction/filter")     //not added in repo
     fun filterTransaction(@Body dateFilter : DateFilter) : Call<List<Transaction>>
+
+    @POST("order/filter")         //not addded in repo
+    fun filterOrder(@Body dateFilter: DateFilter) : Call<List<Order>>
 
 }

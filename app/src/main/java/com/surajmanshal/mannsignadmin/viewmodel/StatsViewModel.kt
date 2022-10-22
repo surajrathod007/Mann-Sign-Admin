@@ -85,13 +85,15 @@ class StatsViewModel : ViewModel() {
     }
 
     fun getAllOrders() {
+
+        isLoading.postValue(true)
         val v = OrdersViewModel.repository.fetchAllOrders()
         v.enqueue(object : Callback<List<Order>?> {
             override fun onResponse(call: Call<List<Order>?>, response: Response<List<Order>?>) {
                 response.body().let {
                     _allOrders.value = it
                 }
-
+                isLoading.postValue(false)
             }
 
             override fun onFailure(call: Call<List<Order>?>, t: Throwable) {
@@ -126,6 +128,21 @@ class StatsViewModel : ViewModel() {
 
             override fun onFailure(call: Call<List<Transaction>?>, t: Throwable) {
                 TODO("Not yet implemented")
+            }
+        })
+    }
+
+    fun filterOrder(d : DateFilter){
+        isLoading.postValue(true)
+        val l = NetworkService.networkInstance.filterOrder(d)
+        l.enqueue(object : Callback<List<Order>?> {
+            override fun onResponse(call: Call<List<Order>?>, response: Response<List<Order>?>) {
+                _allOrders.postValue(response.body())
+                isLoading.postValue(false)
+            }
+
+            override fun onFailure(call: Call<List<Order>?>, t: Throwable) {
+                isLoading.postValue(false)
             }
         })
     }

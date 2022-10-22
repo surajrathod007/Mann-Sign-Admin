@@ -23,9 +23,21 @@
 
 
             <Spinner
+                android:layout_margin="10dp"
                 android:id="@+id/spTransactionFilter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_margin="5dp"
+                android:id="@+id/btnGenerateTransactionReport"
+                android:text="Generate Report"
+                android:textAllCaps="false"
+                android:backgroundTint="@color/order_selected_text_color"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvTransaction"

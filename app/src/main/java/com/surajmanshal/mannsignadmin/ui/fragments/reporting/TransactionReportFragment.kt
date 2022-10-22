@@ -1,6 +1,10 @@
 package com.surajmanshal.mannsignadmin.ui.fragments.reporting
 
+import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -8,16 +12,28 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
+import com.itextpdf.kernel.pdf.PdfDocument
+import com.itextpdf.kernel.pdf.PdfWriter
+import com.itextpdf.layout.Document
+import com.itextpdf.layout.element.Cell
+import com.itextpdf.layout.element.Paragraph
+import com.itextpdf.layout.element.Table
+import com.itextpdf.layout.properties.TextAlignment
 import com.surajmanshal.mannsignadmin.R
 import com.surajmanshal.mannsignadmin.adapter.TransactionAdapter
 import com.surajmanshal.mannsignadmin.data.model.DateFilter
 import com.surajmanshal.mannsignadmin.databinding.FragmentTransactionReportBinding
+import com.surajmanshal.mannsignadmin.utils.Constants
 import com.surajmanshal.mannsignadmin.viewmodel.StatsViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileOutputStream
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class TransactionReportFragment : Fragment() {
@@ -61,6 +77,7 @@ class TransactionReportFragment : Fragment() {
                 binding.transactionLoading.visibility = View.VISIBLE
             }
         }
+
         binding.spTransactionFilter.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
@@ -140,6 +157,10 @@ class TransactionReportFragment : Fragment() {
 
             }
 
+
+        binding.btnGenerateTransactionReport.setOnClickListener {
+            generateReport()
+        }
         return binding.root
     }
 
@@ -171,5 +192,79 @@ class TransactionReportFragment : Fragment() {
         binding.spTransactionFilter.adapter = adp
 
     }
+
+
+    private fun generateReport(){
+        try{
+
+            var lst = vm.transactionItems.value
+
+            val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString()
+            val file = File(path,"order_report${System.currentTimeMillis()}.pdf")
+            val output = FileOutputStream(file)
+
+            val writer = PdfWriter(file)
+            val pdfDocument = PdfDocument(writer)
+            val document = Document(pdfDocument)
+
+            document.add(Paragraph("Transaction Report Of Mann Sign").setTextAlignment(TextAlignment.CENTER).setBold().setFontSize(14f))
+
+            val table = Table(7)
+            table.useAllAvailableWidth()
+
+            //row1
+            table.addCell(Cell().add(Paragraph("Transaction Id").setBold().setFontSize(8f)))
+            table.addCell(Cell().add(Paragraph("Date").setBold().setFontSize(8f)))
+            table.addCell(Cell().add(Paragraph("Email Id").setBold().setFontSize(8f)))
+            table.addCell(Cell().add(Paragraph("Order Id").setBold().setFontSize(8f)))
+            table.addCell(Cell().add(Paragraph("Mode").setBold().setFontSize(8f)))
+            table.addCell(Cell().add(Paragraph("Delivery Charge").setBold().setFontSize(8f)))
+            table.addCell(Cell().add(Paragraph("Amount").setBold().setFontSize(8f)))
+
+            lst!!.forEach {
+                with(table){
+                    addCell(it.transaction.transactionId).setFontSize(8f)
+                    addCell(it.transaction.date.toString()).setFontSize(8f)
+                    addCell(it.transaction.emailId).setFontSize(8f)
+                    addCell(it.transaction.orderId).setFontSize(8f)
+                    addCell(it.transaction.mode.toString()).setFontSize(8f) //TODO : It Need to check
+                    addCell(it.transaction.deliveryCharge.toString()).setFontSize(8f)
+                    addCell(it.transaction.amount.toString()).setFontSize(8f)
+                }
+            }
+
+            document.add(table)
+            document.add(Paragraph("Total Transactions : ${lst.size}").setFontSize(8f).setBold())
+            val d = LocalDateTime.now().format(DateTimeFormatter.ofPattern("E, dd MMM yyyy hh:mm a"))
+            document.add(
+                Paragraph("Report Generated At : $d").setFontSize(8f).setTextAlignment(
+                    TextAlignment.RIGHT))
+            document.close()
+            Toast.makeText(requireContext(),"Report Created",Toast.LENGTH_SHORT).show()
+            openFile(file,path)
+
+        }catch (e : Exception){
+            Toast.makeText(requireContext(),e.message,Toast.LENGTH_SHORT).show()
+        }
+
+    }
+
+    fun openFile(file : File, path : String){
+        val intent = Intent(Intent.ACTION_VIEW)
+
+        if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.N){
+            val uri = FileProvider.getUriForFile(requireContext(),requireContext().packageName+".provider",file)
+            intent.setData(uri)
+            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            startActivity(intent)
+        }else{
+            intent.setDataAndType(Uri.parse(path),"application/pdf")
+            val i = Intent.createChooser(intent,"Open File With")
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(i)
+        }
+    }
+
+
 
 }
