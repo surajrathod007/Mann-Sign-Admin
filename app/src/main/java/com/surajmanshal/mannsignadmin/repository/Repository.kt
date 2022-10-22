@@ -2,8 +2,10 @@ package com.surajmanshal.mannsignadmin.repository
 
 import com.surajmanshal.mannsignadmin.data.model.Order
 import com.surajmanshal.mannsignadmin.data.model.Category
+import com.surajmanshal.mannsignadmin.data.model.DiscountCoupon
 import com.surajmanshal.mannsignadmin.data.model.Product
 import com.surajmanshal.mannsignadmin.network.NetworkService
+import com.surajmanshal.response.SimpleResponse
 import okhttp3.MultipartBody
 
 class Repository() {
@@ -42,6 +44,9 @@ class Repository() {
 
     fun fetchProductTypes() = server.fetchProductTypes()
 
-    suspend fun updatePrice(typeId: Int, newPrice: Float, changeFor: Int) = server.updatePrice(typeId, newPrice, changeFor)
+    suspend fun updatePrice(typeId: Any, newPrice: Float, changeFor: Int) = server.updatePrice(typeId, newPrice, changeFor)
 
+    fun getCoupons() = server.fetchCoupons()
+
+    suspend fun insertCoupon(coupon: DiscountCoupon) = server.insertCoupon(coupon.couponCode,coupon.value,coupon.qty)
 }

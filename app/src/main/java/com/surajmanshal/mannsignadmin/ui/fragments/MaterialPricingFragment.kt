@@ -11,7 +11,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.surajmanshal.mannsignadmin.R
-import com.surajmanshal.mannsignadmin.adapter.MaterialPricingAdapter
+import com.surajmanshal.mannsignadmin.adapter.PricingAdapter
+import com.surajmanshal.mannsignadmin.utils.PricingItems
 import com.surajmanshal.mannsignadmin.viewmodel.PricingViewModel
 
 
@@ -40,10 +41,9 @@ class MaterialPricingFragment : Fragment() {
                     else -> GridLayoutManager(context, columnCount)
                 }
                 vm.getMaterials()
-                adapter = MaterialPricingAdapter(vm)
 
                 vm.material.observe(viewLifecycleOwner, Observer {
-                    adapter = MaterialPricingAdapter(vm)
+                    adapter = PricingAdapter(it,vm)
                 })
                 vm.serverResponse.observe(viewLifecycleOwner, Observer {
                     Toast.makeText(activity, it.message, Toast.LENGTH_SHORT).show()

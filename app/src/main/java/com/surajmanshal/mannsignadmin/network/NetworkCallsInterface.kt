@@ -1,13 +1,10 @@
 package com.surajmanshal.mannsignadmin.network
 
 import com.surajmanshal.mannsignadmin.data.model.*
-import com.surajmanshal.mannsignadmin.utils.Constants
 import com.surajmanshal.response.SimpleResponse
 import okhttp3.MultipartBody
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
-import java.io.File
 
 interface NetworkCallsInterface {
 
@@ -75,7 +72,7 @@ interface NetworkCallsInterface {
     fun fetchProductTypes(): Call<List<ProductType>>
 
     @POST("pricing/update")
-    suspend fun updatePrice(@Query("id")typeId: Int,@Query("price") newPrice: Float,@Query("changeFor") changeFor: Int): SimpleResponse
+    suspend fun updatePrice(@Query("id") typeId: Any, @Query("price") newPrice: Float, @Query("changeFor") changeFor: Int): SimpleResponse
 
     @GET("area/getAll")
     fun fetchAreas(): Call<List<Area>>
@@ -83,4 +80,9 @@ interface NetworkCallsInterface {
     @GET("transaction/getall")   //not added in repo
     fun fetchAllTransactions() : Call<List<Transaction>>
 
+    @GET("discountCoupons")
+    fun fetchCoupons(): Call<List<DiscountCoupon>>
+
+    @POST("discount/add")
+    suspend fun insertCoupon(@Query("code")couponCode: String,@Query("value") value: Int,@Query("qty") qty: Int): SimpleResponse
 }

@@ -1,11 +1,16 @@
 package com.surajmanshal.mannsignadmin.utils
 
-import android.os.Build
-import androidx.annotation.RequiresApi
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import android.content.DialogInterface
+import android.widget.EditText
 import com.surajmanshal.mannsignadmin.URL
-import java.time.LocalDate
+import com.surajmanshal.mannsignadmin.adapter.PricingAdapter
+import com.surajmanshal.mannsignadmin.data.model.Area
+import com.surajmanshal.mannsignadmin.data.model.Material
+import com.surajmanshal.mannsignadmin.data.model.ProductType
+import com.surajmanshal.mannsignadmin.viewmodel.PricingViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 object Functions {
 
@@ -13,8 +18,5 @@ object Functions {
         val fileName = imageurl.substringAfter("http://localhost:8700/images/")
         return URL.IMAGE_PATH+ fileName
     }
-
-
-
 
 }
