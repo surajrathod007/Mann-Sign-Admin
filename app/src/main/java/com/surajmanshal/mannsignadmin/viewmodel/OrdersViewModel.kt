@@ -58,6 +58,7 @@ class OrdersViewModel : ViewModel() {
     }
 
     fun getAllOrders() {
+        isLoading.postValue(true)
         val v = repository.fetchAllOrders()
         v.enqueue(object : Callback<List<Order>?> {
             override fun onResponse(call: Call<List<Order>?>, response: Response<List<Order>?>) {

@@ -58,11 +58,13 @@
                     android:clickable="true"
                     android:textAllCaps="false"
                     android:textColor="@color/black"
+                    android:fontFamily="@font/satoshi_medium"
                     android:text="All Orders"
                     android:background="@drawable/textview_background"
                     android:foreground="?attr/selectableItemBackground"/>
 
                 <TextView
+                    android:fontFamily="@font/satoshi_medium"
                     android:padding="10dp"
                     android:layout_marginLeft="10dp"
                     android:id="@+id/txtPendingOrders"
@@ -76,6 +78,7 @@
                     android:foreground="?attr/selectableItemBackground"/>
 
                 <TextView
+                    android:fontFamily="@font/satoshi_medium"
                     android:padding="10dp"
                     android:layout_marginLeft="10dp"
                     android:id="@+id/txtConfirmedOrders"
@@ -89,6 +92,7 @@
                     android:foreground="?attr/selectableItemBackground"/>
 
                 <TextView
+                    android:fontFamily="@font/satoshi_medium"
                     android:padding="10dp"
                     android:layout_marginLeft="10dp"
                     android:id="@+id/txtProcessingOrders"
@@ -102,6 +106,7 @@
                     android:foreground="?attr/selectableItemBackground"/>
 
                 <TextView
+                    android:fontFamily="@font/satoshi_medium"
                     android:padding="10dp"
                     android:layout_marginLeft="10dp"
                     android:id="@+id/txtReadyOrders"
@@ -115,6 +120,7 @@
                     android:foreground="?attr/selectableItemBackground"/>
 
                 <TextView
+                    android:fontFamily="@font/satoshi_medium"
                     android:padding="10dp"
                     android:layout_marginLeft="10dp"
                     android:id="@+id/txtDeliveredOrders"
@@ -128,6 +134,7 @@
                     android:foreground="?attr/selectableItemBackground"/>
 
                 <TextView
+                    android:fontFamily="@font/satoshi_medium"
                     android:padding="10dp"
                     android:layout_marginLeft="10dp"
                     android:id="@+id/txtCanceledOrders"

@@ -4,12 +4,11 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
+    android:layout_marginBottom="10dp"
     app:cardElevation="0dp"
-    app:strokeWidth="0.5dp"
-    android:backgroundTint="@color/order_selected_bg_color"
-    android:background="@color/order_selected_bg_color"
-    app:strokeColor="@color/order_selected_text_color">
+
+
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -29,6 +28,7 @@
                 android:id="@+id/txtOrderId"
                 android:text="Order Id"
                 android:textColor="@color/black"
+                android:fontFamily="@font/satoshi_medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="12sp"/>
@@ -36,6 +36,7 @@
             <TextView
                 android:id="@+id/txtOrderDate"
                 android:layout_width="wrap_content"
+                android:fontFamily="@font/satoshi_medium"
                 android:layout_height="wrap_content"
                 android:textSize="10sp"
                 android:text="Order Date"/>
@@ -43,6 +44,7 @@
             <TextView
                 android:id="@+id/txtOrderEmailId"
                 android:textSize="10sp"
+                android:fontFamily="@font/satoshi_medium"
                 android:text="surajsinhrathod007@gmail.com"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -69,9 +71,11 @@
             <TextView
                 android:paddingRight="10dp"
                 android:paddingLeft="10dp"
+                android:paddingBottom="2dp"
                 android:id="@+id/txtOrderStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/satoshi_medium"
                 android:textSize="8sp"
                 android:textColor="@color/black"
                 android:text="Pendnig"

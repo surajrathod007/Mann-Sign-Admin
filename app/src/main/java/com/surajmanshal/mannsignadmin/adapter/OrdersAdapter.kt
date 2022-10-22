@@ -38,7 +38,7 @@ class OrdersAdapter(val context: Context, val orders: List<Order>) :
         holder.txtOrderTitle.text = order.orderId
         holder.txtOrderDate.text = order.orderDate.toString()
         holder.txtOrderEmailId.text = order.emailId
-        holder.txtOrderTotal.text = "$ ${order.total}"
+        holder.txtOrderTotal.text = "₹ ${order.total}"
 
 
         holder.itemView.setOnClickListener {
