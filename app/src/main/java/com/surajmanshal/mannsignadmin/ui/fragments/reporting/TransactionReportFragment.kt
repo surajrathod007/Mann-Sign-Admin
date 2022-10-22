@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.surajmanshal.mannsignadmin.R
+import com.surajmanshal.mannsignadmin.adapter.TransactionAdapter
 import com.surajmanshal.mannsignadmin.data.model.DateFilter
 import com.surajmanshal.mannsignadmin.databinding.FragmentTransactionReportBinding
 import com.surajmanshal.mannsignadmin.viewmodel.StatsViewModel
@@ -47,6 +48,19 @@ class TransactionReportFragment : Fragment() {
             Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
         }
 
+        vm.transactionItems.observe(viewLifecycleOwner){
+            binding.rvTransaction.adapter = TransactionAdapter(it)
+        }
+
+
+        vm.isLoading.observe(viewLifecycleOwner) {
+            if (!it) {
+                binding.transactionLoading.visibility = View.GONE
+            }
+            if (it) {
+                binding.transactionLoading.visibility = View.VISIBLE
+            }
+        }
         binding.spTransactionFilter.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(

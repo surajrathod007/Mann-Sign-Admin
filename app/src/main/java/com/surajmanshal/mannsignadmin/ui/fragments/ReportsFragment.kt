@@ -67,12 +67,12 @@ class ReportsFragment : Fragment() {
             binding.txtTotalOrders.text = it.size.toString()
         }
 
-        vm.transactions.observe(viewLifecycleOwner) {
+        vm.transactionItems.observe(viewLifecycleOwner) {
             if (!it.isNullOrEmpty()) {
                 binding.txtTotalTransactions.text = it.size.toString()
                 var t = 0.0f
                 it.forEach {
-                    t += it.amount
+                    t += it.transaction.amount
                 }
                 binding.txtTotalEarnings.text = "₹" + t
             }
