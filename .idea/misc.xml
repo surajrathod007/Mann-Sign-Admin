@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/drawable/bottomsheet_background.xml" value="0.1825" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/drawable/dialog_bg.xml" value="0.1805" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.179" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/drawable/textview_background.xml" value="0.172" />
@@ -11,6 +12,7 @@
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/activity_order_item_details.xml" value="0.25" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/activity_report_details.xml" value="0.2552083333333333" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/activity_resources_management.xml" value="0.2552083333333333" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/bottomsheet_datepicker.xml" value="0.33" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/custom_spinner_item.xml" value="0.2552083333333333" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/fragment_all_orders.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/fragment_canceled_orders.xml" value="0.2552083333333333" />

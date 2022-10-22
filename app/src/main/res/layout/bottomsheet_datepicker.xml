@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bottomsheet_background">
+
+    <TextView
+        android:layout_marginTop="8dp"
+        android:text="Select Start Date"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:fontFamily="@font/satoshi_medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <DatePicker
+        android:id="@+id/datePickerStart"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:datePickerMode="spinner"
+        android:calendarViewShown="false"/>
+
+    <TextView
+        android:layout_marginTop="4dp"
+        android:text="Select Last Date"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:fontFamily="@font/satoshi_medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <DatePicker
+        android:id="@+id/datePickerEnd"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:datePickerMode="spinner"
+        android:calendarViewShown="false"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnFilterDate"
+        android:layout_margin="10dp"
+        android:textAllCaps="false"
+        android:text="Filter Date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

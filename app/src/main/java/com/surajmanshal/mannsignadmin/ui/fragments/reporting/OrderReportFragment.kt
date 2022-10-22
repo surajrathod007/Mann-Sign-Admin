@@ -11,9 +11,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.DatePicker
 import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.button.MaterialButton
 import com.itextpdf.kernel.pdf.PdfDocument
 import com.itextpdf.kernel.pdf.PdfWriter
 import com.itextpdf.layout.Document
@@ -40,6 +43,7 @@ class OrderReportFragment : Fragment() {
 
     lateinit var binding : FragmentOrderReportBinding
     lateinit var vm: StatsViewModel
+    lateinit var bottomSheetDialog: BottomSheetDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -136,11 +140,7 @@ class OrderReportFragment : Fragment() {
                             }
                         }
                         5 -> {
-                            Toast.makeText(
-                                requireContext(),
-                                "Open Calender",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            showBottomSheet()
                         }
                     }
                 }
@@ -157,6 +157,26 @@ class OrderReportFragment : Fragment() {
         return binding.root
     }
 
+    fun showBottomSheet() {
+        bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.BottomSheetTheme)
+        val sheetView =
+            LayoutInflater.from(requireContext()).inflate(R.layout.bottomsheet_datepicker, null)
+
+        val startDate = sheetView.findViewById<DatePicker>(R.id.datePickerStart)
+        val endDate = sheetView.findViewById<DatePicker>(R.id.datePickerEnd)
+        val sheet = sheetView.findViewById<MaterialButton>(R.id.btnFilterDate)
+
+        sheet.setOnClickListener {
+            val s = LocalDate.of(startDate.year,startDate.month+1,startDate.dayOfMonth)
+            val e = LocalDate.of(endDate.year,endDate.month+1,endDate.dayOfMonth)
+            val d = DateFilter(s,e)
+            Toast.makeText(requireContext(),"$d",Toast.LENGTH_LONG).show()
+            bottomSheetDialog.dismiss()
+        }
+
+        bottomSheetDialog.setContentView(sheetView)
+        bottomSheetDialog.show()
+    }
 
     private fun setupSpinner() {
 
