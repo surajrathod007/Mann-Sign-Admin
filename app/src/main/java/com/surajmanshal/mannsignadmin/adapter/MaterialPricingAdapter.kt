@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.EditText
+import com.surajmanshal.mannsignadmin.data.model.Material
 import com.surajmanshal.mannsignadmin.data.model.ProductType
 import com.surajmanshal.mannsignadmin.databinding.FragmentItemBinding
 import com.surajmanshal.mannsignadmin.utils.Constants
@@ -14,10 +15,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class ProductPricingAdapter(
+class MaterialPricingAdapter(
     val vm : PricingViewModel
-) : RecyclerView.Adapter<ProductPricingAdapter.ViewHolder>() {
-    val list : List<ProductType> = vm.productTypes.value?: listOf()
+) : RecyclerView.Adapter<MaterialPricingAdapter.ViewHolder>() {
+    val list : List<Material> = vm.material.value?: listOf()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         return ViewHolder(
@@ -34,19 +35,18 @@ class ProductPricingAdapter(
         with(holder){
             with(item){
                 type.text = name
-                price.text = "₹ $basePrice"
+                holder.price.text = "₹ $price"
                 card.setOnClickListener {
                     val dialog = AlertDialog.Builder(it.context)
                     dialog.setTitle("New Price")
                     val etName = EditText(it.context)
-                    etName.setText("$basePrice")
+                    etName.setText("$price")
                     dialog.setView(etName)
                     dialog.setPositiveButton("Set", object : DialogInterface.OnClickListener {
                         override fun onClick(p0: DialogInterface?, p1: Int) {
-                            // todo : Set new price
                             CoroutineScope(Dispatchers.IO).launch {
-                                vm.setNewPrice(typeId!!,etName.text.toString().toFloat(), Constants.CHANGE_BASE_PRICE)
-                                vm.getProductTypes()
+                                vm.setNewPrice(id!!,etName.text.toString().toFloat(), Constants.CHANGE_MATERIAL_PRICE)
+                                vm.getMaterials()
                             }
                         }
                     })

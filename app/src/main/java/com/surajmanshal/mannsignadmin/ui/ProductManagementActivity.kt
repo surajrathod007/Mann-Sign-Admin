@@ -231,7 +231,7 @@ class ProductManagementActivity : AppCompatActivity() {
         container.forEach {
             val option = it as CheckBox
             if (option.isChecked)
-                list.add(vm.materials.value!!.get(container.indexOfChild(option)).id)
+                list.add(vm.materials.value!!.get(container.indexOfChild(option)).id!!)
         }
         return list
     }

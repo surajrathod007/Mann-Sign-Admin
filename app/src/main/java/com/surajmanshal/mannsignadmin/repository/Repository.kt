@@ -16,11 +16,13 @@ class Repository() {
 
     fun fetchCategory() = server.fetchCategories()
 
-    fun fetchSubcategories(id:Int) = server.fetchSubCategoriesOfCategory(id)
+    fun fetchSubcategories(id: Int) = server.fetchSubCategoriesOfCategory(id)
 
     fun fetchSizes() = server.fetchSystemSizes()
 
     fun fetchAllOrders() = server.fetchAllOrders()
+
+    fun getAreas() = server.fetchAreas()
 
     suspend fun updateOrder(order: Order) = server.updateOrder(order)
 
@@ -28,17 +30,18 @@ class Repository() {
 
     fun fetchPosters() = server.fetchAllPosters()
 
-    suspend fun uploadImage(part : MultipartBody.Part) = server.uploadImage(part)
+    suspend fun uploadImage(part: MultipartBody.Part) = server.uploadImage(part)
 
-    suspend fun deleteCategory(id : Int) = server.deleteCategory(id)
+    suspend fun deleteCategory(id: Int) = server.deleteCategory(id)
 
     suspend fun insertCategory(category: Category) = server.insertCategory(category)
 
     suspend fun deleteSubCategory(id: Int) = server.deleteSubCategory(id)
 
-    suspend fun fetchUserByEmail(email : String) = server.fetchUserByEmail(email)
+    suspend fun fetchUserByEmail(email: String) = server.fetchUserByEmail(email)
 
     fun fetchProductTypes() = server.fetchProductTypes()
 
-    suspend fun updatePrice(typeId: Int, newPrice: Float, changeFor: Int) = server.updatePrice(typeId,newPrice,changeFor)
+    suspend fun updatePrice(typeId: Int, newPrice: Float, changeFor: Int) = server.updatePrice(typeId, newPrice, changeFor)
+
 }
