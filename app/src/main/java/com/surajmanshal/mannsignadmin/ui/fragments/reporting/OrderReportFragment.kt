@@ -182,7 +182,7 @@ class OrderReportFragment : Fragment() {
 
         val arr = arrayOf(all, last7Days, last30Days, last180Days, last365Days, custom)
 
-        val adp = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, arr)
+        val adp = ArrayAdapter(requireContext(), R.layout.custom_spinner_item, arr)
         binding.spOrderFilter.adapter = adp
 
     }

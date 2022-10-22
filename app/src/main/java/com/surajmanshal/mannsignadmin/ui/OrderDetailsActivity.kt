@@ -132,7 +132,7 @@ class OrderDetailsActivity : AppCompatActivity() {
     private fun setUpPaymentStatus() {
         val adp = ArrayAdapter(
             this@OrderDetailsActivity,
-            android.R.layout.simple_spinner_dropdown_item,
+            R.layout.custom_spinner_item,
             resources.getStringArray(R.array.order_payment_status)
         )
         paymentStatusSpinner.adapter = adp
@@ -141,7 +141,7 @@ class OrderDetailsActivity : AppCompatActivity() {
     private fun setupSpinner() {
         val adp = ArrayAdapter(
             this@OrderDetailsActivity,
-            android.R.layout.simple_spinner_dropdown_item,
+            R.layout.custom_spinner_item,
             resources.getStringArray(R.array.order_status_array)
         )
         spinner.adapter = adp
