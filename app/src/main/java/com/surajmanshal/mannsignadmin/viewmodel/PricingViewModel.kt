@@ -1,10 +1,10 @@
 package com.surajmanshal.mannsignadmin.viewmodel
 
-import android.text.BoringLayout
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.surajmanshal.mannsignadmin.data.model.*
+import com.surajmanshal.mannsignadmin.data.model.product.ProductType
 import com.surajmanshal.mannsignadmin.repository.Repository
 import com.surajmanshal.response.SimpleResponse
 import retrofit2.Call

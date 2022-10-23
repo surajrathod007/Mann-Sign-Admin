@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/categoryFragment"
-        android:name="com.surajmanshal.mannsignadmin.ui.fragments.CategoryFragment"
+        android:name="com.surajmanshal.mannsignadmin.ui.fragments.category.CategoryFragment"
         android:label="fragment_category"
         tools:layout="@layout/fragment_category" >
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/subCategoryFragment"
-        android:name="com.surajmanshal.mannsignadmin.ui.fragments.SubCategoryFragment"
+        android:name="com.surajmanshal.mannsignadmin.ui.fragments.category.SubCategoryFragment"
         android:label="fragment_sub_category"
         tools:layout="@layout/fragment_sub_category" />
 </navigation>

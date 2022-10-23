@@ -2,6 +2,8 @@
     <string name="app_name">Mann Sign Admin</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="couponCode">Coupon Code</string>
+    <string name="Quantity">Quantity</string>
 
     <!-- Spinner OrderStatus -->
     <string-array name="order_status_array">

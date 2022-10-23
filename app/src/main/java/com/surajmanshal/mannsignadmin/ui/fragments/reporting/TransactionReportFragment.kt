@@ -26,10 +26,9 @@ import com.itextpdf.layout.element.Paragraph
 import com.itextpdf.layout.element.Table
 import com.itextpdf.layout.properties.TextAlignment
 import com.surajmanshal.mannsignadmin.R
-import com.surajmanshal.mannsignadmin.adapter.TransactionAdapter
+import com.surajmanshal.mannsignadmin.adapter.recyclerView.TransactionAdapter
 import com.surajmanshal.mannsignadmin.data.model.DateFilter
 import com.surajmanshal.mannsignadmin.databinding.FragmentTransactionReportBinding
-import com.surajmanshal.mannsignadmin.utils.Constants
 import com.surajmanshal.mannsignadmin.viewmodel.StatsViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

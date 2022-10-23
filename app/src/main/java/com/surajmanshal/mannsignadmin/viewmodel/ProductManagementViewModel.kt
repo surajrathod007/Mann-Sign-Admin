@@ -1,18 +1,15 @@
 package com.surajmanshal.mannsignadmin.viewmodel
 
-import android.content.Context
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.surajmanshal.mannsignadmin.data.model.*
-import com.surajmanshal.mannsignadmin.network.NetworkService
+import com.surajmanshal.mannsignadmin.data.model.product.Product
 import com.surajmanshal.mannsignadmin.repository.Repository
 import com.surajmanshal.response.SimpleResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody.Part
 import retrofit2.Call
 import retrofit2.Callback
