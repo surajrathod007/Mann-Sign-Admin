@@ -44,7 +44,7 @@
             android:gravity="center"
             android:fontFamily="@font/satoshi_medium"
             android:textSize="20sp"
-            android:textColor="@color/black"
+            android:textColor="@color/title_text_color"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
@@ -54,7 +54,7 @@
             android:gravity="center"
             android:fontFamily="@font/satoshi_medium"
             android:textSize="12sp"
-            android:textColor="#105136"
+            android:textColor="@color/text_normal_color"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
@@ -75,7 +75,7 @@
                 android:text="Phone Number : "
                 android:textSize="14sp"
                 android:fontFamily="@font/satoshi_medium"
-                android:textColor="@color/black"
+                android:textColor="@color/title_text_color"
                 />
 
             <TextView
@@ -85,7 +85,7 @@
                 android:text=""
                 android:textSize="14sp"
                 android:fontFamily="@font/satoshi_medium"
-                android:textColor="@color/title_text_color"
+                android:textColor="@color/text_normal_color"
                 />
 
             <TextView
@@ -94,7 +94,7 @@
                 android:text="Address : "
                 android:textSize="14sp"
                 android:fontFamily="@font/satoshi_medium"
-                android:textColor="@color/black"
+                android:textColor="@color/title_text_color"
                 />
 
             <TextView
@@ -104,7 +104,7 @@
                 android:text=""
                 android:textSize="14sp"
                 android:fontFamily="@font/satoshi_medium"
-                android:textColor="@color/title_text_color"
+                android:textColor="@color/text_normal_color"
                 />
 
             <TextView
@@ -113,7 +113,7 @@
                 android:text="Pin Code : "
                 android:textSize="14sp"
                 android:fontFamily="@font/satoshi_medium"
-                android:textColor="@color/black"
+                android:textColor="@color/title_text_color"
                 />
 
             <TextView
@@ -123,7 +123,7 @@
                 android:text=""
                 android:textSize="14sp"
                 android:fontFamily="@font/satoshi_medium"
-                android:textColor="@color/title_text_color"
+                android:textColor="@color/text_normal_color"
                 />
 
             <TextView
@@ -132,7 +132,7 @@
                 android:text="Recieved Orders : "
                 android:textSize="14sp"
                 android:fontFamily="@font/satoshi_medium"
-                android:textColor="@color/black"
+                android:textColor="@color/title_text_color"
                 />
 
             <TextView
@@ -142,7 +142,7 @@
                 android:text="0"
                 android:textSize="14sp"
                 android:fontFamily="@font/satoshi_medium"
-                android:textColor="@color/title_text_color"
+                android:textColor="@color/text_normal_color"
                 />
 
 

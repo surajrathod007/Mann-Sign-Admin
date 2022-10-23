@@ -98,4 +98,7 @@ dependencies {
     implementation 'com.itextpdf.android:kernel-android:7.2.3'
     implementation 'com.itextpdf.android:layout-android:7.2.3'
     implementation 'com.itextpdf.android:io-android:7.2.3'
+
+    //liquid refresh layout
+    implementation 'com.github.mukeshsolanki:liquidrefreshlayout:1.0.3'
 }

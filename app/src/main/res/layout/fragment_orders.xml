@@ -12,6 +12,8 @@
         android:layout_height="match_parent"
         tools:context=".ui.fragments.OrdersFragment">
 
+
+
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -57,7 +59,7 @@
                     android:layout_height="40dp"
                     android:clickable="true"
                     android:textAllCaps="false"
-                    android:textColor="@color/black"
+                    android:textColor="@color/title_text_color"
                     android:fontFamily="@font/satoshi_medium"
                     android:text="All Orders"
                     android:background="@drawable/textview_background"
@@ -72,7 +74,7 @@
                     android:layout_height="40dp"
                     android:clickable="true"
                     android:textAllCaps="false"
-                    android:textColor="@color/black"
+                    android:textColor="@color/title_text_color"
                     android:text="Pending Orders"
                     android:background="@drawable/textview_background"
                     android:foreground="?attr/selectableItemBackground"/>
@@ -86,7 +88,7 @@
                     android:layout_height="40dp"
                     android:clickable="true"
                     android:textAllCaps="false"
-                    android:textColor="@color/black"
+                    android:textColor="@color/title_text_color"
                     android:text="Confirmed Orders"
                     android:background="@drawable/textview_background"
                     android:foreground="?attr/selectableItemBackground"/>
@@ -100,7 +102,7 @@
                     android:layout_height="40dp"
                     android:clickable="true"
                     android:textAllCaps="false"
-                    android:textColor="@color/black"
+                    android:textColor="@color/title_text_color"
                     android:text="Processing Orders"
                     android:background="@drawable/textview_background"
                     android:foreground="?attr/selectableItemBackground"/>
@@ -114,7 +116,7 @@
                     android:layout_height="40dp"
                     android:clickable="true"
                     android:textAllCaps="false"
-                    android:textColor="@color/black"
+                    android:textColor="@color/title_text_color"
                     android:text="Ready Orders"
                     android:background="@drawable/textview_background"
                     android:foreground="?attr/selectableItemBackground"/>
@@ -128,7 +130,7 @@
                     android:layout_height="40dp"
                     android:clickable="true"
                     android:textAllCaps="false"
-                    android:textColor="@color/black"
+                    android:textColor="@color/title_text_color"
                     android:text="Delivered Orders"
                     android:background="@drawable/textview_background"
                     android:foreground="?attr/selectableItemBackground"/>
@@ -142,7 +144,7 @@
                     android:layout_height="40dp"
                     android:clickable="true"
                     android:textAllCaps="false"
-                    android:textColor="@color/black"
+                    android:textColor="@color/title_text_color"
                     android:text="Canceled Orders"
                     android:background="@drawable/textview_background"
                     android:foreground="?attr/selectableItemBackground"/>
@@ -151,19 +153,32 @@
 
         </HorizontalScrollView>
 
-            <ProgressBar
-                android:layout_gravity="center_horizontal"
-                android:id="@+id/loading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_margin="10dp"
-                android:id="@+id/rvOrders"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_order_layout"
+
+            <com.madapps.liquid.LiquidRefreshLayout
+                android:id="@+id/refreshLayout"
+                app:AniBackColor="@color/order_selected_text_color"
+                app:AniForeColor="@color/bg_color"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent">
+
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_margin="10dp"
+                    android:id="@+id/rvOrders"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_order_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </com.madapps.liquid.LiquidRefreshLayout>
+
+
 
         </LinearLayout>
+        <ProgressBar
+            android:layout_gravity="center"
+            android:id="@+id/loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
     </FrameLayout>
 </layout>

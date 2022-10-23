@@ -40,6 +40,12 @@
 
 
 
+            <com.madapps.liquid.LiquidRefreshLayout
+                android:id="@+id/refreshLayoutOrderReport"
+                app:AniBackColor="@color/order_selected_text_color"
+                app:AniForeColor="@color/bg_color"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvOrderReport"
@@ -48,6 +54,7 @@
                 android:layout_margin="5dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_order_layout" />
+            </com.madapps.liquid.LiquidRefreshLayout>
 
         </LinearLayout>
 

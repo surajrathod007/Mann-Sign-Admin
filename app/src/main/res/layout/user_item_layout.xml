@@ -42,7 +42,7 @@
                 android:text="abc@gmail.com"
                 android:textSize="14sp"
                 android:fontFamily="@font/satoshi_medium"
-                android:textColor="#175E40" />
+                android:textColor="@color/text_normal_color" />
 
 
 

@@ -27,7 +27,7 @@
             <TextView
                 android:id="@+id/txtOrderId"
                 android:text="Order Id"
-                android:textColor="@color/black"
+                android:textColor="@color/title_text_color"
                 android:fontFamily="@font/satoshi_medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -39,12 +39,14 @@
                 android:fontFamily="@font/satoshi_medium"
                 android:layout_height="wrap_content"
                 android:textSize="10sp"
+                android:textColor="@color/text_normal_color"
                 android:text="Order Date"/>
 
             <TextView
                 android:id="@+id/txtOrderEmailId"
                 android:textSize="10sp"
                 android:fontFamily="@font/satoshi_medium"
+                android:textColor="@color/text_normal_color"
                 android:text="surajsinhrathod007@gmail.com"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -77,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/satoshi_medium"
                 android:textSize="8sp"
-                android:textColor="@color/black"
+                android:textColor="@color/title_text_color"
                 android:text="Pendnig"
                 android:background="@drawable/textview_background"/>
 

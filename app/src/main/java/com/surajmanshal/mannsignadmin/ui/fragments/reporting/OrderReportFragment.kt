@@ -24,6 +24,7 @@ import com.itextpdf.layout.element.Cell
 import com.itextpdf.layout.element.Paragraph
 import com.itextpdf.layout.element.Table
 import com.itextpdf.layout.properties.TextAlignment
+import com.madapps.liquid.LiquidRefreshLayout
 import com.surajmanshal.mannsignadmin.R
 import com.surajmanshal.mannsignadmin.adapter.recyclerView.OrdersAdapter
 import com.surajmanshal.mannsignadmin.data.model.DateFilter
@@ -70,11 +71,29 @@ class OrderReportFragment : Fragment() {
         vm.isLoading.observe(viewLifecycleOwner) {
             if (!it) {
                 binding.orderLoading.visibility = View.GONE
+                binding.refreshLayoutOrderReport.finishRefreshing()
             }
             if (it) {
                 binding.orderLoading.visibility = View.VISIBLE
             }
         }
+
+        binding.refreshLayoutOrderReport.setOnRefreshListener(object : LiquidRefreshLayout.OnRefreshListener {
+            override fun completeRefresh() {
+
+            }
+
+            override fun refreshing() {
+                CoroutineScope(Dispatchers.IO).launch{
+
+                    vm.isLoading.postValue(true)
+                    //Toast.makeText(requireContext(),"${viewModel.allOrders.value}",Toast.LENGTH_LONG).show()
+                    vm.getAllOrders()
+                    binding.rvOrderReport.adapter =
+                        OrdersAdapter(requireContext(), vm.allOrders.value!!)
+                }
+            }
+        })
 
         binding.spOrderFilter.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {

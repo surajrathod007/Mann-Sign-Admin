@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import com.madapps.liquid.LiquidRefreshLayout
 import com.surajmanshal.mannsignadmin.R
 import com.surajmanshal.mannsignadmin.adapter.recyclerView.OrdersAdapter
 import com.surajmanshal.mannsignadmin.databinding.FragmentOrdersBinding
@@ -65,11 +66,27 @@ class OrdersFragment : Fragment(), View.OnClickListener {
             viewModel.isLoading.observe(viewLifecycleOwner) {
                 if (!it) {
                     binding.loading.visibility = View.GONE
+                    binding.refreshLayout.finishRefreshing()
                 }
                 if (it) {
                     binding.loading.visibility = View.VISIBLE
                 }
             }
+
+
+            binding.refreshLayout.setOnRefreshListener(object : LiquidRefreshLayout.OnRefreshListener {
+                override fun completeRefresh() {
+
+                }
+
+                override fun refreshing() {
+                    viewModel.isLoading.postValue(true)
+                    //Toast.makeText(requireContext(),"${viewModel.allOrders.value}",Toast.LENGTH_LONG).show()
+                    viewModel.getAllOrders()
+                    binding.rvOrders.adapter =
+                        OrdersAdapter(requireContext(), viewModel.allOrders.value!!)
+                }
+            })
 
         } else {
             Toast.makeText(requireContext(), "No Internet Connection", Toast.LENGTH_LONG).show()
