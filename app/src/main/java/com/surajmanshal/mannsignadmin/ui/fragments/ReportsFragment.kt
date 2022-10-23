@@ -45,7 +45,9 @@ class ReportsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         vm = ViewModelProvider(requireActivity()).get(StatsViewModel::class.java)
-
+        CoroutineScope(Dispatchers.IO).launch {
+            vm.setupViewModelDataMembers()
+        }
     }
 
     override fun onResume() {
@@ -63,8 +65,9 @@ class ReportsFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_reports, container, false)
         binding = FragmentReportsBinding.bind(view)
 
-        vm.allOrders.observe(viewLifecycleOwner) {
+        vm.allOrders.observe(viewLifecycleOwner){
             binding.txtTotalOrders.text = it.size.toString()
+            Toast.makeText(requireContext(),it.size.toString(),Toast.LENGTH_SHORT).show()
         }
 
         vm.transactionItems.observe(viewLifecycleOwner) {
@@ -78,36 +81,47 @@ class ReportsFragment : Fragment() {
             }
         }
 
-        vm.serverResponse.observe(viewLifecycleOwner){
-            Toast.makeText(requireContext(),it.message,Toast.LENGTH_LONG).show()
+        vm.allUsers.observe(viewLifecycleOwner) {
+            if (!it.isNullOrEmpty()) {
+                binding.txtTotalUsers.text = it.size.toString()
+            }
+        }
+
+        vm.products.observe(viewLifecycleOwner) {
+            if (!it.isNullOrEmpty()) {
+                //its total product
+                binding.txtTotalInvoice.text = it.size.toString()
+            }
+        }
+
+        vm.serverResponse.observe(viewLifecycleOwner) {
+            Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
         }
 
         //card click listners
         binding.cardTransaction.setOnClickListener {
-            val i = Intent(it.context,ReportDetailsActivity::class.java)
-            i.putExtra("index",1)
+            val i = Intent(it.context, ReportDetailsActivity::class.java)
+            i.putExtra("index", 1)
             startActivity(i)
         }
         binding.cardOrders.setOnClickListener {
-            val i = Intent(it.context,ReportDetailsActivity::class.java)
-            i.putExtra("index",0)
+            val i = Intent(it.context, ReportDetailsActivity::class.java)
+            i.putExtra("index", 0)
             startActivity(i)
         }
         binding.cardProducts.setOnClickListener {
-            val i = Intent(it.context,ReportDetailsActivity::class.java)
-            i.putExtra("index",2)
+            val i = Intent(it.context, ReportDetailsActivity::class.java)
+            i.putExtra("index", 2)
             startActivity(i)
         }
         binding.cardUsers.setOnClickListener {
-            val i = Intent(it.context,ReportDetailsActivity::class.java)
-            i.putExtra("index",3)
+            val i = Intent(it.context, ReportDetailsActivity::class.java)
+            i.putExtra("index", 3)
             startActivity(i)
         }
 
         return binding.root
     }
-
-
 
 
 }

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="24dp"
+    android:elevation="0dp"
+    app:cardElevation="0dp">
+
+    <LinearLayout
+        android:background="@color/bg_color"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_marginTop="8dp"
+            android:src="@drawable/bottomsheet_bar"
+            android:layout_marginBottom="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:text="Customer Details"
+            android:textColor="@color/title_text_color"
+            android:fontFamily="@font/satoshi_bold"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:id="@+id/imgUserProfile"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/bottomsheet_background"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            android:layout_width="150dp"
+            android:layout_height="150dp"/>
+
+        <TextView
+            android:id="@+id/txtUserName"
+            android:text="Suraj Rathod"
+            android:gravity="center"
+            android:fontFamily="@font/satoshi_medium"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/txtUserEmail"
+            android:text="surajsinhrathod75@gmail.com"
+            android:gravity="center"
+            android:fontFamily="@font/satoshi_medium"
+            android:textSize="12sp"
+            android:textColor="#105136"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+        <GridLayout
+            android:background="@drawable/gridlayout_background"
+            android:padding="8dp"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:rowCount="4"
+            >
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Phone Number : "
+                android:textSize="14sp"
+                android:fontFamily="@font/satoshi_medium"
+                android:textColor="@color/black"
+                />
+
+            <TextView
+                android:id="@+id/txtUserPhoneNumber"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text=""
+                android:textSize="14sp"
+                android:fontFamily="@font/satoshi_medium"
+                android:textColor="@color/title_text_color"
+                />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Address : "
+                android:textSize="14sp"
+                android:fontFamily="@font/satoshi_medium"
+                android:textColor="@color/black"
+                />
+
+            <TextView
+                android:id="@+id/txtUserAddress"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text=""
+                android:textSize="14sp"
+                android:fontFamily="@font/satoshi_medium"
+                android:textColor="@color/title_text_color"
+                />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Pin Code : "
+                android:textSize="14sp"
+                android:fontFamily="@font/satoshi_medium"
+                android:textColor="@color/black"
+                />
+
+            <TextView
+                android:id="@+id/txtUserPinCode"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text=""
+                android:textSize="14sp"
+                android:fontFamily="@font/satoshi_medium"
+                android:textColor="@color/title_text_color"
+                />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Recieved Orders : "
+                android:textSize="14sp"
+                android:fontFamily="@font/satoshi_medium"
+                android:textColor="@color/black"
+                />
+
+            <TextView
+                android:id="@+id/txtUserOrders"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="0"
+                android:textSize="14sp"
+                android:fontFamily="@font/satoshi_medium"
+                android:textColor="@color/title_text_color"
+                />
+
+
+        </GridLayout>
+
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

@@ -1,14 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.fragments.reporting.UserReportFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <data>
+
+    </data>
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="User Report" />
+        tools:context=".ui.fragments.reporting.UserReportFragment">
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/bg_color"
+            android:orientation="vertical">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnGenerateUserReport"
+                android:layout_margin="8dp"
+                android:textAllCaps="false"
+                android:text="Generate Report"
+                android:backgroundTint="@color/order_selected_text_color"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvUsers"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/user_item_layout"/>
+
+        </LinearLayout>
+
+    </FrameLayout>
+</layout>

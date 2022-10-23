@@ -91,4 +91,7 @@ interface NetworkCallsInterface {
 
     @POST("discount/add")
     suspend fun insertCoupon(@Query("code")couponCode: String,@Query("value") value: Int,@Query("qty") qty: Int): SimpleResponse
+
+    @GET("user/getall")
+    fun fetchAllUsers() : Call<List<User>>
 }
