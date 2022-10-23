@@ -149,7 +149,6 @@ class TransactionReportFragment : Fragment() {
                         5 -> {
                             //open dialog
                             showBottomSheet()
-
                         }
                     }
                 }
@@ -181,7 +180,10 @@ class TransactionReportFragment : Fragment() {
             val s = LocalDate.of(startDate.year,startDate.month+1,startDate.dayOfMonth)
             val e = LocalDate.of(endDate.year,endDate.month+1,endDate.dayOfMonth)
             val d = DateFilter(s,e)
-            Toast.makeText(requireContext(),"$d",Toast.LENGTH_LONG).show()
+            //Toast.makeText(requireContext(),"$d",Toast.LENGTH_LONG).show()
+            CoroutineScope(Dispatchers.IO).launch {
+                vm.filterTransaction(d)
+            }
             bottomSheetDialog.dismiss()
         }
 
