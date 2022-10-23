@@ -1,33 +1,22 @@
 package com.surajmanshal.mannsignadmin.ui.fragments
 
-import android.app.ProgressDialog
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.tabs.TabLayoutMediator
-import com.surajmanshal.mannsignadmin.MainActivity
 import com.surajmanshal.mannsignadmin.R
-import com.surajmanshal.mannsignadmin.adapter.MainViewPagerAdapter
-import com.surajmanshal.mannsignadmin.adapter.OrdersAdapter
-import com.surajmanshal.mannsignadmin.data.model.Order
+import com.surajmanshal.mannsignadmin.adapter.recyclerView.OrdersAdapter
 import com.surajmanshal.mannsignadmin.databinding.FragmentOrdersBinding
 import com.surajmanshal.mannsignadmin.network.NetworkService
-import com.surajmanshal.mannsignadmin.ui.OrderDetailsActivity
 import com.surajmanshal.mannsignadmin.utils.Constants
 import com.surajmanshal.mannsignadmin.viewmodel.OrdersViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 
 class OrdersFragment : Fragment(), View.OnClickListener {

@@ -20,62 +20,62 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".ui.ReportDetailsActivity"
+            android:name=".ui.activity.ReportDetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.OrderItemDetailsActivity"
+            android:name=".ui.activity.OrderItemDetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.AdapterActivity"
+            android:name=".ui.activity.AdapterActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.ProductsActivity"
+            android:name=".ui.activity.ProductsActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity> <!-- android:usesCleartextTraffic="true" attribute is needed when working with http -->
         <activity
-            android:name=".ui.OrderDetailsActivity"
+            android:name=".ui.activity.OrderDetailsActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.ShippingManagementActivity"
+            android:name=".ui.activity.ShippingManagementActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.MaterialManagementActivity"
+            android:name=".ui.activity.ResourcesManagementActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.CategoryManagementActivity"
+            android:name=".ui.activity.CategoryManagementActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.PriceManagementActivity"
+            android:name=".ui.activity.PriceManagementActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.ProductManagementActivity"
+            android:name=".ui.activity.ProductManagementActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

@@ -10,7 +10,7 @@
     app:cardBackgroundColor="@color/white"
     android:foreground="?attr/selectableItemBackground"
     app:cardElevation="0dp"
-    tools:context=".ui.CategoryManagementActivity">
+    tools:context=".ui.activity.CategoryManagementActivity">
 <!--
 
     <androidx.recyclerview.widget.RecyclerView

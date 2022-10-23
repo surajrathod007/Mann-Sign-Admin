@@ -3,7 +3,7 @@ package com.surajmanshal.mannsignadmin.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.surajmanshal.mannsignadmin.data.model.Product
+import com.surajmanshal.mannsignadmin.data.model.product.Product
 import com.surajmanshal.mannsignadmin.repository.Repository
 import retrofit2.Call
 import retrofit2.Callback

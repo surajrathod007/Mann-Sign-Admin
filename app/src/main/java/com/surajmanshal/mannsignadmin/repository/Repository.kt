@@ -1,11 +1,10 @@
 package com.surajmanshal.mannsignadmin.repository
 
-import com.surajmanshal.mannsignadmin.data.model.Order
+import com.surajmanshal.mannsignadmin.data.model.ordering.Order
 import com.surajmanshal.mannsignadmin.data.model.Category
 import com.surajmanshal.mannsignadmin.data.model.DiscountCoupon
-import com.surajmanshal.mannsignadmin.data.model.Product
+import com.surajmanshal.mannsignadmin.data.model.product.Product
 import com.surajmanshal.mannsignadmin.network.NetworkService
-import com.surajmanshal.response.SimpleResponse
 import okhttp3.MultipartBody
 
 class Repository() {

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.MaterialPricingFragment">
+    tools:context=".ui.fragments.resources_and_pricing.MaterialPricingFragment">
 
     <!--    todo : Empty for now since not used Anywhere-->
 

@@ -22,7 +22,7 @@ import com.itextpdf.layout.element.Paragraph
 import com.itextpdf.layout.element.Table
 import com.itextpdf.layout.properties.TextAlignment
 import com.surajmanshal.mannsignadmin.R
-import com.surajmanshal.mannsignadmin.adapter.OrdersAdapter
+import com.surajmanshal.mannsignadmin.adapter.recyclerView.OrdersAdapter
 import com.surajmanshal.mannsignadmin.data.model.DateFilter
 import com.surajmanshal.mannsignadmin.databinding.FragmentOrderReportBinding
 import com.surajmanshal.mannsignadmin.utils.Constants

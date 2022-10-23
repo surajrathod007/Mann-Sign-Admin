@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.surajmanshal.mannsignadmin.data.model.DateFilter
-import com.surajmanshal.mannsignadmin.data.model.Order
-import com.surajmanshal.mannsignadmin.data.model.Transaction
-import com.surajmanshal.mannsignadmin.data.model.TransactionItem
+import com.surajmanshal.mannsignadmin.data.model.ordering.Order
+import com.surajmanshal.mannsignadmin.data.model.ordering.Transaction
+import com.surajmanshal.mannsignadmin.data.model.ordering.TransactionItem
 import com.surajmanshal.mannsignadmin.network.NetworkService
 import com.surajmanshal.response.SimpleResponse
 import kotlinx.coroutines.CoroutineScope
@@ -15,7 +15,6 @@ import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
 
 class StatsViewModel : ViewModel() {
 

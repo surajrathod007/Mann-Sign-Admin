@@ -6,13 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import com.surajmanshal.mannsignadmin.R
-import com.surajmanshal.mannsignadmin.databinding.ActivityCategoryManagementBinding
 import com.surajmanshal.mannsignadmin.databinding.FragmentDashboardBinding
-import com.surajmanshal.mannsignadmin.ui.CategoryManagementActivity
-import com.surajmanshal.mannsignadmin.ui.PriceManagementActivity
-import com.surajmanshal.mannsignadmin.ui.ProductsActivity
+import com.surajmanshal.mannsignadmin.ui.activity.CategoryManagementActivity
+import com.surajmanshal.mannsignadmin.ui.activity.PriceManagementActivity
+import com.surajmanshal.mannsignadmin.ui.activity.ProductsActivity
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
