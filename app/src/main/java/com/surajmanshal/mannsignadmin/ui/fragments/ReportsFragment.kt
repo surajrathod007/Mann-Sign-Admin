@@ -27,7 +27,7 @@ import com.itextpdf.layout.properties.TextAlignment
 import com.itextpdf.layout.properties.VerticalAlignment
 import com.surajmanshal.mannsignadmin.R
 import com.surajmanshal.mannsignadmin.databinding.FragmentReportsBinding
-import com.surajmanshal.mannsignadmin.ui.ReportDetailsActivity
+import com.surajmanshal.mannsignadmin.ui.activity.ReportDetailsActivity
 import com.surajmanshal.mannsignadmin.viewmodel.StatsViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

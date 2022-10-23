@@ -9,15 +9,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.DatePicker
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.FileProvider
-import androidx.fragment.app.findFragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.button.MaterialButton
 import com.itextpdf.kernel.pdf.PdfDocument
 import com.itextpdf.kernel.pdf.PdfWriter
 import com.itextpdf.layout.Document
@@ -26,9 +23,8 @@ import com.itextpdf.layout.element.Paragraph
 import com.itextpdf.layout.element.Table
 import com.itextpdf.layout.properties.TextAlignment
 import com.surajmanshal.mannsignadmin.R
-import com.surajmanshal.mannsignadmin.adapter.UserAdapter
-import com.surajmanshal.mannsignadmin.data.model.DateFilter
-import com.surajmanshal.mannsignadmin.data.model.User
+import com.surajmanshal.mannsignadmin.adapter.recyclerView.UserAdapter
+import com.surajmanshal.mannsignadmin.data.model.auth.User
 import com.surajmanshal.mannsignadmin.databinding.FragmentUserReportBinding
 import com.surajmanshal.mannsignadmin.viewmodel.StatsViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -36,7 +32,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 

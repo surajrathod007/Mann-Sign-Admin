@@ -1,9 +1,9 @@
-package com.surajmanshal.mannsignadmin.adapter
+package com.surajmanshal.mannsignadmin.adapter.recyclerView
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.surajmanshal.mannsignadmin.data.model.User
+import com.surajmanshal.mannsignadmin.data.model.auth.User
 import com.surajmanshal.mannsignadmin.databinding.UserItemLayoutBinding
 import com.surajmanshal.mannsignadmin.viewmodel.StatsViewModel
 import kotlinx.coroutines.CoroutineScope
