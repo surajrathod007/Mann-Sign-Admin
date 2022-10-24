@@ -11,9 +11,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.DatePicker
 import android.widget.Toast
 import androidx.core.content.FileProvider
+import androidx.fragment.app.findFragment
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.button.MaterialButton
 import com.itextpdf.kernel.pdf.PdfDocument
 import com.itextpdf.kernel.pdf.PdfWriter
 import com.itextpdf.layout.Document
@@ -39,6 +43,7 @@ class TransactionReportFragment : Fragment() {
 
     lateinit var binding: FragmentTransactionReportBinding
     lateinit var vm: StatsViewModel
+    lateinit var bottomSheetDialog: BottomSheetDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +68,7 @@ class TransactionReportFragment : Fragment() {
             Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
         }
 
-        vm.transactionItems.observe(viewLifecycleOwner){
+        vm.transactionItems.observe(viewLifecycleOwner) {
             binding.rvTransaction.adapter = TransactionAdapter(it)
         }
 
@@ -141,17 +146,14 @@ class TransactionReportFragment : Fragment() {
                             }
                         }
                         5 -> {
-                            Toast.makeText(
-                                requireContext(),
-                                "Open Calender",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            //open dialog
+                            showBottomSheet()
                         }
                     }
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {
-                    TODO("Not yet implemented")
+
                 }
 
             }
@@ -161,6 +163,31 @@ class TransactionReportFragment : Fragment() {
             generateReport()
         }
         return binding.root
+    }
+
+
+    fun showBottomSheet() {
+        bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.BottomSheetTheme)
+        val sheetView =
+            LayoutInflater.from(requireContext()).inflate(R.layout.bottomsheet_datepicker, null)
+
+        val startDate = sheetView.findViewById<DatePicker>(R.id.datePickerStart)
+        val endDate = sheetView.findViewById<DatePicker>(R.id.datePickerEnd)
+        val sheet = sheetView.findViewById<MaterialButton>(R.id.btnFilterDate)
+
+        sheet.setOnClickListener {
+            val s = LocalDate.of(startDate.year,startDate.month+1,startDate.dayOfMonth)
+            val e = LocalDate.of(endDate.year,endDate.month+1,endDate.dayOfMonth)
+            val d = DateFilter(s,e)
+            //Toast.makeText(requireContext(),"$d",Toast.LENGTH_LONG).show()
+            CoroutineScope(Dispatchers.IO).launch {
+                vm.filterTransaction(d)
+            }
+            bottomSheetDialog.dismiss()
+        }
+
+        bottomSheetDialog.setContentView(sheetView)
+        bottomSheetDialog.show()
     }
 
     private fun setupSpinner() {
@@ -193,20 +220,25 @@ class TransactionReportFragment : Fragment() {
     }
 
 
-    private fun generateReport(){
-        try{
+    private fun generateReport() {
+        try {
 
             var lst = vm.transactionItems.value
 
-            val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString()
-            val file = File(path,"order_report${System.currentTimeMillis()}.pdf")
+            val path =
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+                    .toString()
+            val file = File(path, "order_report${System.currentTimeMillis()}.pdf")
             val output = FileOutputStream(file)
 
             val writer = PdfWriter(file)
             val pdfDocument = PdfDocument(writer)
             val document = Document(pdfDocument)
 
-            document.add(Paragraph("Transaction Report Of Mann Sign").setTextAlignment(TextAlignment.CENTER).setBold().setFontSize(14f))
+            document.add(
+                Paragraph("Transaction Report Of Mann Sign").setTextAlignment(TextAlignment.CENTER)
+                    .setBold().setFontSize(14f)
+            )
 
             val table = Table(7)
             table.useAllAvailableWidth()
@@ -221,7 +253,7 @@ class TransactionReportFragment : Fragment() {
             table.addCell(Cell().add(Paragraph("Amount").setBold().setFontSize(8f)))
 
             lst!!.forEach {
-                with(table){
+                with(table) {
                     addCell(it.transaction.transactionId).setFontSize(8f)
                     addCell(it.transaction.date.toString()).setFontSize(8f)
                     addCell(it.transaction.emailId).setFontSize(8f)
@@ -234,36 +266,42 @@ class TransactionReportFragment : Fragment() {
 
             document.add(table)
             document.add(Paragraph("Total Transactions : ${lst.size}").setFontSize(8f).setBold())
-            val d = LocalDateTime.now().format(DateTimeFormatter.ofPattern("E, dd MMM yyyy hh:mm a"))
+            val d =
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern("E, dd MMM yyyy hh:mm a"))
             document.add(
                 Paragraph("Report Generated At : $d").setFontSize(8f).setTextAlignment(
-                    TextAlignment.RIGHT))
+                    TextAlignment.RIGHT
+                )
+            )
             document.close()
-            Toast.makeText(requireContext(),"Report Created",Toast.LENGTH_SHORT).show()
-            openFile(file,path)
+            Toast.makeText(requireContext(), "Report Created", Toast.LENGTH_SHORT).show()
+            openFile(file, path)
 
-        }catch (e : Exception){
-            Toast.makeText(requireContext(),e.message,Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
         }
 
     }
 
-    fun openFile(file : File, path : String){
+    fun openFile(file: File, path: String) {
         val intent = Intent(Intent.ACTION_VIEW)
 
-        if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.N){
-            val uri = FileProvider.getUriForFile(requireContext(),requireContext().packageName+".provider",file)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            val uri = FileProvider.getUriForFile(
+                requireContext(),
+                requireContext().packageName + ".provider",
+                file
+            )
             intent.setData(uri)
             intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             startActivity(intent)
-        }else{
-            intent.setDataAndType(Uri.parse(path),"application/pdf")
-            val i = Intent.createChooser(intent,"Open File With")
+        } else {
+            intent.setDataAndType(Uri.parse(path), "application/pdf")
+            val i = Intent.createChooser(intent, "Open File With")
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(i)
         }
     }
-
 
 
 }

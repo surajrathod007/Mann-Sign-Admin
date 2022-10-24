@@ -3,14 +3,20 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/drawable/bottomsheet_background.xml" value="0.1825" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/drawable/bottomsheet_bar.xml" value="0.1825" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/drawable/dialog_bg.xml" value="0.1805" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/drawable/gridlayout_background.xml" value="0.1825" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.179" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/drawable/ic_baseline_keyboard_arrow_right_24.xml" value="0.1825" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/drawable/textview_background.xml" value="0.172" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/activity_main.xml" value="0.2552083333333333" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/activity_order_details.xml" value="0.25" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/activity_order_item_details.xml" value="0.25" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/activity_report_details.xml" value="0.2552083333333333" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/activity_resources_management.xml" value="0.2552083333333333" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/activity_user_details.xml" value="0.25" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/bottomsheet_datepicker.xml" value="0.25" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/custom_spinner_item.xml" value="0.2552083333333333" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/fragment_all_orders.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/fragment_canceled_orders.xml" value="0.2552083333333333" />
@@ -24,11 +30,14 @@
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/fragment_ready_orders.xml" value="0.2552083333333333" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/fragment_reports.xml" value="0.25" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/fragment_transaction_report.xml" value="0.33" />
-        <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/fragment_user_report.xml" value="0.2552083333333333" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/fragment_user_report.xml" value="0.33" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/item_order_layout.xml" value="0.5" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/item_product_layout.xml" value="0.2552083333333333" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/order_item_layout.xml" value="0.33" />
-        <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/order_product_items_layout.xml" value="0.33" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/order_product_items_layout.xml" value="0.5" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/transaction_item_layout.xml" value="0.33" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/user_detail_bottomsheet.xml" value="0.33" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/user_item_layout.xml" value="0.4589928057553957" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/menu/bottom_menu.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/menu/reports_menu.xml" value="0.2552083333333333" />
         <entry key="..\:/Users/Asus/AppData/Local/Android/Sdk/platforms/android-32/data/res/layout/simple_spinner_dropdown_item.xml" value="0.2552083333333333" />

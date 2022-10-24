@@ -3,10 +3,12 @@ package com.surajmanshal.mannsignadmin.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.surajmanshal.mannsignadmin.data.model.DateFilter
+import com.surajmanshal.mannsignadmin.data.model.*
+import com.surajmanshal.mannsignadmin.data.model.auth.User
 import com.surajmanshal.mannsignadmin.data.model.ordering.Order
 import com.surajmanshal.mannsignadmin.data.model.ordering.Transaction
 import com.surajmanshal.mannsignadmin.data.model.ordering.TransactionItem
+import com.surajmanshal.mannsignadmin.data.model.product.Product
 import com.surajmanshal.mannsignadmin.network.NetworkService
 import com.surajmanshal.response.SimpleResponse
 import kotlinx.coroutines.CoroutineScope
@@ -15,6 +17,7 @@ import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
 
 class StatsViewModel : ViewModel() {
 
@@ -33,6 +36,15 @@ class StatsViewModel : ViewModel() {
     private val _dateFilter = MutableLiveData<DateFilter>()
     val dateFilter: LiveData<DateFilter> get() = _dateFilter
 
+    private val _allUsers = MutableLiveData<List<User>>()
+    val allUsers : LiveData<List<User>> get() = _allUsers
+
+    private val _user = MutableLiveData<User>()
+    val user : LiveData<User> get() = _user
+
+    private val _orderSize = MutableLiveData<Int>(0)
+    val orderSize : LiveData<Int> get() = _orderSize
+
     val isLoading = MutableLiveData<Boolean>(true)
 
 
@@ -41,6 +53,8 @@ class StatsViewModel : ViewModel() {
             //isLoading.postValue(true)
             getAllOrders()
             getAllTransactions()
+            getAllUsers()
+            getPosters()
         }
     }
 
@@ -92,6 +106,7 @@ class StatsViewModel : ViewModel() {
                 response.body().let {
                     _allOrders.value = it
                 }
+                _orderSize.postValue(response.body()!!.size)
                 isLoading.postValue(false)
             }
 
@@ -101,7 +116,7 @@ class StatsViewModel : ViewModel() {
         })
     }
 
-    suspend fun filterTransaction(d: DateFilter) {
+    fun filterTransaction(d: DateFilter) {
         isLoading.postValue(true)
         val f = NetworkService.networkInstance.filterTransaction(d)
         f.enqueue(object : Callback<List<Transaction>?> {
@@ -144,5 +159,41 @@ class StatsViewModel : ViewModel() {
                 isLoading.postValue(false)
             }
         })
+    }
+
+    fun getAllUsers(){
+
+        isLoading.postValue(true)
+        val p = NetworkService.networkInstance.fetchAllUsers()
+        p.enqueue(object : Callback<List<User>?> {
+            override fun onResponse(call: Call<List<User>?>, response: Response<List<User>?>) {
+                _allUsers.postValue(response.body())
+                isLoading.postValue(false)
+            }
+
+            override fun onFailure(call: Call<List<User>?>, t: Throwable) {
+                isLoading.postValue(false)
+            }
+        })
+
+    }
+
+    private val _products = MutableLiveData<List<Product>>()
+    val products: LiveData<List<Product>> get() = _products
+
+    fun getPosters() {
+        val response = NetworkService.networkInstance.fetchAllPosters()
+        response.enqueue(object : Callback<List<Product>> {
+            override fun onResponse(call: Call<List<Product>>, response: Response<List<Product>>) {
+                response.body()?.let { _products.value = it}
+            }
+            override fun onFailure(call: Call<List<Product>>, t: Throwable) {
+                println(t.toString())
+            }
+        })
+    }
+
+    fun selectUser(user: User){
+        _user.postValue(user)
     }
 }

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:elevation="0dp"
+        app:cardElevation="0dp"
+        android:id="@+id/cardUser">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtUserFirstLastName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="First Name"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/satoshi_medium"
+                android:textColor="@color/title_text_color" />
+
+            <TextView
+                android:id="@+id/txtUserEmailId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="abc@gmail.com"
+                android:textSize="14sp"
+                android:fontFamily="@font/satoshi_medium"
+                android:textColor="#175E40" />
+
+
+
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>
