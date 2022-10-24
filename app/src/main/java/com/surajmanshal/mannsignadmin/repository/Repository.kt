@@ -3,8 +3,10 @@ package com.surajmanshal.mannsignadmin.repository
 import com.surajmanshal.mannsignadmin.data.model.ordering.Order
 import com.surajmanshal.mannsignadmin.data.model.Category
 import com.surajmanshal.mannsignadmin.data.model.DiscountCoupon
+import com.surajmanshal.mannsignadmin.data.model.SubCategory
 import com.surajmanshal.mannsignadmin.data.model.product.Product
 import com.surajmanshal.mannsignadmin.network.NetworkService
+import com.surajmanshal.response.SimpleResponse
 import okhttp3.MultipartBody
 
 class Repository() {
@@ -48,4 +50,6 @@ class Repository() {
     fun getCoupons() = server.fetchCoupons()
 
     suspend fun insertCoupon(coupon: DiscountCoupon) = server.insertCoupon(coupon.couponCode,coupon.value,coupon.qty)
+
+    suspend fun insertSubCategory(category: SubCategory) = server.insertSubCategory(category)
 }

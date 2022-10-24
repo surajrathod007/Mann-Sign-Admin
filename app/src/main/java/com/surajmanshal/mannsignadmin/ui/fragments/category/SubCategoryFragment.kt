@@ -1,15 +1,20 @@
 package com.surajmanshal.mannsignadmin.ui.fragments.category
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.surajmanshal.mannsignadmin.R
 import com.surajmanshal.mannsignadmin.adapter.recyclerView.SubCategoryAdapter
+import com.surajmanshal.mannsignadmin.data.model.Category
+import com.surajmanshal.mannsignadmin.data.model.SubCategory
 import com.surajmanshal.mannsignadmin.databinding.FragmentCategoryBinding
 import com.surajmanshal.mannsignadmin.viewmodel.CategoryViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -34,7 +39,7 @@ class SubCategoryFragment : CategoryFragment() {
         binding.rvCategories.layoutManager = LinearLayoutManager(requireContext())
         val id = arguments?.getInt("id")
         vm.getSubCategories(id)
-
+        if(id==null) activity?.onBackPressed()
         with(binding){
             btnCancel.setOnClickListener {
                 vm.onDeletionCancelOrDone()
@@ -49,7 +54,18 @@ class SubCategoryFragment : CategoryFragment() {
                 vm.onDeletionCancelOrDone()
             }
             btnAddCategory.setOnClickListener {
-                setupInputDialog().show()
+                val dialog = AlertDialog.Builder(activity)
+                dialog.setTitle("New Subcategory")
+                val etName = EditText(activity)
+                dialog.setView(etName)
+                dialog.setPositiveButton("Add", object : DialogInterface.OnClickListener {
+                    override fun onClick(p0: DialogInterface?, p1: Int) {
+                        CoroutineScope(Dispatchers.IO).launch {
+                            vm.addNewSubCategory(SubCategory(mainCategoryId = id!!, name = etName.text.toString()))
+                            vm.getSubCategories(id)
+                        }
+                    }
+                })
             }
         }
         vm.subCategories.observe(viewLifecycleOwner, Observer {
