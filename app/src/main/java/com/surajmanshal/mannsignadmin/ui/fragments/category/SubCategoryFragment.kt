@@ -66,6 +66,7 @@ class SubCategoryFragment : CategoryFragment() {
                         }
                     }
                 })
+                dialog.show()
             }
         }
         vm.subCategories.observe(viewLifecycleOwner, Observer {
