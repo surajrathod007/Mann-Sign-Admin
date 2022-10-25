@@ -122,7 +122,7 @@ class OrdersViewModel : ViewModel() {
                 }
 
                 override fun onFailure(call: Call<User?>, t: Throwable) {
-                    TODO("Not yet implemented")
+//                    TODO("Not yet implemented")
                 }
             })
 

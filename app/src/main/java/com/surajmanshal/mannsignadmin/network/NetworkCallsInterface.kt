@@ -67,6 +67,7 @@ interface NetworkCallsInterface {
     @POST("subCategory/add")
     suspend fun insertSubCategory(@Body category: SubCategory): SimpleResponse
 
+
     @GET("category/subcategories")
     fun fetchSubCategoriesOfCategory(@Query("id") id : Int) : Call<List<SubCategory>>
 
@@ -99,4 +100,6 @@ interface NetworkCallsInterface {
 
     @GET("user/getall")
     fun fetchAllUsers() : Call<List<User>>
+
+
 }
