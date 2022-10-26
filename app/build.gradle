@@ -103,4 +103,7 @@ dependencies {
 
     //liquid refresh layout
     implementation 'com.github.mukeshsolanki:liquidrefreshlayout:1.0.3'
+
+    //onesignal
+    implementation 'com.onesignal:OneSignal:[4.0.0, 4.99.99]'
 }
