@@ -24,7 +24,7 @@ class ProductsAdapter(val productList : List<Product>)  : RecyclerView.Adapter<P
         with(holder){
             with(product){
                 val url = images?.get(0)?.let { Functions.urlMaker(it.url) }
-                Glide.with(image.context).load(url).into(image)
+                Glide.with(image.context).load(url).centerCrop().into(image)
                 title.text = posterDetails!!.title
             }
         }

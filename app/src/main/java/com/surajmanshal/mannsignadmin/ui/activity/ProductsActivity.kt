@@ -24,7 +24,6 @@ class ProductsActivity : AppCompatActivity() {
         setContentView(binding.root)
         vm = ViewModelProvider(this)[ProductsViewModel::class.java]
         binding.rvProducts.layoutManager = GridLayoutManager(this,columCount)
-        vm.getPosters()
 
         // Views Setup
         with(binding){
@@ -35,7 +34,7 @@ class ProductsActivity : AppCompatActivity() {
         vm.products.observe(this, Observer {
             setAdapterWithList(it)
         })
-
+        vm.getPosters()
     }
 
     fun setAdapterWithList(list: List<Product>){

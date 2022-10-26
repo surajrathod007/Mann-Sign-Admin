@@ -111,6 +111,14 @@ class CategoryViewModel:ViewModel() {
             println("$e")
         }
     }
+    suspend fun addNewSubCategory(category: SubCategory){
+        try {
+            val response = repository.insertSubCategory(category)
+            _serverResponse.postValue(response)
+        }catch (e : Exception){
+            println("$e")
+        }
+    }
 
     private fun addCategory(category: Category) {
         _categories.value?.add(category)

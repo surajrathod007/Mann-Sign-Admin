@@ -141,7 +141,7 @@ class StatsViewModel : ViewModel() {
             }
 
             override fun onFailure(call: Call<List<Transaction>?>, t: Throwable) {
-                TODO("Not yet implemented")
+//                TODO("Not yet implemented")
             }
         })
     }
