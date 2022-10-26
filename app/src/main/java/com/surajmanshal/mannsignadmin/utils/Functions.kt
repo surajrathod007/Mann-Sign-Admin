@@ -1,6 +1,9 @@
 package com.surajmanshal.mannsignadmin.utils
 
 import android.text.InputType
+import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.EditText
 import com.surajmanshal.mannsignadmin.URL
 
@@ -12,5 +15,12 @@ object Functions {
     }
     fun setTypeNumber(editText: EditText){
         editText.inputType = InputType.TYPE_CLASS_NUMBER
+    }
+
+    fun makeViewVisible(view : View){
+        view.visibility = VISIBLE
+    }
+    fun makeViewGone(view : View){
+        view.visibility = GONE
     }
 }

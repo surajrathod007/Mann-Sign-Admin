@@ -5,7 +5,7 @@ import com.surajmanshal.mannsignadmin.data.model.Size
 import java.io.Serializable
 
 data class Product(
-    val productId: Int,
+    var productId: Int,
     var images: List<Image>? = null,
     var sizes: List<Size>? = null,
     var materials: List<Int>? = null,

@@ -57,7 +57,6 @@ class OrderItemDetailsActivity : AppCompatActivity() {
         }
 
 
-
         setContentView(binding.root)
     }
 

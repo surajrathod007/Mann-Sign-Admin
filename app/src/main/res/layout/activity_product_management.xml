@@ -154,15 +154,31 @@
         </GridLayout>
 
     <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvCategory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Poster Category"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvSubCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Poster SubCategory"
+            android:visibility="gone"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvBasePrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Base Price: "
+            android:visibility="gone"/>
 
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/categorySpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             />
+
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnAddProduct"
