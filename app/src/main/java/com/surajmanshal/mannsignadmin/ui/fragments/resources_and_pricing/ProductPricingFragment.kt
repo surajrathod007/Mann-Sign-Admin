@@ -42,12 +42,7 @@ class ProductPricingFragment : Fragment() {
                 }
                 vm.getProductTypes()
                 adapter = vm.productTypes.value?.let { PricingAdapter(it,vm) }
-                vm.productTypes.observe(viewLifecycleOwner, Observer {
-                    adapter = PricingAdapter(it,vm)
-                })
-                vm.serverResponse.observe(viewLifecycleOwner, Observer {
-                    Toast.makeText(activity, it.message, Toast.LENGTH_SHORT).show()
-                })
+
             }
         }
 

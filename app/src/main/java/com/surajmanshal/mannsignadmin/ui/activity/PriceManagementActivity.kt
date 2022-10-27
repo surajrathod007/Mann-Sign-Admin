@@ -4,9 +4,11 @@ import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.EditText
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.withCreated
 import com.surajmanshal.mannsignadmin.R
 import com.surajmanshal.mannsignadmin.adapter.MainViewPagerAdapter
 import com.surajmanshal.mannsignadmin.data.model.DiscountCoupon
@@ -21,6 +23,7 @@ import com.surajmanshal.mannsignadmin.viewmodel.PricingViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import nl.joery.animatedbottombar.AnimatedBottomBar
 
 class PriceManagementActivity : AppCompatActivity() {
@@ -33,38 +36,49 @@ class PriceManagementActivity : AppCompatActivity() {
         setContentView(_binding.root)
         vm =  ViewModelProvider(this)[PricingViewModel::class.java]
         setupViewPager()
-        val dialog = android.app.AlertDialog.Builder(this)
-        dialog.setTitle("New Discount Coupon")
-        val etCode = EditText(this)
-        val etValue = EditText(this)
-        val etQty = EditText(this)
-        etCode.hint = resources.getString(R.string.couponCode)
-        etQty.hint = resources.getString(R.string.Quantity)
-        etValue.hint = "Discount Value( 0-100%)"
-        Functions.setTypeNumber(etValue)
-        Functions.setTypeNumber(etQty)
-        val dialogContainerView =  DialogContainerBinding.inflate(layoutInflater)
-        with(dialogContainerView.dialogContainer){
-            addView(etCode)
-            addView(etValue)
-            addView(etQty)
-        }
+
 
         vm.allowAdding.observe(this, Observer {
             binding.btnAddNew.isVisible = it
         })
         binding.btnAddNew.setOnClickListener {
+            val dialog = android.app.AlertDialog.Builder(this)
+            dialog.setTitle("New Discount Coupon")
+            val etCode = EditText(this)
+            val etValue = EditText(this)
+            val etQty = EditText(this)
+            etCode.hint = resources.getString(R.string.couponCode)
+            etQty.hint = resources.getString(R.string.Quantity)
+            etValue.hint = "Discount Value( 0-100%)"
+            Functions.setTypeNumber(etValue)
+            Functions.setTypeNumber(etQty)
+            val dialogContainerView =  DialogContainerBinding.inflate(layoutInflater)
+            with(dialogContainerView.dialogContainer){
+                addView(etCode)
+                addView(etValue)
+                addView(etQty)
+            }
             dialog.setView(dialogContainerView.root)
             dialog.setPositiveButton("Add", object : DialogInterface.OnClickListener {
                 override fun onClick(p0: DialogInterface?, p1: Int) {
                     CoroutineScope(Dispatchers.IO).launch {
                         vm.addCoupon(
                             DiscountCoupon("${etCode.text}",
-                            etValue.text.toString().toInt(),
-                            etQty.text.toString().toInt()
+                                etValue.text.toString().toInt(),
+                                etQty.text.toString().toInt()
                             )
                         )
                         vm.getCoupons()
+                        /*withContext(Dispatchers.Main){
+                            dialog.setOnDismissListener {
+                                with(dialogContainerView.dialogContainer){
+                                    removeView(etCode)
+                                    removeView(etValue)
+                                    removeView(etQty)
+                                    binding.root.removeView(dialogContainerView.root)
+                                }
+                            }
+                        }*/
                     }
                 }
             })
@@ -80,6 +94,9 @@ class PriceManagementActivity : AppCompatActivity() {
                 if(newIndex==3) vm.allowToAdd(true)
                 else vm.allowToAdd()
             }
+        })
+        vm.serverResponse.observe(this, Observer {
+            Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
         })
     }
     fun setupViewPager(){
