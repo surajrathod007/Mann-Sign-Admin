@@ -5,10 +5,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.withCreated
 import com.surajmanshal.mannsignadmin.R
 import com.surajmanshal.mannsignadmin.adapter.MainViewPagerAdapter
 import com.surajmanshal.mannsignadmin.data.model.DiscountCoupon
@@ -23,7 +24,6 @@ import com.surajmanshal.mannsignadmin.viewmodel.PricingViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import nl.joery.animatedbottombar.AnimatedBottomBar
 
 class PriceManagementActivity : AppCompatActivity() {
@@ -58,6 +58,7 @@ class PriceManagementActivity : AppCompatActivity() {
                 addView(etValue)
                 addView(etQty)
             }
+
             dialog.setView(dialogContainerView.root)
             dialog.setPositiveButton("Add", object : DialogInterface.OnClickListener {
                 override fun onClick(p0: DialogInterface?, p1: Int) {
@@ -69,20 +70,22 @@ class PriceManagementActivity : AppCompatActivity() {
                             )
                         )
                         vm.getCoupons()
-                        /*withContext(Dispatchers.Main){
-                            dialog.setOnDismissListener {
-                                with(dialogContainerView.dialogContainer){
-                                    removeView(etCode)
-                                    removeView(etValue)
-                                    removeView(etQty)
-                                    binding.root.removeView(dialogContainerView.root)
-                                }
-                            }
-                        }*/
                     }
                 }
             })
-            dialog.show()
+            val d = dialog.create()
+
+            etValue.doOnTextChanged{ text, _, _, _ ->
+                enableOrDisableAddButton(etValue,etCode,etQty,d)
+            }
+            etQty.doOnTextChanged{ text, _, _, _ ->
+                enableOrDisableAddButton(etValue,etCode,etQty,d)
+            }
+            etCode.doOnTextChanged{ text, _, _, _ ->
+                enableOrDisableAddButton(etValue,etCode,etQty,d)
+            }
+            d.show()
+            d.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
         }
         binding.animatedBottomBar.setOnTabSelectListener(object : AnimatedBottomBar.OnTabSelectListener{
             override fun onTabSelected(
@@ -99,6 +102,11 @@ class PriceManagementActivity : AppCompatActivity() {
             Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
         })
     }
+
+    private fun enableOrDisableAddButton(et1: EditText,et2: EditText,et3: EditText,d: android.app.AlertDialog) {
+        d.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = et1.text.isNotEmpty()&&et2.text.isNotEmpty()&&et3.text.isNotEmpty()
+    }
+
     fun setupViewPager(){
         val fragmentList = listOf(
             ProductPricingFragment.newInstance(vm), MaterialPricingFragment.newInstance(vm)
