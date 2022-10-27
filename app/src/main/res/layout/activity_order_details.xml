@@ -23,15 +23,37 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <TextView
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:fontFamily="@font/satoshi_medium"
-                    android:gravity="center"
-                    android:text="Order Details"
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:layout_marginBottom="10dp">
+
+                    <ImageView
+                        android:clickable="true"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:id="@+id/btnProductBack"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
+                        android:background="@drawable/back_button_bg"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/satoshi_medium"
+                        android:gravity="center"
+                        android:text="Order Details"
+                        android:textColor="@color/title_text_color"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
+
+
 
                 <TextView
                     android:layout_width="match_parent"
@@ -39,6 +61,7 @@
                     android:layout_marginLeft="8dp"
                     android:fontFamily="@font/satoshi_medium"
                     android:text="Order Items"
+                    android:textColor="@color/title_text_color"
                     android:textStyle="bold" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -49,16 +72,14 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/order_product_items_layout"/>
 
-                <com.google.android.material.divider.MaterialDivider
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp" />
+
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Customer Information"
                     android:fontFamily="@font/satoshi_bold"
+                    android:textColor="@color/title_text_color"
                     android:gravity="center"/>
 
                 <GridLayout
@@ -78,6 +99,7 @@
 
                     <TextView
                         android:id="@+id/txtCustomerEmail"
+                        android:textColor="@color/text_normal_color"
                         android:fontFamily="@font/satoshi_medium"
                         android:text="" />
 
@@ -88,6 +110,7 @@
 
                     <TextView
                         android:id="@+id/txtCustomerFirstName"
+                        android:textColor="@color/text_normal_color"
                         android:fontFamily="@font/satoshi_medium"
                         android:text="" />
 
@@ -98,6 +121,7 @@
 
                     <TextView
                         android:id="@+id/txtCustomerLastName"
+                        android:textColor="@color/text_normal_color"
                         android:fontFamily="@font/satoshi_medium"
                         android:text="" />
 
@@ -108,6 +132,7 @@
 
                     <TextView
                         android:id="@+id/txtCustomerPhoneNumber"
+                        android:textColor="@color/text_normal_color"
                         android:fontFamily="@font/satoshi_medium"
                         android:text="" />
 
@@ -118,6 +143,7 @@
 
                     <TextView
                         android:id="@+id/txtCustomerAddress"
+                        android:textColor="@color/text_normal_color"
                         android:fontFamily="@font/satoshi_medium"
                         android:text="" />
 
@@ -128,6 +154,7 @@
 
                     <TextView
                         android:id="@+id/txtCustomerPinCode"
+                        android:textColor="@color/text_normal_color"
                         android:fontFamily="@font/satoshi_medium"
                         android:text="" />
 
@@ -136,16 +163,14 @@
 
 
 
-                <com.google.android.material.divider.MaterialDivider
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp" />
+
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Order Information"
                     android:fontFamily="@font/satoshi_bold"
+                    android:textColor="@color/title_text_color"
                     android:gravity="center"/>
                 <GridLayout
                     android:padding="8dp"
@@ -164,6 +189,7 @@
 
                     <TextView
                         android:id="@+id/txtOrderIdDetails"
+                        android:textColor="@color/text_normal_color"
                         android:fontFamily="@font/satoshi_medium"
                         android:text="99898sb" />
 
@@ -174,6 +200,7 @@
 
                     <TextView
                         android:id="@+id/txtOrderDateDetails"
+                        android:textColor="@color/text_normal_color"
                         android:fontFamily="@font/satoshi_medium"
                         android:text="18 july 2003" />
 
@@ -184,6 +211,7 @@
 
                     <TextView
                         android:id="@+id/txtOrderQuantityDetails"
+                        android:textColor="@color/text_normal_color"
                         android:fontFamily="@font/satoshi_medium"
                         android:text="5" />
 
@@ -194,6 +222,7 @@
 
                     <TextView
                         android:id="@+id/txtOrderTotalDetails"
+                        android:textColor="@color/text_normal_color"
                         android:fontFamily="@font/satoshi_medium"
                         android:text="$56" />
 
@@ -212,6 +241,7 @@
                     <EditText
                         android:id="@+id/edEstimatedDays"
                         android:layout_width="50dp"
+                        android:textColor="@color/text_normal_color"
                         android:fontFamily="@font/satoshi_medium"
                         android:gravity="center"
                         android:hint="0"
@@ -225,6 +255,7 @@
 
                     <EditText
                         android:id="@+id/edTrackingUrl"
+                        android:textColor="@color/text_normal_color"
                         android:fontFamily="@font/satoshi_medium"
                         android:gravity="center"
                         android:hint="Enter Tracking Url"

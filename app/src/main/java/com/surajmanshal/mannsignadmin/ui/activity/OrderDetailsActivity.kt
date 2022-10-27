@@ -102,9 +102,17 @@ class OrderDetailsActivity : AppCompatActivity() {
             makeInvoice()
         }
 
+        binding.btnProductBack.setOnClickListener {
+            onBackPressed()
+        }
+
     }
 
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
+    }
     private fun setupOrderItems(orderItems: List<OrderItem>?) {
         binding.rvOrderItems.adapter = OrderItemsAdapter(this@OrderDetailsActivity, orderItems!!)
     }

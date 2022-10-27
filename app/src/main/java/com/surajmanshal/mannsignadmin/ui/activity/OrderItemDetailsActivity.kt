@@ -56,10 +56,18 @@ class OrderItemDetailsActivity : AppCompatActivity() {
             binding.txtOrderItemDetailsLanguage.text = it.name
         }
 
+        binding.btnProductBack.setOnClickListener {
+            onBackPressed()
+
+        }
 
         setContentView(binding.root)
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
+    }
     private fun setupOrderItemDetails(orderItem: OrderItem) {
         with(binding) {
 
