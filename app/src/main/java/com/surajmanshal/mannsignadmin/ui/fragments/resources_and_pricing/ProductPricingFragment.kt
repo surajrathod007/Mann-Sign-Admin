@@ -41,7 +41,10 @@ class ProductPricingFragment : Fragment() {
                     else -> GridLayoutManager(context, columnCount)
                 }
                 vm.getProductTypes()
-                adapter = vm.productTypes.value?.let { PricingAdapter(it,vm) }
+
+                vm.productTypes.observe(viewLifecycleOwner, Observer {
+                    adapter = vm.productTypes.value?.let { PricingAdapter(it,vm) }
+                })
 
             }
         }
