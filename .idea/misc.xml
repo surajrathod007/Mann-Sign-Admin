@@ -14,7 +14,7 @@
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/drawable/textview_background.xml" value="0.172" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/activity_main.xml" value="0.2552083333333333" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/activity_order_details.xml" value="0.25" />
-        <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/activity_order_item_details.xml" value="0.25" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/activity_order_item_details.xml" value="0.5" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/activity_report_details.xml" value="0.2552083333333333" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/activity_resources_management.xml" value="0.2552083333333333" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/activity_user_details.xml" value="0.25" />
@@ -35,6 +35,7 @@
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/fragment_user_report.xml" value="0.33" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/item_order_layout.xml" value="0.5" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/item_product_layout.xml" value="0.2552083333333333" />
+        <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/item_review_layout.xml" value="0.33" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/order_item_layout.xml" value="0.33" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/order_product_items_layout.xml" value="0.5" />
         <entry key="..\:/Users/Asus/AndroidStudioProjects/MannSignAdmin/app/src/main/res/layout/transaction_item_layout.xml" value="0.33" />

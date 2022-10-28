@@ -1,6 +1,7 @@
 package com.surajmanshal.mannsignadmin.data.model
 
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 data class Review (
     val reviewId : Int?=null,
@@ -8,5 +9,5 @@ data class Review (
     val rating : Int,
     val comment : String,
     val emailId : String,
-    val reviewDate : String
+    val reviewDate : LocalDateTime
 )

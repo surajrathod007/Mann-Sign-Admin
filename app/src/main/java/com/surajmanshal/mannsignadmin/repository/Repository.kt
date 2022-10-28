@@ -9,7 +9,7 @@ import com.surajmanshal.mannsignadmin.network.NetworkService
 import com.surajmanshal.response.SimpleResponse
 import okhttp3.MultipartBody
 
-class Repository() {
+open class Repository() {
     private val server = NetworkService.networkInstance
     fun fetchMaterials() = server.fetchMaterials()
 

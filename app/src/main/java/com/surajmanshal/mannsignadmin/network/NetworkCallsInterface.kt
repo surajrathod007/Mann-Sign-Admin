@@ -101,5 +101,17 @@ interface NetworkCallsInterface {
     @GET("user/getall")
     fun fetchAllUsers() : Call<List<User>>
 
+    @POST("review/add")
+    fun addReview(@Body review : Review) : Call<SimpleResponse>
+
+    @POST("review/get")
+    fun getReview(@Query("productId") productId : String) : Call<List<Review>>
+
+    @POST("review/getUserReview")
+    fun getUserReview(@Query("productId") productId : String, @Query("emailId") emailId : String) : Call<Review?>
+
+    @POST("review/delete")
+    fun deleteReview(@Query("reviewId") reviewId : String) : Call<SimpleResponse>
+
 
 }

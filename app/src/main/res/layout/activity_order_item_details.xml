@@ -42,6 +42,7 @@
                         android:background="@drawable/back_button_bg"/>
 
                     <TextView
+                        android:paddingRight="16dp"
                         android:text="Product Details"
                         android:gravity="center"
                         android:fontFamily="@font/satoshi_medium"
@@ -62,10 +63,6 @@
                     android:layout_marginBottom="20dp"
                     />
 
-                <com.google.android.material.divider.MaterialDivider
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp" />
 
                 <GridLayout
                     android:padding="6dp"
@@ -171,10 +168,7 @@
 
                 </GridLayout>
 
-                <com.google.android.material.divider.MaterialDivider
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp" />
+
 
                 <TextView
                     android:id="@+id/txtOrderItemDetailsProductType"
@@ -327,10 +321,32 @@
 
                 </GridLayout>
 
-                <com.google.android.material.divider.MaterialDivider
+
+
+                <TextView
+                    android:layout_marginLeft="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp" />
+                    android:gravity="left"
+                    android:fontFamily="@font/satoshi_medium"
+                    android:textColor="@color/title_text_color"
+                    android:text="Product Reviews"/>
+
+                <TextView
+                    android:layout_marginTop="4dp"
+                    android:id="@+id/txtRatingDetails"
+                    android:layout_marginLeft="8dp"
+                    android:fontFamily="@font/satoshi_medium"
+                    android:textSize="12sp"
+                    android:text="Total Reviews : 50 Avg Rating : 6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvReviews"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_review_layout"/>
 
             </LinearLayout>
 

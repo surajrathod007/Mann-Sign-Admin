@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="0dp"
+        app:cardElevation="0dp">
+
+        <LinearLayout
+            android:padding="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:src="@color/bg_color"
+                    android:id="@+id/imgUserProfileReview"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp" />
+
+                <TextView
+                    android:textSize="18sp"
+                    android:fontFamily="@font/satoshi_bold"
+                    android:textColor="@color/title_text_color"
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/txtUserNameReview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="surajsinhrathod75@gmail.com" />
+
+
+            </LinearLayout>
+
+            <RatingBar
+                android:layout_marginTop="12dp"
+                android:id="@+id/ratingBar"
+                style="?attr/ratingBarStyleIndicator"
+                android:scaleX=".8"
+                android:scaleY=".8"
+                android:transformPivotX="0dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/txtUserReview"
+                android:text="Hello Yar Aaj ka video bahot kharab he"
+                android:fontFamily="@font/satoshi_medium"
+                android:textColor="@color/text_normal_color"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginTop="4dp"
+                android:id="@+id/txtReviewDate"
+                android:textSize="12sp"
+                android:fontFamily="@font/satoshi_medium"
+                android:text="18 Jul 2003 04:15 PM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>
