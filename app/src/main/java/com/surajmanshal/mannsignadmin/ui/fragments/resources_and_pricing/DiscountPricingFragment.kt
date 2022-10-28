@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.surajmanshal.mannsignadmin.R
 import com.surajmanshal.mannsignadmin.adapter.recyclerView.PricingAdapter
 import com.surajmanshal.mannsignadmin.viewmodel.PricingViewModel
+import com.surajmanshal.response.SimpleResponse
+import java.util.Observable
 
 
 class DiscountPricingFragment : Fragment() {
@@ -44,12 +46,15 @@ class DiscountPricingFragment : Fragment() {
                 vm.discounts.observe(viewLifecycleOwner, Observer {
                     adapter = PricingAdapter(it,vm)
                 })
-                vm.serverResponse.observe(viewLifecycleOwner, Observer {
-                    Toast.makeText(activity, it.message, Toast.LENGTH_SHORT).show()
-                })
             }
         }
         return view
+    }
+
+    override fun onPause() {
+        super.onPause()
+        vm.serverResponse.removeObserver{
+        }
     }
 
     companion object {

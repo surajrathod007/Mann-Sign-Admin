@@ -44,14 +44,15 @@ class MaterialPricingFragment : Fragment() {
                 vm.material.observe(viewLifecycleOwner, Observer {
                     adapter = PricingAdapter(it,vm)
                 })
-                vm.serverResponse.observe(viewLifecycleOwner, Observer {
-                    Toast.makeText(activity, it.message, Toast.LENGTH_SHORT).show()
-                })
             }
         }
         return view
     }
-
+    override fun onPause() {
+        super.onPause()
+        vm.serverResponse.removeObserver{
+        }
+    }
     companion object {
 
         @JvmStatic

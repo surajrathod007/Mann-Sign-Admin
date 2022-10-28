@@ -41,13 +41,11 @@ class ProductPricingFragment : Fragment() {
                     else -> GridLayoutManager(context, columnCount)
                 }
                 vm.getProductTypes()
-                adapter = vm.productTypes.value?.let { PricingAdapter(it,vm) }
+
                 vm.productTypes.observe(viewLifecycleOwner, Observer {
-                    adapter = PricingAdapter(it,vm)
+                    adapter = vm.productTypes.value?.let { PricingAdapter(it,vm) }
                 })
-                vm.serverResponse.observe(viewLifecycleOwner, Observer {
-                    Toast.makeText(activity, it.message, Toast.LENGTH_SHORT).show()
-                })
+
             }
         }
 
