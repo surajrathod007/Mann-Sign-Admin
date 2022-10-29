@@ -19,6 +19,7 @@ import retrofit2.Response
 class OrdersViewModel : ViewModel() {
     //lateinit var  repository : Repository
 
+
     private val _allOrders = MutableLiveData<List<Order>>(emptyList())
     val allOrders: LiveData<List<Order>> get() = _allOrders
 
@@ -38,6 +39,9 @@ class OrdersViewModel : ViewModel() {
 
     val _language = MutableLiveData<Language>()
     val langauge : LiveData<Language> get() = _language
+
+    val _reviews = MutableLiveData<List<Review>>()
+    val reviews : LiveData<List<Review>> get() = _reviews
 
     companion object {
         val repository = Repository()
@@ -174,6 +178,20 @@ class OrdersViewModel : ViewModel() {
             _serverResponse.postValue(SimpleResponse(true,"${e.message}"))
         }
 
+    }
+
+    fun fetchProductReview(productId : String){
+
+        val l = NetworkService.networkInstance.getReview(productId)
+        l.enqueue(object : Callback<List<Review>?> {
+            override fun onResponse(call: Call<List<Review>?>, response: Response<List<Review>?>) {
+                _reviews.postValue(response.body())
+            }
+
+            override fun onFailure(call: Call<List<Review>?>, t: Throwable) {
+
+            }
+        })
     }
 
 }

@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.surajmanshal.mannsignadmin.adapter.recyclerView.ReviewAdapter
 import com.surajmanshal.mannsignadmin.data.model.ordering.OrderItem
 import com.surajmanshal.mannsignadmin.databinding.ActivityOrderItemDetailsBinding
 import com.surajmanshal.mannsignadmin.utils.Functions
@@ -34,6 +35,8 @@ class OrderItemDetailsActivity : AppCompatActivity() {
                     lid = orderItem.variant!!.languageId,
                     mid = orderItem.variant!!.materialId
                 )
+
+            vm.fetchProductReview(orderItem.product!!.productId.toString())
         }
 
 
@@ -54,6 +57,19 @@ class OrderItemDetailsActivity : AppCompatActivity() {
 
         vm.langauge.observe(this) {
             binding.txtOrderItemDetailsLanguage.text = it.name
+        }
+
+        vm.reviews.observe(this){
+            binding.rvReviews.adapter = ReviewAdapter(it)
+            if(it.isEmpty()){
+                binding.txtRatingDetails.text = "No Reviews"
+            }else{
+                var sum = 0
+                it.forEach {
+                    sum+=it.rating
+                }
+                binding.txtRatingDetails.text = "Total Reviews : ${it.size} , Avg Rating : ${sum/it.size}"
+            }
         }
 
         binding.btnProductBack.setOnClickListener {
