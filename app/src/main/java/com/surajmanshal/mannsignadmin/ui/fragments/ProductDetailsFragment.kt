@@ -9,6 +9,8 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
+import androidx.lifecycle.Observer
+import com.bumptech.glide.Glide
 import com.surajmanshal.mannsignadmin.R
 import com.surajmanshal.mannsignadmin.data.model.Size
 import com.surajmanshal.mannsignadmin.data.model.product.Product
@@ -23,7 +25,6 @@ class ProductDetailsFragment : Fragment() {
     private lateinit var _binding : ActivityProductManagementBinding
     val binding get() = _binding
     lateinit var mVM : ProductsViewModel
-    private var mProduct = Product(0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,30 +40,57 @@ class ProductDetailsFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.activity_product_management, container, false)
         _binding = ActivityProductManagementBinding.bind(view)
-        with(binding){
-            with(Functions){
-                makeViewVisible(tvSubCategory)
-                makeViewGone(categorySpinner)
-                makeViewGone(btnAddProduct)
-                makeViewVisible(tvBasePrice)
+
+        mVM._currentProduct.value?.let {
+            with(binding){
+            // Calls for resources -------------------------------------------------------
+            with(mVM){
+
+                getCategoryById(it.category!!)
+                getSubCategoryById(it.subCategory!!)
+                it.languages?.forEach { getLanguageById(it) }
+                it.materials?.forEach { getMaterialById(it) }
+                _currentProductCategory.observe(viewLifecycleOwner, Observer {
+                    setupCategoryView(it.name)
+                })
+                _currentProductSubCategory.observe(viewLifecycleOwner, Observer {
+                    setupSubCategoryView(it.name)
+                })
+                _currentProductMaterial.observe(viewLifecycleOwner, Observer {
+                    setupMaterialViews(it.name)
+                })
+                _currentProductLanguage.observe(viewLifecycleOwner, Observer {
+                    setupLanguageViews(it.name)
+                })
             }
-            makeETDisableAndSetText(etTitle,mProduct.posterDetails!!.title)
-            makeETDisableAndSetText(etShortDescription,mProduct.posterDetails!!.short_desc)
-            mProduct.posterDetails!!.long_desc?.let { makeETDisableAndSetText(etLongDescription, it) }
-            tvCategory.text // call get Category by id and set it
-            tvSubCategory.text // call get SubCategory by id and set it
-            tvBasePrice.text = "${tvBasePrice.text} ${mProduct.basePrice}"
+
+            // Set up Views  ----------------------------------------------------------------
+
+                with(Functions){
+                    Glide.with(this@ProductDetailsFragment)
+                        .load(urlMaker(it.images!![0].url)).into(ivProduct)
+                    makeViewVisible(tvSubCategory)
+                    makeViewGone(categorySpinner)
+                    makeViewGone(btnAddProduct)
+                    makeViewVisible(tvBasePrice)
+                }
+                makeETDisableAndSetText(etTitle,it.posterDetails!!.title)
+                makeETDisableAndSetText(etShortDescription,it.posterDetails!!.short_desc)
+                it.posterDetails!!.long_desc?.let { makeETDisableAndSetText(etLongDescription, it) }
+                tvBasePrice.text = "${tvBasePrice.text} ${it.basePrice}"
+                it.sizes?.forEach { setupSizesViews(it) }
+            }
         }
-        mProduct.sizes?.forEach {
-            setupSizesViews(it)
-        }
-        mProduct.languages?.forEach {
-            // todo : call get language by id and set it
-        }
-        mProduct.materials?.forEach {
-            // todo : call get material by id and set it
-        }
+
         return binding.root
+    }
+
+    private fun setupCategoryView(name: String) {
+        binding.tvCategory.text = binding.tvCategory.text.toString() + name
+    }
+
+    private fun setupSubCategoryView(name: String) {
+        binding.tvSubCategory.text = binding.tvSubCategory.text.toString() + name
     }
 
     private fun createTextView(text : String): TextView {
@@ -77,8 +105,6 @@ class ProductDetailsFragment : Fragment() {
 
     fun setupLanguageViews(name : String) = binding.gvLanguages.addView(createTextView(name))
 
-    fun setupSubcategoryViews(name : String) = binding.tvSubCategory.setText(name)
-
     fun makeETDisableAndSetText(et : EditText,text : String){
         et.isEnabled = false
         et.setText(text)
@@ -87,11 +113,10 @@ class ProductDetailsFragment : Fragment() {
     companion object {
 
         @JvmStatic
-        fun newInstance(vm: ProductsViewModel, product: Product, productsActivity: ProductsActivity) =
+        fun newInstance(vm: ProductsViewModel) =
             ProductDetailsFragment().apply {
                 arguments = Bundle().apply {
                     mVM = vm
-                    mProduct = product
                 }
             }
     }

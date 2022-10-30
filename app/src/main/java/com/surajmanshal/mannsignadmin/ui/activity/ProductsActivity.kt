@@ -40,8 +40,9 @@ class ProductsActivity : AppCompatActivity() {
 //        if (list.isNotEmpty()) binding.rvProducts.adapter = ProductsAdapter(list)
 //    }
     fun replaceFragment(code : Int,product: Product?){
+        product?.let { vm._currentProduct.value = product }
         val fragment = if(code==0)ProductsListFragment.newInstance(vm,this)
-        else ProductDetailsFragment.newInstance(vm,product!!,this)
+        else ProductDetailsFragment.newInstance(vm)
         supportFragmentManager.beginTransaction().addToBackStack(null)
             .replace(binding.fragmentContainerView.id,
             fragment).commit()

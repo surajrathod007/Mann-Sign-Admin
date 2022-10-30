@@ -52,4 +52,13 @@ open class Repository() {
     suspend fun insertCoupon(coupon: DiscountCoupon) = server.insertCoupon(coupon.couponCode,coupon.value,coupon.qty)
 
     suspend fun insertSubCategory(category: SubCategory) = server.insertSubCategory(category)
+
+    fun getCategoryById(id: Int) = server.fetchCategoryById(id)
+
+    fun getSubCategoryById(id: Int) = server.fetchSubCategoryById(id)
+
+    fun getMaterialById(id:Int) =  server.fetchMaterialById(id)
+
+    fun getLanguageById(id:Int) =  server.fetchLanguageById(id)
+
 }

@@ -58,7 +58,6 @@ class ProductManagementActivity : AppCompatActivity() {
         }
         with(binding){
             setContentView(root)
-            Glide.with(this@ProductManagementActivity).load("https://ik.imagekit.io/eobmcqpoq/GREEN_NITA_ysnIaZNQz.png?ik-sdk-version=javascript-1.4.3&updatedAt=1665844404231").into(ivProduct)
             ivProduct.setOnClickListener {
                 chooseImage()
             }

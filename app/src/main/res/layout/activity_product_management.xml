@@ -13,13 +13,16 @@
         android:orientation="vertical"
         android:paddingHorizontal="8dp">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/ivProduct"
-        android:layout_width="180dp"
-        android:layout_height="240dp"
-        android:layout_gravity="center"
-        android:layout_margin="16dp"
-        android:background="@color/cardview_dark_background"/>
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivProduct"
+            android:layout_width="180dp"
+            android:layout_height="240dp"
+            android:layout_gravity="center"
+            android:layout_margin="16dp"
+            app:shapeAppearance="@style/ShapeAppearanceOverlay.Material3.Chip"
+            app:srcCompat="@drawable/ic_action_choose_img"
+            android:background="@color/bg_color"
+            />
 
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
@@ -59,7 +62,8 @@
     <com.google.android.material.textview.MaterialTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sizes"/>
+        android:text="Sizes"
+        android:textStyle="bold"/>
 
         <GridLayout
             android:id="@+id/gvSizes"
@@ -97,7 +101,8 @@
     <com.google.android.material.textview.MaterialTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Materials" />
+        android:text="Materials"
+        android:textStyle="bold"/>
 
    <GridLayout
        android:id="@+id/gvMaterials"
@@ -130,7 +135,8 @@
     <com.google.android.material.textview.MaterialTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Language"/>
+        android:text="Language"
+        android:textStyle="bold"/>
 
         <GridLayout
             android:id="@+id/gvLanguages"
@@ -157,21 +163,25 @@
         android:id="@+id/tvCategory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Poster Category"/>
+        android:text="Poster Category: "
+        android:textStyle="bold"/>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvSubCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Poster SubCategory"
+            android:text="Poster SubCategory: "
+            android:textStyle="bold"
             android:visibility="gone"/>
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvBasePrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Base Price: "
-            android:visibility="gone"/>
+            android:text="Base Price: ₹"
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:layout_marginBottom="8dp"/>
 
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/categorySpinner"

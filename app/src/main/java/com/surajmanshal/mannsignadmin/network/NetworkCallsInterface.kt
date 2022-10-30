@@ -113,5 +113,11 @@ interface NetworkCallsInterface {
     @POST("review/delete")
     fun deleteReview(@Query("reviewId") reviewId : String) : Call<SimpleResponse>
 
+    @GET("category")
+    fun fetchCategoryById(@Query("id") id: Int): Call<Category>
+
+    @GET("subCategory")
+    fun fetchSubCategoryById(@Query("id")id: Int): Call<SubCategory>
+
 
 }
