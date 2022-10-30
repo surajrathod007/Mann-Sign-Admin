@@ -11,6 +11,7 @@ import android.os.Environment
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
 import com.itextpdf.io.image.ImageDataFactory
@@ -29,6 +30,7 @@ import com.surajmanshal.mannsignadmin.adapter.recyclerView.OrderItemsAdapter
 import com.surajmanshal.mannsignadmin.data.model.ordering.Order
 import com.surajmanshal.mannsignadmin.data.model.ordering.OrderItem
 import com.surajmanshal.mannsignadmin.databinding.ActivityOrderDetailsBinding
+import com.surajmanshal.mannsignadmin.utils.Constants
 import com.surajmanshal.mannsignadmin.viewmodel.OrdersViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -44,8 +46,13 @@ class OrderDetailsActivity : AppCompatActivity() {
     lateinit var paymentStatusSpinner: Spinner
     lateinit var binding: ActivityOrderDetailsBinding
     lateinit var vm: OrdersViewModel
-    var status = 0
-    lateinit var order : Order
+    var status = 0  //this is not in use
+    var orderStatus = -1
+    lateinit var order: Order
+
+    companion object{
+        val statuses = arrayOf("Pending","Confirmed","Processing","Ready","Delivered","Canceled")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +62,7 @@ class OrderDetailsActivity : AppCompatActivity() {
         val i = intent
         status = i.getIntExtra("status", 0)
         order = i.getSerializableExtra("order") as Order
+
         setContentView(binding.root)
         spinner = findViewById(R.id.spOrderStatus)
         paymentStatusSpinner = findViewById(R.id.spOrderPaymentStatus)
@@ -66,6 +74,7 @@ class OrderDetailsActivity : AppCompatActivity() {
         setUpPaymentStatus()
         setupOrderDetails(order)
         setupOrderItems(order.orderItems)
+        setupUpdateButton(order.orderStatus)
 
         vm.serverResponse.observe(this) {
             Toast.makeText(this@OrderDetailsActivity, "${it.message}", Toast.LENGTH_SHORT).show()
@@ -83,19 +92,17 @@ class OrderDetailsActivity : AppCompatActivity() {
         }
 
         binding.btnUpdateOrder.setOnClickListener {
-            order.also {
-                it.orderStatus = spinner.selectedItemPosition
-                it.paymentStatus = paymentStatusSpinner.selectedItemPosition
-                if (binding.edEstimatedDays.text.isNullOrEmpty()) {
-                    it.days = 0
-                } else {
-                    it.days = Integer.parseInt(binding.edEstimatedDays.text.toString())
-                }
-                it.trackingUrl = binding.edTrackingUrl.text.toString()
+
+            if(binding.edEstimatedDays.text.toString() == "0" || binding.edEstimatedDays.text.toString().isNullOrEmpty()){
+                Toast.makeText(this,"Please enter the estimated days !",Toast.LENGTH_LONG).show()
+                return@setOnClickListener
             }
-            CoroutineScope(Dispatchers.IO).launch {
-                vm.updateOrder(order)
+            if(orderStatus == Constants.ORDER_DELIVERED && binding.edTrackingUrl.text.toString().isNullOrEmpty())
+            {
+                Toast.makeText(this,"Please Provide The Tracking Url ! !",Toast.LENGTH_LONG).show()
+                return@setOnClickListener
             }
+            showConfirmDialog()
         }
 
         binding.btnGenerateInvoice.setOnClickListener {
@@ -109,10 +116,75 @@ class OrderDetailsActivity : AppCompatActivity() {
     }
 
 
+    fun setupUpdateButton(s: Int) {
+        when (s) {
+
+            Constants.ORDER_PENDING -> {
+                orderStatus = Constants.ORDER_CONFIRMED
+                binding.btnUpdateOrder.text = "Confirm Order"
+            }
+
+            Constants.ORDER_CONFIRMED -> {
+                orderStatus = Constants.ORDER_PROCCESSING
+                binding.btnUpdateOrder.text = "Start Proccesing"
+            }
+
+            Constants.ORDER_PROCCESSING -> {
+                orderStatus = Constants.ORDER_READY
+                binding.btnUpdateOrder.text = "Make Order Ready"
+            }
+
+            Constants.ORDER_READY -> {
+                orderStatus = Constants.ORDER_DELIVERED
+                binding.btnUpdateOrder.text = "Make Order Delivered"
+            }
+
+            Constants.ORDER_DELIVERED -> {
+                orderStatus = Constants.ORDER_DELIVERED
+                binding.btnUpdateOrder.text = "Order Is Delivered !"
+                binding.btnUpdateOrder.isEnabled = false
+            }
+
+            Constants.ORDER_CANCELED -> {
+                orderStatus = Constants.ORDER_CANCELED
+                binding.btnUpdateOrder.text = "Order Is Canceled !"
+                binding.btnUpdateOrder.isEnabled = false
+            }
+        }
+    }
+
     override fun onBackPressed() {
         super.onBackPressed()
         finish()
     }
+
+    fun showConfirmDialog(){
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Are you sure ?")
+        builder.setMessage("After setting order to \"${statuses.get(orderStatus)}\" it can not be undone...")
+        builder.setPositiveButton("Change Status"){dialog,which ->
+
+            order.also {
+                it.orderStatus = orderStatus
+                //it.paymentStatus = paymentStatusSpinner.selectedItemPosition
+                if (binding.edEstimatedDays.text.isNullOrEmpty()) {
+                    it.days = 0
+                } else {
+                    it.days = Integer.parseInt(binding.edEstimatedDays.text.toString())
+                }
+                it.trackingUrl = binding.edTrackingUrl.text.toString()
+            }
+            CoroutineScope(Dispatchers.IO).launch {
+                vm.updateOrder(order)
+            }
+
+        }
+        builder.setNegativeButton("Cancel"){_,_->
+            Toast.makeText(this,"Action Canceled",Toast.LENGTH_SHORT).show()
+        }
+        builder.show()
+    }
+
     private fun setupOrderItems(orderItems: List<OrderItem>?) {
         binding.rvOrderItems.adapter = OrderItemsAdapter(this@OrderDetailsActivity, orderItems!!)
     }
@@ -153,14 +225,16 @@ class OrderDetailsActivity : AppCompatActivity() {
 
     }
 
-    fun makeInvoice(){
+    fun makeInvoice() {
 
-        try{
+        try {
 
             var lst = order.orderItems
 
-            val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString()
-            val file = File(path,"mann_invoice${System.currentTimeMillis()}.pdf")
+            val path =
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+                    .toString()
+            val file = File(path, "mann_invoice${System.currentTimeMillis()}.pdf")
             val output = FileOutputStream(file)
 
             val writer = PdfWriter(file)
@@ -173,7 +247,7 @@ class OrderDetailsActivity : AppCompatActivity() {
             val headerImg = this.getDrawable(R.drawable.invoice_header)
             val bitmap = (headerImg as BitmapDrawable).bitmap
             val opstream = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.PNG,100,opstream)
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, opstream)
             val bitmapdata = opstream.toByteArray()
 
             val img = ImageDataFactory.create(bitmapdata)
@@ -182,7 +256,7 @@ class OrderDetailsActivity : AppCompatActivity() {
 
 
             //first table
-            val c : FloatArray = floatArrayOf(220F, 220F, 200F, 180F)
+            val c: FloatArray = floatArrayOf(220F, 220F, 200F, 180F)
             val table1 = Table(c)
 
 
@@ -190,11 +264,15 @@ class OrderDetailsActivity : AppCompatActivity() {
             table1.addCell(Cell().add(Paragraph("Bill to Party ").setFontSize(10.0f)).setBold())
             table1.addCell(Cell().add(Paragraph("Ship to Party ").setFontSize(10.0f)).setBold())
             table1.addCell(Cell().add(Paragraph("Date : ").setFontSize(10.0f)).setBold())
-            table1.addCell(Cell().add(Paragraph(LocalDate.now().toString()).setFontSize(10.0f).setBold()))
+            table1.addCell(
+                Cell().add(
+                    Paragraph(LocalDate.now().toString()).setFontSize(10.0f).setBold()
+                )
+            )
 
             //row 2
-            table1.addCell(Cell(4,0).add(Paragraph("857,indiranagar -2 ").setFontSize(8.0f)))
-            table1.addCell(Cell(4,0).add(Paragraph("11, My Queen").setFontSize(8.0f)))
+            table1.addCell(Cell(4, 0).add(Paragraph("857,indiranagar -2 ").setFontSize(8.0f)))
+            table1.addCell(Cell(4, 0).add(Paragraph("11, My Queen").setFontSize(8.0f)))
             table1.addCell(Cell().add(Paragraph("Invoice No : ").setFontSize(10.0f)))
             table1.addCell(Cell().add(Paragraph("inv1000").setFontSize(10.0f)))
 
@@ -208,7 +286,15 @@ class OrderDetailsActivity : AppCompatActivity() {
             //table1.addCell(Cell().add(Paragraph("")))
             //table1.addCell(Cell().add(Paragraph("")))
             table1.addCell(Cell().add(Paragraph("Order Date : ").setFontSize(10.0f)))
-            table1.addCell(Cell().add(Paragraph("${LocalDate.now().plusDays(7)}").setFontSize(10.0f)))
+            table1.addCell(
+                Cell().add(
+                    Paragraph(
+                        "${
+                            LocalDate.now().plusDays(7)
+                        }"
+                    ).setFontSize(10.0f)
+                )
+            )
 
             //row 5
             //table1.addCell(Cell().add(Paragraph("")))
@@ -220,16 +306,30 @@ class OrderDetailsActivity : AppCompatActivity() {
             table1.addCell(Cell().add(Paragraph("State Code : ").setFontSize(8.0f).setBold()))
             table1.addCell(Cell().add(Paragraph("State Code : ").setFontSize(8.0f).setBold()))
             table1.addCell(
-                Cell(0,2).add(Paragraph("COMPANY GSTIN NO : ").setFontSize(8.0f).setBold()).setTextAlignment(
-                    TextAlignment.CENTER))
+                Cell(0, 2).add(Paragraph("COMPANY GSTIN NO : ").setFontSize(8.0f).setBold())
+                    .setTextAlignment(
+                        TextAlignment.CENTER
+                    )
+            )
             //table1.addCell(Cell().add(Paragraph("")))
 
             //row 7
-            table1.addCell(Cell().add(Paragraph("GSTIN NO : <add here>").setFontSize(8.0f).setBold()))
-            table1.addCell(Cell().add(Paragraph("GSTIN NO : <add here>").setFontSize(8.0f).setBold()))
             table1.addCell(
-                Cell(0,2).add(Paragraph("24BENPP0006B1Z4").setFontSize(8.0f).setBold()).setTextAlignment(
-                    TextAlignment.CENTER))
+                Cell().add(
+                    Paragraph("GSTIN NO : <add here>").setFontSize(8.0f).setBold()
+                )
+            )
+            table1.addCell(
+                Cell().add(
+                    Paragraph("GSTIN NO : <add here>").setFontSize(8.0f).setBold()
+                )
+            )
+            table1.addCell(
+                Cell(0, 2).add(Paragraph("24BENPP0006B1Z4").setFontSize(8.0f).setBold())
+                    .setTextAlignment(
+                        TextAlignment.CENTER
+                    )
+            )
             //table1.addCell(Cell().add(Paragraph("")))
 
             document.add(table1)
@@ -239,7 +339,11 @@ class OrderDetailsActivity : AppCompatActivity() {
             table2.useAllAvailableWidth()
             //row1
             table2.addCell(Cell().add(Paragraph("Sr No.").setBold().setFontSize(10.0f)))
-            table2.addCell(Cell().add(Paragraph("Product Description").setBold().setFontSize(10.0f)))
+            table2.addCell(
+                Cell().add(
+                    Paragraph("Product Description").setBold().setFontSize(10.0f)
+                )
+            )
             table2.addCell(Cell().add(Paragraph("HSN Code").setBold().setFontSize(10.0f)))
             table2.addCell(Cell().add(Paragraph("UOM").setBold().setFontSize(10.0f)))
             table2.addCell(Cell().add(Paragraph("Product Type").setBold().setFontSize(10.0f)))
@@ -250,29 +354,29 @@ class OrderDetailsActivity : AppCompatActivity() {
             //add items
             var sr = 1
             var gtotal = 0.0f
-            var extraRows = 15-lst!!.size
-            with(table2){
+            var extraRows = 15 - lst!!.size
+            with(table2) {
                 lst!!.forEach {
                     addCell(sr.toString()).setFontSize(10f)
                     addCell(it.product!!.posterDetails!!.title).setFontSize(10f)
                     addCell("Hsn$sr").setFontSize(10f)
                     addCell("UOM$sr").setFontSize(10f)
                     //set product type
-                    if(it.product!!.posterDetails !=null)
+                    if (it.product!!.posterDetails != null)
                         addCell("Poster").setFontSize(10f)
-                    if(it.product!!.boardDetails !=null)
+                    if (it.product!!.boardDetails != null)
                         addCell("ACP Board").setFontSize(10f)
-                    if(it.product!!.bannerDetails !=null)
+                    if (it.product!!.bannerDetails != null)
                         addCell("Banner").setFontSize(10f)
 
                     addCell("${it.quantity}").setFontSize(10f)
                     addCell("${it.variant!!.variantPrice}").setFontSize(10f)
                     addCell("${it.totalPrice}").setFontSize(10f)
-                    gtotal+=it.totalPrice
+                    gtotal += it.totalPrice
                     sr++
                 }
 
-                for (i in 1..extraRows){
+                for (i in 1..extraRows) {
                     addCell(sr.toString()).setFontSize(10f)
                     addCell("").setFontSize(10f)
                     addCell("").setFontSize(10f)
@@ -285,19 +389,19 @@ class OrderDetailsActivity : AppCompatActivity() {
                 }
             }
 
-            val cgst = (gtotal*9)/100
-            val sgst = (gtotal*9)/100
+            val cgst = (gtotal * 9) / 100
+            val sgst = (gtotal * 9) / 100
 
             document.add(table2)
 
-            val col = floatArrayOf(200f,200f,200f,180f)
+            val col = floatArrayOf(200f, 200f, 200f, 180f)
             val table3 = Table(col)
 
             //bar
             val barImg = this.getDrawable(R.drawable.upi_barcode)
             val bitmap1 = (barImg as BitmapDrawable).bitmap
             val opstream1 = ByteArrayOutputStream()
-            bitmap1.compress(Bitmap.CompressFormat.PNG,100,opstream1)
+            bitmap1.compress(Bitmap.CompressFormat.PNG, 100, opstream1)
             val bitmapdata1 = opstream1.toByteArray()
 
             var img1 = ImageDataFactory.create(bitmapdata1)
@@ -311,36 +415,62 @@ class OrderDetailsActivity : AppCompatActivity() {
             table3.addCell(
                 Cell().add(
                     Paragraph("Bank Detail").setFontSize(10f).setBold().setTextAlignment(
-                        TextAlignment.CENTER)))
+                        TextAlignment.CENTER
+                    )
+                )
+            )
             table3.addCell(
                 Cell().add(
                     Paragraph("Upi Payment").setFontSize(10f).setBold().setTextAlignment(
-                        TextAlignment.CENTER)))
+                        TextAlignment.CENTER
+                    )
+                )
+            )
             table3.addCell(
                 Cell().add(
-                    Paragraph("Total Amount before Tax : ").setFontSize(10f).setBold().setTextAlignment(
-                        TextAlignment.RIGHT)))
+                    Paragraph("Total Amount before Tax : ").setFontSize(10f).setBold()
+                        .setTextAlignment(
+                            TextAlignment.RIGHT
+                        )
+                )
+            )
             table3.addCell(
                 Cell().add(
                     Paragraph("$gtotal").setFontSize(10f).setBold().setTextAlignment(
-                        TextAlignment.RIGHT)))
+                        TextAlignment.RIGHT
+                    )
+                )
+            )
 
             //row2
             table3.addCell(
                 Cell().add(
-                    Paragraph("Bank : Bank of Maharashtra").setFontSize(10f).setBold().setTextAlignment(
-                        TextAlignment.CENTER)))
+                    Paragraph("Bank : Bank of Maharashtra").setFontSize(10f).setBold()
+                        .setTextAlignment(
+                            TextAlignment.CENTER
+                        )
+                )
+            )
             table3.addCell(
-                Cell(5,0).add(upibar).setHorizontalAlignment(HorizontalAlignment.CENTER).setVerticalAlignment(
-                    VerticalAlignment.MIDDLE))
+                Cell(5, 0).add(upibar).setHorizontalAlignment(HorizontalAlignment.CENTER)
+                    .setVerticalAlignment(
+                        VerticalAlignment.MIDDLE
+                    )
+            )
             table3.addCell(
                 Cell().add(
                     Paragraph("Add: CGST (9%) : ").setFontSize(10f).setBold().setTextAlignment(
-                        TextAlignment.RIGHT)))
+                        TextAlignment.RIGHT
+                    )
+                )
+            )
             table3.addCell(
                 Cell().add(
                     Paragraph("$cgst").setFontSize(10f).setBold().setTextAlignment(
-                        TextAlignment.RIGHT)))
+                        TextAlignment.RIGHT
+                    )
+                )
+            )
 
             //row3
             table3.addCell(Cell().add(Paragraph("Bank A/C : 60207512779\n").setFontSize(10f)))
@@ -348,11 +478,17 @@ class OrderDetailsActivity : AppCompatActivity() {
             table3.addCell(
                 Cell().add(
                     Paragraph("Add: SGST (9%) : ").setFontSize(10f).setBold().setTextAlignment(
-                        TextAlignment.RIGHT)))
+                        TextAlignment.RIGHT
+                    )
+                )
+            )
             table3.addCell(
                 Cell().add(
                     Paragraph("$sgst").setFontSize(10f).setBold().setTextAlignment(
-                        TextAlignment.RIGHT)))
+                        TextAlignment.RIGHT
+                    )
+                )
+            )
 
             //row4
             table3.addCell(Cell().add(Paragraph("Bank IFSC : MAHB0001632").setFontSize(10f)))
@@ -360,61 +496,93 @@ class OrderDetailsActivity : AppCompatActivity() {
             table3.addCell(
                 Cell().add(
                     Paragraph("Total Tax Amount : ").setFontSize(10f).setBold().setTextAlignment(
-                        TextAlignment.RIGHT)))
+                        TextAlignment.RIGHT
+                    )
+                )
+            )
             table3.addCell(
                 Cell().add(
-                    Paragraph("${cgst+sgst}").setFontSize(10f).setBold().setTextAlignment(
-                        TextAlignment.RIGHT)))
+                    Paragraph("${cgst + sgst}").setFontSize(10f).setBold().setTextAlignment(
+                        TextAlignment.RIGHT
+                    )
+                )
+            )
 
             //row5
             table3.addCell(Cell().add(Paragraph("PAN No. : BENPP0006B").setFontSize(10f)))
             //table3.addCell(Cell().add(Paragraph("Upi Payment").setFontSize(10f).setBold().setTextAlignment(TextAlignment.CENTER)))
             table3.addCell(
                 Cell().add(
-                    Paragraph("Total Amount after Tax  ₹").setFontSize(10f).setBold().setTextAlignment(
-                        TextAlignment.RIGHT)))
+                    Paragraph("Total Amount after Tax  ₹").setFontSize(10f).setBold()
+                        .setTextAlignment(
+                            TextAlignment.RIGHT
+                        )
+                )
+            )
             table3.addCell(
                 Cell().add(
-                    Paragraph("${gtotal+cgst+sgst}").setFontSize(10f).setBold().setTextAlignment(
-                        TextAlignment.RIGHT)))
+                    Paragraph("${gtotal + cgst + sgst}").setFontSize(10f).setBold()
+                        .setTextAlignment(
+                            TextAlignment.RIGHT
+                        )
+                )
+            )
 
             //row6
             table3.addCell(Cell().add(Paragraph("Mode of Transport : By Hand").setFontSize(10f)))
             //table3.addCell(Cell().add(Paragraph("Upi Payment").setFontSize(10f).setBold().setTextAlignment(TextAlignment.CENTER)))
             table3.addCell(
                 Cell().add(
-                    Paragraph("Transportation Charge : ").setFontSize(10f).setBold().setTextAlignment(
-                        TextAlignment.RIGHT)))
+                    Paragraph("Transportation Charge : ").setFontSize(10f).setBold()
+                        .setTextAlignment(
+                            TextAlignment.RIGHT
+                        )
+                )
+            )
             table3.addCell(
                 Cell().add(
                     Paragraph("").setFontSize(10f).setBold().setTextAlignment(
-                        TextAlignment.RIGHT)))
+                        TextAlignment.RIGHT
+                    )
+                )
+            )
 
             //row7
             table3.addCell(Cell().add(Paragraph("Veh.No :").setFontSize(10f)))
             table3.addCell(
                 Cell().add(
-                    Paragraph("UPI ID: 7405736990@okbizaxis").setFontSize(8f).setBold().setTextAlignment(
-                        TextAlignment.CENTER)))
+                    Paragraph("UPI ID: 7405736990@okbizaxis").setFontSize(8f).setBold()
+                        .setTextAlignment(
+                            TextAlignment.CENTER
+                        )
+                )
+            )
             table3.addCell(
                 Cell().add(
                     Paragraph("Grand Total : ").setFontSize(10f).setBold().setTextAlignment(
-                        TextAlignment.RIGHT)))
+                        TextAlignment.RIGHT
+                    )
+                )
+            )
             table3.addCell(
                 Cell().add(
-                    Paragraph("${gtotal+cgst+sgst}").setFontSize(10f).setBold().setTextAlignment(
-                        TextAlignment.RIGHT)))
+                    Paragraph("${gtotal + cgst + sgst}").setFontSize(10f).setBold()
+                        .setTextAlignment(
+                            TextAlignment.RIGHT
+                        )
+                )
+            )
 
             document.add(table3)
 
             //last table
-            val table4 = Table(floatArrayOf(300f,100f,100f,100f))
+            val table4 = Table(floatArrayOf(300f, 100f, 100f, 100f))
 
             //bar
             val stampImg = this.getDrawable(R.drawable.stamp)
             val bitmap2 = (stampImg as BitmapDrawable).bitmap
             val opstream2 = ByteArrayOutputStream()
-            bitmap2.compress(Bitmap.CompressFormat.PNG,100,opstream2)
+            bitmap2.compress(Bitmap.CompressFormat.PNG, 100, opstream2)
             val bitmapdata2 = opstream2.toByteArray()
 
             var img2 = ImageDataFactory.create(bitmapdata2)
@@ -425,13 +593,16 @@ class OrderDetailsActivity : AppCompatActivity() {
 
 
             //row1
-            table4.addCell(Cell(2,0).add(Paragraph("Rupees :").setFontSize(10f)))
-            table4.addCell(Cell(6,0).add(Paragraph("  ").setFontSize(10f)))
-            table4.addCell(Cell(6,0).add(stamp))
+            table4.addCell(Cell(2, 0).add(Paragraph("Rupees :").setFontSize(10f)))
+            table4.addCell(Cell(6, 0).add(Paragraph("  ").setFontSize(10f)))
+            table4.addCell(Cell(6, 0).add(stamp))
             table4.addCell(
-                Cell(5,0).add(
+                Cell(5, 0).add(
                     Paragraph("for MANN SIGN:").setFontSize(10f).setBold().setTextAlignment(
-                        TextAlignment.CENTER)))
+                        TextAlignment.CENTER
+                    )
+                )
+            )
 
             //row2
             //table4.addCell(Cell().add(Paragraph("Veh.No :").setFontSize(10f)))
@@ -447,9 +618,14 @@ class OrderDetailsActivity : AppCompatActivity() {
 
             //row4
             table4.addCell(
-                Cell(3,0).add(
-                    Paragraph("SUBJECT TO AHMEDABAD JURISDICTION\nThis is a Computer Generated Invoice").setFontSize(10f).setTextAlignment(
-                        TextAlignment.CENTER)))
+                Cell(3, 0).add(
+                    Paragraph("SUBJECT TO AHMEDABAD JURISDICTION\nThis is a Computer Generated Invoice").setFontSize(
+                        10f
+                    ).setTextAlignment(
+                        TextAlignment.CENTER
+                    )
+                )
+            )
             //table4.addCell(Cell().add(Paragraph("  ").setFontSize(10f)))
             //table4.addCell(Cell().add(Paragraph("Veh.No :").setFontSize(10f)))
             //table4.addCell(Cell().add(Paragraph("Veh.No :").setFontSize(10f)))
@@ -467,33 +643,37 @@ class OrderDetailsActivity : AppCompatActivity() {
             table4.addCell(
                 Cell().add(
                     Paragraph("Authorised Signatory ").setVerticalAlignment(
-                        VerticalAlignment.BOTTOM).setFontSize(8f).setTextAlignment(TextAlignment.CENTER))).setVerticalAlignment(
-                VerticalAlignment.BOTTOM)
+                        VerticalAlignment.BOTTOM
+                    ).setFontSize(8f).setTextAlignment(TextAlignment.CENTER)
+                )
+            ).setVerticalAlignment(
+                VerticalAlignment.BOTTOM
+            )
 
 
 
             document.add(table4)
             document.close()
-            Toast.makeText(this,"Pdf Created",Toast.LENGTH_SHORT).show()
-            openFile(file,path)
+            Toast.makeText(this, "Pdf Created", Toast.LENGTH_SHORT).show()
+            openFile(file, path)
 
-        }catch ( e : Exception){
-            Toast.makeText(this,e.message,Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
         }
 
     }
 
-    fun openFile(file : File, path : String){
+    fun openFile(file: File, path: String) {
         val intent = Intent(Intent.ACTION_VIEW)
 
-        if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.N){
-            val uri = FileProvider.getUriForFile(this,this.packageName+".provider",file)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            val uri = FileProvider.getUriForFile(this, this.packageName + ".provider", file)
             intent.setData(uri)
             intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             startActivity(intent)
-        }else{
-            intent.setDataAndType(Uri.parse(path),"application/pdf")
-            val i = Intent.createChooser(intent,"Open File With")
+        } else {
+            intent.setDataAndType(Uri.parse(path), "application/pdf")
+            val i = Intent.createChooser(intent, "Open File With")
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(i)
         }
