@@ -106,4 +106,7 @@ dependencies {
 
     //onesignal
     implementation 'com.onesignal:OneSignal:[4.0.0, 4.99.99]'
+
+    //ios like overscroll ;)
+    implementation 'com.github.valkriaine:Bouncy:2.3'
 }

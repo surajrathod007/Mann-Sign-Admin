@@ -8,11 +8,13 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:background="@color/bg_color"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.activity.OrderItemDetailsActivity">
 
         <LinearLayout
+            android:background="@color/bg_color"
             android:id="@+id/linearProductDetails"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -46,7 +48,11 @@
         </LinearLayout>
 
 
-        <androidx.core.widget.NestedScrollView
+        <com.factor.bouncy.BouncyNestedScrollView
+            app:fling_animation_size=".5"
+            app:overscroll_animation_size=".6"
+            app:bouncy_scrollview_damping_ratio="DAMPING_RATIO_MEDIUM_BOUNCY"
+            app:bouncy_scrollview_stiffness="STIFFNESS_LOW"
             app:layout_constraintTop_toBottomOf="@id/linearProductDetails"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -361,7 +367,7 @@
             </LinearLayout>
 
 
-        </androidx.core.widget.NestedScrollView>
+        </com.factor.bouncy.BouncyNestedScrollView>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
