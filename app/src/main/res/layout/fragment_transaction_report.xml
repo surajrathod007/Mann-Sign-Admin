@@ -39,7 +39,11 @@
 
 
 
-            <androidx.recyclerview.widget.RecyclerView
+            <com.factor.bouncy.BouncyRecyclerView
+                app:recyclerview_fling_animation_size=".7"
+                app:recyclerview_overscroll_animation_size=".7"
+                app:recyclerview_damping_ratio="DAMPING_RATIO_MEDIUM_BOUNCY"
+                app:recyclerview_stiffness="STIFFNESS_LOW"
                 android:id="@+id/rvTransaction"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/transaction_item_layout"

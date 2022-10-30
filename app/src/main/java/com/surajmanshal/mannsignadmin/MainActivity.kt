@@ -4,9 +4,11 @@ import android.Manifest
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import com.onesignal.OneSignal
 import com.surajmanshal.mannsignadmin.adapter.MainViewPagerAdapter
 import com.surajmanshal.mannsignadmin.databinding.ActivityMainBinding
 import com.surajmanshal.mannsignadmin.ui.fragments.DashboardFragment
@@ -35,7 +37,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         requestPermission()
-
+        //store this id in DB when user login
+        val uid = OneSignal.getDeviceState()?.userId
+        Toast.makeText(this,"Player id " + uid, Toast.LENGTH_LONG).show()
 
 
     }
