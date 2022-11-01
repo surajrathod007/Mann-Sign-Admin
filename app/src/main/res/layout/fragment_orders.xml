@@ -8,6 +8,7 @@
     </data>
 
     <FrameLayout
+        android:background="@color/black"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.fragments.OrdersFragment">
@@ -15,10 +16,12 @@
 
 
         <LinearLayout
+            android:background="@drawable/bottomsheet_background"
+            android:backgroundTint="@color/bg_color"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/bg_color">
+            >
 
 
         <!--
