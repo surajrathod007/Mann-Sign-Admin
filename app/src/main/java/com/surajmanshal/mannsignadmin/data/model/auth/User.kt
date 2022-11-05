@@ -14,5 +14,6 @@ data class User(
     val profileImage : String = "",
     val address : String = "",
     val pinCode : Int = 0,
-    var token : String = ""
+    var token : String = "",
+    var deviceId : String = ""
 )

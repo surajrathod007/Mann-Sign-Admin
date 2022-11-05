@@ -87,12 +87,17 @@ class UserReportFragment : Fragment() {
         val pin = sheetView.findViewById<TextView>(R.id.txtUserPinCode)
         val profile = sheetView.findViewById<ImageView>(R.id.imgUserProfile) //todo : set profile picture
         val orders = sheetView.findViewById<TextView>(R.id.txtUserOrders)
+        val btnClose = sheetView.findViewById<ImageView>(R.id.btnCloseUserProfile)
 
         userName.text = u.firstName + " " + u.lastName
         userEmail.text = u.emailId
         userPhone.text = u.phoneNumber
         address.text = u.address
         pin.text = u.pinCode.toString()
+
+        btnClose.setOnClickListener {
+            bottomSheetDialog.hide()
+        }
 
         o = vm.allOrders.value!!.filter { it.emailId==u.emailId }.size.toString()
         if(!o.isNullOrEmpty())

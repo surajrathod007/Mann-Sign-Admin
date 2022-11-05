@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="24dp"
     android:elevation="0dp"
@@ -13,22 +13,56 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <!--
         <ImageView
             android:layout_marginTop="8dp"
             android:src="@drawable/bottomsheet_bar"
             android:layout_marginBottom="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+            -->
 
-        <TextView
-            android:text="Customer Details"
-            android:textColor="@color/title_text_color"
-            android:fontFamily="@font/satoshi_bold"
-            android:textSize="14sp"
-            android:gravity="center"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <TextView
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginLeft="14dp"
+                android:text="Customer Details"
+                android:textColor="@color/title_text_color"
+                android:fontFamily="@font/satoshi_bold"
+                android:textSize="16sp"
+                android:gravity="left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <ImageView
+                android:id="@+id/btnCloseUserProfile"
+                android:clickable="true"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_baseline_close_24"
+                android:layout_marginRight="14dp"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_marginRight="14dp"
+            android:layout_marginLeft="14dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-
         <ImageView
             android:id="@+id/imgUserProfile"
             android:layout_marginTop="10dp"
