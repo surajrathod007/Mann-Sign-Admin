@@ -119,5 +119,9 @@ interface NetworkCallsInterface {
     @GET("subCategory")
     fun fetchSubCategoryById(@Query("id")id: Int): Call<SubCategory>
 
+    @Multipart
+    @POST("font/insert")
+    suspend fun uploadFontFile(@Part part: MultipartBody.Part):SimpleResponse
+
 
 }

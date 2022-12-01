@@ -11,6 +11,7 @@ import com.surajmanshal.mannsignadmin.databinding.FragmentDashboardBinding
 import com.surajmanshal.mannsignadmin.ui.activity.CategoryManagementActivity
 import com.surajmanshal.mannsignadmin.ui.activity.PriceManagementActivity
 import com.surajmanshal.mannsignadmin.ui.activity.ProductsActivity
+import com.surajmanshal.mannsignadmin.ui.activity.ResourcesManagementActivity
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -39,6 +40,7 @@ class DashboardFragment : Fragment() {
             btnProductManagement.setOnClickListener{ startActivity(Intent(activity, ProductsActivity::class.java)) }
             btnCategoryManagement.setOnClickListener{ startActivity(Intent(activity, CategoryManagementActivity::class.java)) }
             btnPriceManagement.setOnClickListener{ startActivity(Intent(activity, PriceManagementActivity::class.java)) }
+            btnResManagement.setOnClickListener { startActivity(Intent(activity, ResourcesManagementActivity::class.java))  }
         }
         return binding.root
     }
