@@ -24,5 +24,6 @@ object Constants {
     // Permission Codes
     const val CHOOSE_IMAGE = 101
     const val READ_EXTERNAL_STORAGE = 102
+    const val CHOOSE_FONT = 103
 
 }

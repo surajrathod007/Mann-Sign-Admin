@@ -61,4 +61,5 @@ open class Repository() {
 
     fun getLanguageById(id:Int) =  server.fetchLanguageById(id)
 
+    suspend fun uploadFontFile(part: MultipartBody.Part) = server.uploadFontFile(part)
 }

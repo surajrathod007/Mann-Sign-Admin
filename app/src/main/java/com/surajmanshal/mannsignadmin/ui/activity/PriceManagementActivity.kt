@@ -34,6 +34,7 @@ class PriceManagementActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = ActivityPriceManagementBinding.inflate(layoutInflater)
         setContentView(_binding.root)
+        val addables = arrayOf(2,3)
         vm =  ViewModelProvider(this)[PricingViewModel::class.java]
         setupViewPager()
 
@@ -94,7 +95,7 @@ class PriceManagementActivity : AppCompatActivity() {
                 newIndex: Int,
                 newTab: AnimatedBottomBar.Tab
             ) {
-                if(newIndex==3) vm.allowToAdd(true)
+                if(addables.contains(newIndex)) vm.allowToAdd(true)
                 else vm.allowToAdd()
             }
         })
