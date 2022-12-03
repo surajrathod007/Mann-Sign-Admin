@@ -119,5 +119,16 @@ interface NetworkCallsInterface {
     @GET("subCategory")
     fun fetchSubCategoryById(@Query("id")id: Int): Call<SubCategory>
 
+    @Multipart
+    @POST("font/insert")
+    suspend fun uploadFontFile(@Part part: MultipartBody.Part):SimpleResponse
 
+    @POST("size/addByAdmin")
+    suspend fun insertSizeByAdmin(@Body size: Size): SimpleResponse
+
+    @POST("material/add")
+    suspend fun insertMaterial(@Body material: Material): SimpleResponse
+
+    @POST("language/add")
+    suspend fun insertLanguage(@Body language: Language): SimpleResponse
 }

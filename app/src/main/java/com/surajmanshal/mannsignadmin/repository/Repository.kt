@@ -1,9 +1,7 @@
 package com.surajmanshal.mannsignadmin.repository
 
+import com.surajmanshal.mannsignadmin.data.model.*
 import com.surajmanshal.mannsignadmin.data.model.ordering.Order
-import com.surajmanshal.mannsignadmin.data.model.Category
-import com.surajmanshal.mannsignadmin.data.model.DiscountCoupon
-import com.surajmanshal.mannsignadmin.data.model.SubCategory
 import com.surajmanshal.mannsignadmin.data.model.product.Product
 import com.surajmanshal.mannsignadmin.network.NetworkService
 import com.surajmanshal.response.SimpleResponse
@@ -61,4 +59,11 @@ open class Repository() {
 
     fun getLanguageById(id:Int) =  server.fetchLanguageById(id)
 
+    suspend fun uploadFontFile(part: MultipartBody.Part) = server.uploadFontFile(part)
+
+    suspend fun insertSize(size: Size) = server.insertSizeByAdmin(size)
+
+    suspend fun insertMaterial(material: Material) = server.insertMaterial(material)
+
+    suspend fun insertLanguage(language : Language) = server.insertLanguage(language)
 }
