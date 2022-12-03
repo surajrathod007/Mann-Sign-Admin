@@ -2,12 +2,16 @@ package com.surajmanshal.mannsignadmin.ui.activity
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -33,6 +37,8 @@ class ResourcesManagementActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMaterialManagementBinding
     lateinit var vm: ResourcesViewModel
+    private lateinit var inputFields : Array<EditText>
+    private lateinit var dialogs : Array<View>
     var fileUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,15 +49,33 @@ class ResourcesManagementActivity : AppCompatActivity() {
 
         with(binding) {
 
+            inputFields = arrayOf(etWidth,
+                etHeight,
+                etLanguageName,
+                etMaterialName,
+                etMaterialPrice,
+                etFileLink
+            )
+
+            dialogs = arrayOf(
+                fontDialog,
+                sizeDialog,
+                materialDialog,
+                languageDialog
+            )
+
             btnSizeResources.setOnClickListener { sizeDialog.show(); hideButtons() }
             btnFontResource.setOnClickListener { fontDialog.show(); hideButtons() }
             btnMaterialResource.setOnClickListener { materialDialog.show(); hideButtons() }
             btnLanguageResource.setOnClickListener { languageDialog.show(); hideButtons() }
 
-            sizeDialog.setOnClickListener { it.hide();showButtons() }
-            fontDialog.setOnClickListener { it.hide();showButtons() }
-            materialDialog.setOnClickListener { it.hide();showButtons() }
-            languageDialog.setOnClickListener { it.hide();showButtons() }
+            dialogs.forEach { it ->
+                it.apply {
+                    setOnClickListener{
+                        hideKeyboard();showButtons();hide()
+                    }
+                }
+            }
 
 
             btnAddMaterial.setOnClickListener {
@@ -213,19 +237,13 @@ class ResourcesManagementActivity : AppCompatActivity() {
 
     fun clearFieldsAndHideDialogs(){
         clearFields()
+        hideKeyboard()
         hideDialogs()
         showButtons()
     }
 
     fun clearFields(){
-        with(binding){
-            etHeight.clear()
-            etWidth.clear()
-            etFileLink.clear()
-            etLanguageName.clear()
-            etMaterialName.clear()
-            etMaterialPrice.clear()
-        }
+        inputFields.forEach { it.clear() }
     }
 
     fun hideDialogs(){
@@ -234,6 +252,13 @@ class ResourcesManagementActivity : AppCompatActivity() {
             languageDialog.hide()
             materialDialog.hide()
             sizeDialog.hide()
+        }
+    }
+
+    fun hideKeyboard(){
+        this.currentFocus?.let { view ->
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            imm?.hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
 

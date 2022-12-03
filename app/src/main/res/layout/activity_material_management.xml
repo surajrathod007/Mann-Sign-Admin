@@ -186,6 +186,7 @@
                 style="@style/ThemeOverlay.Material3.TextInputEditText.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:endIconMode="clear_text"
                 android:layout_marginHorizontal="@dimen/margin_low"
                 android:layout_marginTop="24dp">
 
@@ -263,6 +264,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_low"
+                app:endIconMode="clear_text"
                 android:layout_marginTop="24dp">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -271,6 +273,7 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/white"
                     android:hint="Width"
+                    android:inputType="numberDecimal"
                     android:textSize="18sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -280,6 +283,7 @@
                 style="@style/ThemeOverlay.Material3.TextInputEditText.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:endIconMode="clear_text"
                 android:layout_marginHorizontal="@dimen/margin_low"
                 android:layout_marginTop="24dp">
 
@@ -289,6 +293,7 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/white"
                     android:hint="Height"
+                    android:inputType="numberDecimal"
                     android:textSize="18sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -356,6 +361,7 @@
                 style="@style/ThemeOverlay.Material3.TextInputEditText.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:endIconMode="clear_text"
                 android:layout_marginHorizontal="@dimen/margin_low"
                 android:layout_marginTop="24dp">
 
@@ -374,6 +380,7 @@
                 style="@style/ThemeOverlay.Material3.TextInputEditText.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:endIconMode="clear_text"
                 android:layout_marginHorizontal="@dimen/margin_low"
                 android:layout_marginTop="24dp">
 
@@ -383,6 +390,7 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/white"
                     android:hint="Price / Inch"
+                    android:inputType="numberDecimal"
                     android:textSize="18sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
