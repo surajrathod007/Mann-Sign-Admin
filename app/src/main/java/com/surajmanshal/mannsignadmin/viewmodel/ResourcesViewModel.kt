@@ -3,8 +3,10 @@ package com.surajmanshal.mannsignadmin.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.surajmanshal.mannsignadmin.data.model.Language
+import com.surajmanshal.mannsignadmin.data.model.Material
+import com.surajmanshal.mannsignadmin.data.model.Size
 import com.surajmanshal.mannsignadmin.repository.Repository
-import com.surajmanshal.mannsignadmin.viewmodel.OrdersViewModel.Companion.repository
 
 import com.surajmanshal.response.SimpleResponse
 import okhttp3.MultipartBody
@@ -24,5 +26,20 @@ class ResourcesViewModel : ViewModel() {
         }catch (e : Exception){
             println("$e ${serverResponse.value?.message}")
         }
+    }
+
+    suspend fun sendSize(size : Size){
+        val response = repository.insertSize(size)
+        _serverResponse.postValue(response)
+    }
+
+    suspend fun sendMaterial(material : Material){
+        val response = repository.insertMaterial(material)
+        _serverResponse.postValue(response)
+    }
+
+    suspend fun sendLanguage(language : Language){
+        val response = repository.insertLanguage(language)
+        _serverResponse.postValue(response)
     }
 }

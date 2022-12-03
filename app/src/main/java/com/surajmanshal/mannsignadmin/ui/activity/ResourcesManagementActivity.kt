@@ -11,18 +11,17 @@ import android.provider.OpenableColumns
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.core.content.ContextCompat
-import androidx.databinding.adapters.TextViewBindingAdapter.setText
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.withCreated
+import com.surajmanshal.mannsignadmin.data.model.Language
+import com.surajmanshal.mannsignadmin.data.model.Material
+import com.surajmanshal.mannsignadmin.data.model.Size
 import com.surajmanshal.mannsignadmin.databinding.ActivityMaterialManagementBinding
-import com.surajmanshal.mannsignadmin.utils.Constants
+import com.surajmanshal.mannsignadmin.utils.*
 import com.surajmanshal.mannsignadmin.viewmodel.ResourcesViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -32,9 +31,9 @@ import java.io.FileOutputStream
 
 class ResourcesManagementActivity : AppCompatActivity() {
 
-    lateinit var binding : ActivityMaterialManagementBinding
-    lateinit var vm : ResourcesViewModel
-    var fileUri : Uri? = null
+    lateinit var binding: ActivityMaterialManagementBinding
+    lateinit var vm: ResourcesViewModel
+    var fileUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,21 +41,77 @@ class ResourcesManagementActivity : AppCompatActivity() {
         vm = ViewModelProvider(this)[ResourcesViewModel::class.java]
         setContentView(binding.root)
 
-        with(binding){
-            fileInputView.setEndIconOnClickListener {
-                chooseFont()
+        with(binding) {
+
+            btnSizeResources.setOnClickListener { sizeDialog.show(); hideButtons() }
+            btnFontResource.setOnClickListener { fontDialog.show(); hideButtons() }
+            btnMaterialResource.setOnClickListener { materialDialog.show(); hideButtons() }
+            btnLanguageResource.setOnClickListener { languageDialog.show(); hideButtons() }
+
+            sizeDialog.setOnClickListener { it.hide();showButtons() }
+            fontDialog.setOnClickListener { it.hide();showButtons() }
+            materialDialog.setOnClickListener { it.hide();showButtons() }
+            languageDialog.setOnClickListener { it.hide();showButtons() }
+
+
+            btnAddMaterial.setOnClickListener {
+                if (etMaterialName.isFilled() && etMaterialPrice.isFilled()) {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        vm.sendMaterial(
+                            Material(
+                                0,
+                                etMaterialName.text.toString(),
+                                etMaterialPrice.text.toString().toFloat()
+                            )
+                        )
+                    }
+                } else emptyFieldsMsg()
             }
+
+            btnAddLanguage.setOnClickListener {
+                if (etLanguageName.isFilled()) {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        vm.sendLanguage(
+                            Language(
+                                0,
+                                etLanguageName.text.toString(),
+                            )
+                        )
+                    }
+                } else emptyFieldsMsg()
+            }
+
+            btnUploadSize.setOnClickListener {
+                if (etWidth.isFilled() && etHeight.isFilled()) {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        vm.sendSize(
+                            Size(
+                                0,
+                                etWidth.text.toString().toInt(),
+                                etHeight.text.toString().toInt()
+                            )
+                        )
+                    }
+                } else emptyFieldsMsg()
+            }
+
+            fileInputView.setEndIconOnClickListener { chooseFont() }
             btnUploadFont.setOnClickListener {
-                if(fileUri!=null){
+                if (fileUri != null) {
                     CoroutineScope(Dispatchers.IO).launch { setupFile() }
-                }else if(etFileLink.text.toString()!=""){
+                } else if (etFileLink.text.toString() != "") {
                     // Todo : Download from given url and upload to server
-                }else{
-                    Toast.makeText(this@ResourcesManagementActivity, "Can't Upload", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(
+                        this@ResourcesManagementActivity,
+                        "Can't Upload",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
-        vm.serverResponse.observe(this){
+        vm.serverResponse.observe(this) {
+            if(it.success) clearFieldsAndHideDialogs()
             Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
         }
     }
@@ -69,23 +124,31 @@ class ResourcesManagementActivity : AppCompatActivity() {
         val outputStream = FileOutputStream(file)
         contentResolver.openInputStream(fileUri!!)?.copyTo(outputStream)
 
-        val requestBody = RequestBody.create(MediaType.parse("font/ttf"),file)
-        val part = MultipartBody.Part.createFormData("font",file.name,requestBody)
-        println("${part.body().contentType()}" +"}")
+        val requestBody = RequestBody.create(MediaType.parse("font/ttf"), file)
+        val part = MultipartBody.Part.createFormData("font", file.name, requestBody)
+        println("${part.body().contentType()}" + "}")
 
         vm.sendFont(part)
     }
 
-    private fun chooseFont(){
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+    private fun chooseFont() {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
             openFileManager()
-        }else{
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), Constants.READ_EXTERNAL_STORAGE)
+        } else {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                Constants.READ_EXTERNAL_STORAGE
+            )
             openFileManager()
         }
     }
 
-    private fun openFileManager(){
+    private fun openFileManager() {
         val storageIntent = Intent().apply {
             action = Intent.ACTION_GET_CONTENT;
             type = "font/*";
@@ -95,22 +158,22 @@ class ResourcesManagementActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if(resultCode== Activity.RESULT_OK){
-            if(requestCode == Constants.CHOOSE_FONT){
-                if(data!=null){
-                    try{
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == Constants.CHOOSE_FONT) {
+                if (data != null) {
+                    try {
                         fileUri = data.data!!
                         binding.etFileLink.apply {
                             setText("File Ready to Upload")
                             isEnabled = false
                         }
 
-                    }catch(e : Exception){
+                    } catch (e: Exception) {
                         e.printStackTrace()
                     }
                 }
             }
-        }else{
+        } else {
             Toast.makeText(this, "Req canceled", Toast.LENGTH_SHORT).show()
         }
         super.onActivityResult(requestCode, resultCode, data)
@@ -137,4 +200,41 @@ class ResourcesManagementActivity : AppCompatActivity() {
         }
         return result
     }
+
+    fun hideButtons() = binding.buttonsLayout.hide()
+
+    fun showButtons() = binding.buttonsLayout.show()
+
+    fun emptyFieldsMsg() = Toast.makeText(
+        this@ResourcesManagementActivity,
+        "Please fill the fields",
+        Toast.LENGTH_SHORT
+    ).show()
+
+    fun clearFieldsAndHideDialogs(){
+        clearFields()
+        hideDialogs()
+        showButtons()
+    }
+
+    fun clearFields(){
+        with(binding){
+            etHeight.clear()
+            etWidth.clear()
+            etFileLink.clear()
+            etLanguageName.clear()
+            etMaterialName.clear()
+            etMaterialPrice.clear()
+        }
+    }
+
+    fun hideDialogs(){
+        with(binding){
+            fontDialog.hide()
+            languageDialog.hide()
+            materialDialog.hide()
+            sizeDialog.hide()
+        }
+    }
+
 }
