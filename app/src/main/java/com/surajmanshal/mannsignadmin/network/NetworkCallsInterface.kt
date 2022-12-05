@@ -131,4 +131,14 @@ interface NetworkCallsInterface {
 
     @POST("language/add")
     suspend fun insertLanguage(@Body language: Language): SimpleResponse
+
+    @POST("size/deleteByAdmin")
+    suspend fun deleteSize(@Query("id")sizeId: Int): SimpleResponse
+
+    @POST("material/remove")
+    suspend fun deleteMaterial(@Query("id")materialId: Int): SimpleResponse
+
+    @POST("language/remove")
+    suspend fun deleteLanguage(@Query("id")languageId: Int): SimpleResponse
+
 }

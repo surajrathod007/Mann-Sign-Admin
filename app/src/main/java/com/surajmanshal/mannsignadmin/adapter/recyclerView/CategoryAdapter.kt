@@ -7,13 +7,13 @@ import android.view.ViewGroup
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.surajmanshal.mannsignadmin.R
-import com.surajmanshal.mannsignadmin.databinding.ItemCategoryCardBinding
+import com.surajmanshal.mannsignadmin.databinding.DeletableItemCardBinding
 import com.surajmanshal.mannsignadmin.viewmodel.CategoryViewModel
 
 open class CategoryAdapter(private val vm: CategoryViewModel) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
 
-    class CategoryViewHolder(binding: ItemCategoryCardBinding):RecyclerView.ViewHolder(binding.root){
-        val name = binding.tvCategory
+    class CategoryViewHolder(binding: DeletableItemCardBinding):RecyclerView.ViewHolder(binding.root){
+        val name = binding.tvName
         val btnDelete = binding.ivDelete
         val card = binding.root
     }
@@ -44,7 +44,7 @@ open class CategoryAdapter(private val vm: CategoryViewModel) : RecyclerView.Ada
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         return CategoryViewHolder(
-            ItemCategoryCardBinding.inflate(
+            DeletableItemCardBinding.inflate(
                 LayoutInflater.from(
                     parent.context
                 ), parent, false

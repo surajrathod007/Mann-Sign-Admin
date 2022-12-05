@@ -15,20 +15,11 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ProductManagementViewModel : ViewModel() {
+class ProductManagementViewModel : ResourcesViewModel() {
 
-    private val repository = Repository()
     // -------------- LIVE DATA -------------------------------------------
-    private val _sizes = MutableLiveData<List<Size>>()
-    val sizes : LiveData<List<Size>> get() = _sizes                                        //SIZE
-    private val _materials = MutableLiveData<List<Material>>()
-    val materials : LiveData<List<Material>> get() = _materials                         //MATERIALS
-    private val _languages = MutableLiveData<List<Language>>()
-    val languages  : LiveData<List<Language>> get() = _languages                        // LANGUAGES
     private val _subCategories = MutableLiveData<List<SubCategory>>()
     val subCategories: LiveData<List<SubCategory>> get() = _subCategories               //CATEGORIES
-    private val _serverResponse = MutableLiveData<SimpleResponse>()
-    val serverResponse : LiveData<SimpleResponse> get() = _serverResponse               //SERVER RESPONSE
     private val _imageUploadResponse = MutableLiveData<SimpleResponse>()
     val imageUploadResponse : LiveData<SimpleResponse> get() = _imageUploadResponse     // IMAGE UPLOADING PROGRESS
     private val _productUploadResponse = MutableLiveData<SimpleResponse>()
@@ -46,47 +37,7 @@ class ProductManagementViewModel : ViewModel() {
         CoroutineScope(Dispatchers.IO).launch { getPosters() }
     }
 
-    private suspend fun getSizes(){
-        val response = repository.fetchSizes()
-        println("Response is $response")
-        response.enqueue(object : Callback<List<Size>> {
-            override fun onResponse(call: Call<List<Size>>, response: Response<List<Size>>) {
-                println("Inner Response is $response")
-                response.body()?.let { _sizes.value = it }
-            }
-            override fun onFailure(call: Call<List<Size>>, t: Throwable) {
-                println("Failure is $t")
-            }
-        })
-    }
 
-    private suspend fun getMaterials(){
-        val response = repository.fetchMaterials()
-        println("Response is $response")
-        response.enqueue(object : Callback<List<Material>> {
-            override fun onResponse(call: Call<List<Material>>, response: Response<List<Material>>) {
-                println("Inner Response is $response")
-                response.body()?.let { _materials.value = it }
-            }
-            override fun onFailure(call: Call<List<Material>>, t: Throwable) {
-                println("Failure is $t")
-            }
-        })
-    }
-
-    private suspend fun getLanguages(){
-        val response = repository.fetchLanguages()
-        println("Response is $response")
-        response.enqueue(object : Callback<List<Language>> {
-            override fun onResponse(call: Call<List<Language>>, response: Response<List<Language>>) {
-                println("Inner Response is $response")
-                response.body()?.let { _languages.value = it }
-            }
-            override fun onFailure(call: Call<List<Language>>, t: Throwable) {
-                println("Failure is $t")
-            }
-        })
-    }
 
     private suspend fun getSubCategories(){
         val response = repository.fetchSubCategories()
@@ -102,7 +53,7 @@ class ProductManagementViewModel : ViewModel() {
         })
     }
 
-    suspend fun  addProduct(product: Product) {
+    suspend fun addProduct(product: Product) {
         try {
             val response = repository.sendProduct(product)
             _serverResponse.postValue(response)

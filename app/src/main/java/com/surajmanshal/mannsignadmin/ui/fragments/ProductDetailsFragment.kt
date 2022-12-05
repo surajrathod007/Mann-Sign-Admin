@@ -86,7 +86,7 @@ class ProductDetailsFragment : Fragment() {
     }
 
     private fun setupCategoryView(name: String) {
-        binding.tvCategory.text = binding.tvCategory.text.toString() + name
+        binding.tvName.text = binding.tvName.text.toString() + name
     }
 
     private fun setupSubCategoryView(name: String) {

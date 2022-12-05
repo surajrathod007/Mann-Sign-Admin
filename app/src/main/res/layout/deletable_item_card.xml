@@ -17,7 +17,7 @@
 
         <TextView
             android:layout_weight="8"
-            android:id="@+id/tvCategory"
+            android:id="@+id/tvName"
             android:layout_width="256dp"
             android:layout_height="match_parent"
             android:textSize="15sp"
