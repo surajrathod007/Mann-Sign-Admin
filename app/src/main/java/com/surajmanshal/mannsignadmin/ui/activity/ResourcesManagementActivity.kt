@@ -1,6 +1,7 @@
 package com.surajmanshal.mannsignadmin.ui.activity
 
 import android.Manifest
+import android.app.ActionBar
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -10,13 +11,19 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
+import com.surajmanshal.mannsignadmin.adapter.recyclerView.CategoryAdapter
+import com.surajmanshal.mannsignadmin.adapter.recyclerView.DeletableItemsAdapter
 import com.surajmanshal.mannsignadmin.data.model.Language
 import com.surajmanshal.mannsignadmin.data.model.Material
 import com.surajmanshal.mannsignadmin.data.model.Size
@@ -39,6 +46,7 @@ class ResourcesManagementActivity : AppCompatActivity() {
     lateinit var vm: ResourcesViewModel
     private lateinit var inputFields : Array<EditText>
     private lateinit var dialogs : Array<View>
+    private lateinit var viewResButtons : Array<TextView>
     var fileUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,6 +72,13 @@ class ResourcesManagementActivity : AppCompatActivity() {
                 languageDialog
             )
 
+            viewResButtons = arrayOf(
+                btnViewSizes,
+                btnViewMaterials,
+                btnViewLanguages,
+                btnViewFonts
+            )
+
             btnSizeResources.setOnClickListener { sizeDialog.show(); hideButtons() }
             btnFontResource.setOnClickListener { fontDialog.show(); hideButtons() }
             btnMaterialResource.setOnClickListener { materialDialog.show(); hideButtons() }
@@ -73,6 +88,29 @@ class ResourcesManagementActivity : AppCompatActivity() {
                 it.apply {
                     setOnClickListener{
                         hideKeyboard();showButtons();hide()
+                    }
+                }
+            }
+
+            viewResButtons.forEach { textView->
+                textView.setOnClickListener {
+                    hideDialogs()
+                    allResLayout.apply {
+                        root.layoutParams = LinearLayout.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT)
+                        tvToolbar.text = when(viewResButtons.indexOf(textView)){
+                            0 -> "Sizes"
+                            1 -> "Materials"
+                            2 -> "Languages"
+                            3 -> "Fonts"
+                            else -> "Resources"
+                        }
+                        when(viewResButtons.indexOf(textView)){
+                            0 -> vm.getSizes()
+                            1 -> vm.getMaterials()
+                            2 -> vm.getLanguages()
+                        }
                     }
                 }
             }
@@ -134,10 +172,33 @@ class ResourcesManagementActivity : AppCompatActivity() {
                 }
             }
         }
-        vm.serverResponse.observe(this) {
-            if(it.success) clearFieldsAndHideDialogs()
-            Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+        with(vm){
+            serverResponse.observe(this@ResourcesManagementActivity) {
+                if(it.success) clearFieldsAndHideDialogs()
+                Toast.makeText(this@ResourcesManagementActivity, it.message, Toast.LENGTH_SHORT).show()
+            }
+
+            deletionResponse.observe(this@ResourcesManagementActivity) {
+                if(it.success) when(deletionMode.value){
+                    is Size -> getSizes()
+                    is Material -> getMaterials()
+                    is Language -> getLanguages()
+                }
+                Toast.makeText(this@ResourcesManagementActivity, it.message, Toast.LENGTH_SHORT).show()
+            }
+
+            sizes.observe(this@ResourcesManagementActivity){
+                setAllResAdapter(it)
+            }
+            materials.observe(this@ResourcesManagementActivity){
+                setAllResAdapter(it)
+            }
+            languages.observe(this@ResourcesManagementActivity){
+                setAllResAdapter(it)
+            }
+
         }
+
     }
 
     private suspend fun setupFile() {
@@ -262,4 +323,23 @@ class ResourcesManagementActivity : AppCompatActivity() {
         }
     }
 
+    fun setAllResAdapter(list: List<Any>){
+        binding.allResLayout.rvItems.adapter = DeletableItemsAdapter(list){ item ->
+            CoroutineScope(Dispatchers.IO).launch{
+                vm.deleteResource(item)
+            }
+        }
+    }
+
+    override fun onBackPressed() {
+        with(binding) {
+            if (!binding.buttonsLayout.isVisible) {
+                buttonsLayout.show()
+                hideDialogs()
+                allResLayout.apply {
+                    root.layoutParams = LinearLayout.LayoutParams(0,0)
+                }
+            }else super.onBackPressed()
+        }
+    }
 }
