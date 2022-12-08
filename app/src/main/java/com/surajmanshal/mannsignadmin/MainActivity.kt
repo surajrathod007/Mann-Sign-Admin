@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity() {
 
     fun setupViewPager(){
         val fragmentList = listOf(DashboardFragment(),OrdersFragment(),ReportsFragment())
+        binding.viewPager.isUserInputEnabled = false
         binding.viewPager.adapter = MainViewPagerAdapter(fragmentList,this)
         binding.bottomNavigationView.setupWithViewPager2(binding.viewPager)
     }
