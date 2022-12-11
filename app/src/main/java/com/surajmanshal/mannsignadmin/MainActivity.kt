@@ -8,12 +8,14 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import com.onesignal.OneSignal
 import com.surajmanshal.mannsignadmin.adapter.MainViewPagerAdapter
 import com.surajmanshal.mannsignadmin.databinding.ActivityMainBinding
 import com.surajmanshal.mannsignadmin.ui.fragments.DashboardFragment
 import com.surajmanshal.mannsignadmin.ui.fragments.OrdersFragment
 import com.surajmanshal.mannsignadmin.ui.fragments.ReportsFragment
+import com.surajmanshal.mannsignadmin.viewmodel.OrdersViewModel
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,10 +29,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+
         setContentView(binding.root)
 
-        setupViewPager()
 
+
+        setupViewPager()
         permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){
             isRead = it[Manifest.permission.READ_EXTERNAL_STORAGE] ?: isRead
             isWrite = it[Manifest.permission.WRITE_EXTERNAL_STORAGE] ?: isWrite
@@ -44,7 +48,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun setupViewPager(){
+    fun setupViewPager() {
         val fragmentList = listOf(DashboardFragment(),OrdersFragment(),ReportsFragment())
         binding.viewPager.isUserInputEnabled = false
         binding.viewPager.adapter = MainViewPagerAdapter(fragmentList,this)

@@ -44,17 +44,14 @@ class ReportsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        vm = ViewModelProvider(requireActivity()).get(StatsViewModel::class.java)
-        CoroutineScope(Dispatchers.IO).launch {
-            vm.setupViewModelDataMembers()
-        }
+
     }
 
     override fun onResume() {
         super.onResume()
-        CoroutineScope(Dispatchers.IO).launch {
-            vm.setupViewModelDataMembers()
-        }
+
+        vm.getAllOrders()
+
     }
 
     override fun onCreateView(
@@ -65,9 +62,12 @@ class ReportsFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_reports, container, false)
         binding = FragmentReportsBinding.bind(view)
 
-        vm.allOrders.observe(viewLifecycleOwner){
+        vm = ViewModelProvider(requireActivity()).get(StatsViewModel::class.java)
+
+        vm.setupViewModelDataMembers()
+
+        vm.allOrders.observe(viewLifecycleOwner) {
             binding.txtTotalOrders.text = it.size.toString()
-            Toast.makeText(requireContext(),it.size.toString(),Toast.LENGTH_SHORT).show()
         }
 
         vm.transactionItems.observe(viewLifecycleOwner) {
@@ -92,6 +92,10 @@ class ReportsFragment : Fragment() {
                 //its total product
                 binding.txtTotalInvoice.text = it.size.toString()
             }
+        }
+
+        vm.orderSize.observe(viewLifecycleOwner){
+            Toast.makeText(requireContext(),"Size is $it",Toast.LENGTH_LONG).show()
         }
 
         vm.serverResponse.observe(viewLifecycleOwner) {

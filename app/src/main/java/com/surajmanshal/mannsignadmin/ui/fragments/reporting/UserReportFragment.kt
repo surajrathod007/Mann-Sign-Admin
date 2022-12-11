@@ -37,18 +37,23 @@ import java.time.format.DateTimeFormatter
 
 class UserReportFragment : Fragment() {
 
-    lateinit var binding : FragmentUserReportBinding
-    lateinit var vm : StatsViewModel
+    lateinit var binding: FragmentUserReportBinding
+    lateinit var vm: StatsViewModel
     lateinit var bottomSheetDialog: BottomSheetDialog
     var o = ""
 
+    override fun onResume() {
+        super.onResume()
+        vm.getAllOrders()
+        vm.getAllUsers()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         vm = ViewModelProvider(requireActivity()).get(StatsViewModel::class.java)
-        CoroutineScope(Dispatchers.IO).launch {
-            vm.getAllUsers()
-            vm.getAllOrders()
-        }
+
+        vm.getAllUsers()
+        vm.getAllOrders()
+
     }
 
     override fun onCreateView(
@@ -60,11 +65,11 @@ class UserReportFragment : Fragment() {
         binding = FragmentUserReportBinding.bind(view)
 
 
-        vm.allUsers.observe(viewLifecycleOwner){
-            binding.rvUsers.adapter = UserAdapter(it,vm)
+        vm.allUsers.observe(viewLifecycleOwner) {
+            binding.rvUsers.adapter = UserAdapter(it, vm)
         }
 
-        vm.user.observe(viewLifecycleOwner){
+        vm.user.observe(viewLifecycleOwner) {
             showBottomSheet(it)
         }
 
@@ -75,7 +80,7 @@ class UserReportFragment : Fragment() {
         return binding.root
     }
 
-    fun showBottomSheet(u : User) {
+    fun showBottomSheet(u: User) {
         bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.BottomSheetTheme)
         val sheetView =
             LayoutInflater.from(requireContext()).inflate(R.layout.user_detail_bottomsheet, null)
@@ -85,7 +90,8 @@ class UserReportFragment : Fragment() {
         val userPhone = sheetView.findViewById<TextView>(R.id.txtUserPhoneNumber)
         val address = sheetView.findViewById<TextView>(R.id.txtUserAddress)
         val pin = sheetView.findViewById<TextView>(R.id.txtUserPinCode)
-        val profile = sheetView.findViewById<ImageView>(R.id.imgUserProfile) //todo : set profile picture
+        val profile =
+            sheetView.findViewById<ImageView>(R.id.imgUserProfile) //todo : set profile picture
         val orders = sheetView.findViewById<TextView>(R.id.txtUserOrders)
         val btnClose = sheetView.findViewById<ImageView>(R.id.btnCloseUserProfile)
 
@@ -99,8 +105,8 @@ class UserReportFragment : Fragment() {
             bottomSheetDialog.hide()
         }
 
-        o = vm.allOrders.value!!.filter { it.emailId==u.emailId }.size.toString()
-        if(!o.isNullOrEmpty())
+        o = vm.allOrders.value!!.filter { it.emailId == u.emailId }.size.toString()
+        if (!o.isNullOrEmpty())
             orders.text = o
 
 
@@ -148,10 +154,10 @@ class UserReportFragment : Fragment() {
                     addCell(it.phoneNumber).setFontSize(8f)
                     addCell(it.address).setFontSize(6f)
                     addCell(it.pinCode.toString()).setFontSize(8f)
-                    o = vm.allOrders.value!!.filter {i-> i.emailId==it.emailId }.size.toString()
-                    if(!o.isNullOrEmpty()){
+                    o = vm.allOrders.value!!.filter { i -> i.emailId == it.emailId }.size.toString()
+                    if (!o.isNullOrEmpty()) {
                         addCell(o)
-                    }else{
+                    } else {
                         addCell("0")
                     }
 

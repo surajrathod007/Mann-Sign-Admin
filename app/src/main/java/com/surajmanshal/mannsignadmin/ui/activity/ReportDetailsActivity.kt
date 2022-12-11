@@ -29,6 +29,7 @@ class ReportDetailsActivity : AppCompatActivity() {
 
     fun setupViewPager(){
         val fragmentList = listOf(OrderReportFragment(),TransactionReportFragment(),ProductReportFragment(),UserReportFragment())
+        binding.vpReports.isUserInputEnabled = false
         binding.vpReports.adapter = MainViewPagerAdapter(fragmentList,this)
         binding.vpReports.setCurrentItem(index)
         binding.bottomNavigationReport.setupWithViewPager2(binding.vpReports)

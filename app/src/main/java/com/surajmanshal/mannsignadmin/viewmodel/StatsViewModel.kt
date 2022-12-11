@@ -25,7 +25,7 @@ class StatsViewModel : ViewModel() {
     val transactions: LiveData<List<Transaction>> get() = _transactions
 
     private val _transactionItems = MutableLiveData<List<TransactionItem>>()
-    val transactionItems : LiveData<List<TransactionItem>> get() = _transactionItems
+    val transactionItems: LiveData<List<TransactionItem>> get() = _transactionItems
 
     private val _serverResponse = MutableLiveData<SimpleResponse>()
     val serverResponse: LiveData<SimpleResponse> get() = _serverResponse
@@ -37,25 +37,24 @@ class StatsViewModel : ViewModel() {
     val dateFilter: LiveData<DateFilter> get() = _dateFilter
 
     private val _allUsers = MutableLiveData<List<User>>()
-    val allUsers : LiveData<List<User>> get() = _allUsers
+    val allUsers: LiveData<List<User>> get() = _allUsers
 
     private val _user = MutableLiveData<User>()
-    val user : LiveData<User> get() = _user
+    val user: LiveData<User> get() = _user
 
     private val _orderSize = MutableLiveData<Int>(0)
-    val orderSize : LiveData<Int> get() = _orderSize
+    val orderSize: LiveData<Int> get() = _orderSize
 
     val isLoading = MutableLiveData<Boolean>(true)
 
 
-    suspend fun setupViewModelDataMembers() {
-        CoroutineScope(Dispatchers.IO).launch {
-            //isLoading.postValue(true)
-            getAllOrders()
-            getAllTransactions()
-            getAllUsers()
-            getPosters()
-        }
+    fun setupViewModelDataMembers() {
+        //isLoading.postValue(true)
+        getAllOrders()
+        getAllTransactions()
+        getAllUsers()
+        getPosters()
+
     }
 
     fun getAllTransactions() {
@@ -73,7 +72,7 @@ class StatsViewModel : ViewModel() {
                     //_transactions.postValue(response.body())
                     val lst = mutableListOf<TransactionItem>()
 
-                    if(!l.isNullOrEmpty()){
+                    if (!l.isNullOrEmpty()) {
                         l.forEach {
                             lst.add(TransactionItem(it))
                         }
@@ -98,14 +97,11 @@ class StatsViewModel : ViewModel() {
     }
 
     fun getAllOrders() {
-
         isLoading.postValue(true)
         val v = OrdersViewModel.repository.fetchAllOrders()
         v.enqueue(object : Callback<List<Order>?> {
             override fun onResponse(call: Call<List<Order>?>, response: Response<List<Order>?>) {
-                response.body().let {
-                    _allOrders.value = it
-                }
+                _allOrders.postValue(response.body())
                 _orderSize.postValue(response.body()!!.size)
                 isLoading.postValue(false)
             }
@@ -130,7 +126,7 @@ class StatsViewModel : ViewModel() {
                 //_transactions.postValue(response.body())
                 val lst = mutableListOf<TransactionItem>()
 
-                if(!l.isNullOrEmpty()){
+                if (!l.isNullOrEmpty()) {
                     l.forEach {
                         lst.add(TransactionItem(it))
                     }
@@ -146,7 +142,7 @@ class StatsViewModel : ViewModel() {
         })
     }
 
-    fun filterOrder(d : DateFilter){
+    fun filterOrder(d: DateFilter) {
         isLoading.postValue(true)
         val l = NetworkService.networkInstance.filterOrder(d)
         l.enqueue(object : Callback<List<Order>?> {
@@ -161,8 +157,7 @@ class StatsViewModel : ViewModel() {
         })
     }
 
-    fun getAllUsers(){
-
+    fun getAllUsers() {
         isLoading.postValue(true)
         val p = NetworkService.networkInstance.fetchAllUsers()
         p.enqueue(object : Callback<List<User>?> {
@@ -185,15 +180,16 @@ class StatsViewModel : ViewModel() {
         val response = NetworkService.networkInstance.fetchAllPosters()
         response.enqueue(object : Callback<List<Product>> {
             override fun onResponse(call: Call<List<Product>>, response: Response<List<Product>>) {
-                response.body()?.let { _products.value = it}
+                response.body()?.let { _products.value = it }
             }
+
             override fun onFailure(call: Call<List<Product>>, t: Throwable) {
                 println(t.toString())
             }
         })
     }
 
-    fun selectUser(user: User){
+    fun selectUser(user: User) {
         _user.postValue(user)
     }
 }

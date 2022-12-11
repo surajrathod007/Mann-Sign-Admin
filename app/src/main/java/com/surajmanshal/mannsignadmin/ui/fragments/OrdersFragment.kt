@@ -15,19 +15,15 @@ import com.surajmanshal.mannsignadmin.databinding.FragmentOrdersBinding
 import com.surajmanshal.mannsignadmin.network.NetworkService
 import com.surajmanshal.mannsignadmin.utils.Constants
 import com.surajmanshal.mannsignadmin.viewmodel.OrdersViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 
-class OrdersFragment : Fragment(), View.OnClickListener {
+class OrdersFragment() : Fragment(), View.OnClickListener {
 
     lateinit var binding: FragmentOrdersBinding
     lateinit var viewModel: OrdersViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(requireActivity()).get(OrdersViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -36,6 +32,8 @@ class OrdersFragment : Fragment(), View.OnClickListener {
     ): View? {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_orders, container, false)
+
+        viewModel = ViewModelProvider(requireActivity()).get(OrdersViewModel::class.java)
 
         //setup click listners
         binding.txtPendingOrders.setOnClickListener(this)
@@ -46,34 +44,31 @@ class OrdersFragment : Fragment(), View.OnClickListener {
         binding.txtCanceledOrders.setOnClickListener(this)
         binding.txtConfirmedOrders.setOnClickListener(this)
 
+
+
+
         if (NetworkService.checkForInternet(requireContext())) {
-            CoroutineScope(Dispatchers.IO).launch {
-                viewModel.setupViewModelDataMembers()
-            }
 
+            viewModel.getAllOrders()
             viewModel.allOrders.observe(viewLifecycleOwner) {
-                if (it.isNotEmpty()) {
                     binding.rvOrders.adapter = OrdersAdapter(requireContext(), it)
-                }
+                    Toast.makeText(requireContext(),"${it.size} orders",Toast.LENGTH_LONG).show()
             }
-
             viewModel.isEmptyList.observe(viewLifecycleOwner) {
                 if (it) {
                     Toast.makeText(requireContext(), "No Orders", Toast.LENGTH_LONG).show()
                 }
             }
-
             viewModel.isLoading.observe(viewLifecycleOwner) {
-                if (!it) {
+                if(it){
+                    binding.loading.visibility = View.VISIBLE
+                    binding.rvOrders.visibility = View.GONE
+                }else{
                     binding.loading.visibility = View.GONE
+                    binding.rvOrders.visibility = View.VISIBLE
                     binding.refreshLayout.finishRefreshing()
                 }
-                if (it) {
-                    binding.loading.visibility = View.VISIBLE
-                }
             }
-
-
             binding.refreshLayout.setOnRefreshListener(object : LiquidRefreshLayout.OnRefreshListener {
                 override fun completeRefresh() {
 
@@ -83,8 +78,6 @@ class OrdersFragment : Fragment(), View.OnClickListener {
                     viewModel.isLoading.postValue(true)
                     //Toast.makeText(requireContext(),"${viewModel.allOrders.value}",Toast.LENGTH_LONG).show()
                     viewModel.getAllOrders()
-                    binding.rvOrders.adapter =
-                        OrdersAdapter(requireContext(), viewModel.allOrders.value!!)
                 }
             })
 
@@ -97,9 +90,9 @@ class OrdersFragment : Fragment(), View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
-        CoroutineScope(Dispatchers.IO).launch {
-            viewModel.setupViewModelDataMembers()
-        }
+
+            viewModel.getAllOrders()
+
     }
 
     override fun onClick(v: View?) {

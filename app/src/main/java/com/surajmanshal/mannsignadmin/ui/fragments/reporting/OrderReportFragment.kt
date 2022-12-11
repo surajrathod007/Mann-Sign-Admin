@@ -48,10 +48,8 @@ class OrderReportFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        vm = ViewModelProvider(requireActivity()).get(StatsViewModel::class.java)
-        CoroutineScope(Dispatchers.IO).launch {
-            vm.setupViewModelDataMembers()
-        }
+
+
     }
 
     override fun onCreateView(
@@ -61,8 +59,10 @@ class OrderReportFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_order_report, container, false)
         binding = FragmentOrderReportBinding.bind(view)
-
         setupSpinner()
+        vm = ViewModelProvider(requireActivity()).get(StatsViewModel::class.java)
+        vm.setupViewModelDataMembers()
+
 
         vm.allOrders.observe(viewLifecycleOwner){
             binding.rvOrderReport.adapter = OrdersAdapter(requireContext(),it)
@@ -324,4 +324,8 @@ class OrderReportFragment : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        vm.getAllOrders()
+    }
 }

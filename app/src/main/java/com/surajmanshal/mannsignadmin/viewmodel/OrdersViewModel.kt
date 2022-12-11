@@ -20,11 +20,11 @@ class OrdersViewModel : ViewModel() {
     //lateinit var  repository : Repository
 
 
-    private val _allOrders = MutableLiveData<List<Order>>(emptyList())
+    private val _allOrders = MutableLiveData<List<Order>>()
     val allOrders: LiveData<List<Order>> get() = _allOrders
 
     val isEmptyList = MutableLiveData<Boolean>(false)
-    val isLoading = MutableLiveData<Boolean>(true)
+    var isLoading = MutableLiveData<Boolean>(true)
     private val _serverResponse = MutableLiveData<SimpleResponse>()
     val serverResponse : LiveData<SimpleResponse> get() = _serverResponse
     private val _user = MutableLiveData<User>()
@@ -47,12 +47,11 @@ class OrdersViewModel : ViewModel() {
         val repository = Repository()
     }
 
-    suspend fun setupViewModelDataMembers() {
-        CoroutineScope(Dispatchers.IO).launch { getAllOrders() }
+    fun setupViewModelDataMembers() {
+         getAllOrders()
     }
 
     fun filterOrder(status: Int) {
-
         val list = _allOrders.value?.filter { it.orderStatus == status }
         _allOrders.value = list!!
     }
@@ -63,25 +62,37 @@ class OrdersViewModel : ViewModel() {
 
     fun getAllOrders() {
         isLoading.postValue(true)
-        val v = repository.fetchAllOrders()
+        val v = NetworkService.networkInstance.fetchAllOrders()
         v.enqueue(object : Callback<List<Order>?> {
             override fun onResponse(call: Call<List<Order>?>, response: Response<List<Order>?>) {
+                _allOrders.postValue(response.body())
                 response.body().let {
-                    _allOrders.value = it
-                    if (it.isNullOrEmpty()) {
+                    if (it!!.isEmpty()) {
                         isEmptyList.postValue(true)
                     }
                 }
                 isLoading.postValue(false)
             }
-
             override fun onFailure(call: Call<List<Order>?>, t: Throwable) {
-
                 isLoading.postValue(false)
             }
         })
     }
 
+    fun getMyOrders(){
+        isLoading.postValue(true)
+        val r = NetworkService.networkInstance.fetchAllOrders()
+        r.enqueue(object : Callback<List<Order>?> {
+            override fun onResponse(call: Call<List<Order>?>, response: Response<List<Order>?>) {
+                _allOrders.postValue(response.body())
+                isLoading.postValue(false)
+            }
+
+            override fun onFailure(call: Call<List<Order>?>, t: Throwable) {
+                isLoading.postValue(false)
+            }
+        })
+    }
     suspend fun updateOrder(order: Order) {
 
             try {
@@ -118,7 +129,6 @@ class OrdersViewModel : ViewModel() {
     suspend fun fetchUserByEmail(email : String){
 
         try {
-
             val u = NetworkService.networkInstance.fetchUserByEmail(email)
             u.enqueue(object : Callback<User?> {
                 override fun onResponse(call: Call<User?>, response: Response<User?>) {
@@ -134,7 +144,6 @@ class OrdersViewModel : ViewModel() {
             _serverResponse.postValue(SimpleResponse(true,"${e.message.toString()}"))
         }
     }
-
 
     fun fetchOrderItemDetails(sid : Int,lid :  Int,mid : Int){
 
@@ -181,13 +190,11 @@ class OrdersViewModel : ViewModel() {
     }
 
     fun fetchProductReview(productId : String){
-
         val l = NetworkService.networkInstance.getReview(productId)
         l.enqueue(object : Callback<List<Review>?> {
             override fun onResponse(call: Call<List<Review>?>, response: Response<List<Review>?>) {
                 _reviews.postValue(response.body())
             }
-
             override fun onFailure(call: Call<List<Review>?>, t: Throwable) {
 
             }
