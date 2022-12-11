@@ -5,6 +5,8 @@
     <string name="couponCode">Coupon Code</string>
     <string name="Quantity">Quantity</string>
 
+    <string name="generalErrorMsg">Something went wrong</string>
+
     <!-- Spinner OrderStatus -->
     <string-array name="order_status_array">
         <item>Pending</item>
@@ -20,4 +22,6 @@
         <item>Pending</item>
         <item>Done</item>
     </string-array>
+
+
 </resources>

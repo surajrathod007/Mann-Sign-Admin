@@ -26,4 +26,7 @@ object Constants {
     const val READ_EXTERNAL_STORAGE = 102
     const val CHOOSE_FONT = 103
 
+    // Auth
+    const val DATASTORE_EMAIL = "emailId"
+
 }

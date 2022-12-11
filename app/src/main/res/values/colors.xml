@@ -15,4 +15,6 @@
     <color name="title_text_color">#213357</color>
     <color name="text_normal_color">#374457</color>
 
+    <color name="authButtonColor">#3253e0</color>
+
 </resources>

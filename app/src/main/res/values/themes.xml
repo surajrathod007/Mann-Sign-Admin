@@ -21,4 +21,8 @@
     <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@android:color/transparent</item>
     </style>
+
+    <style name="satoshiTypeFace">
+        <item name="fontFamily">@font/satoshi_regular</item>
+    </style>
 </resources>

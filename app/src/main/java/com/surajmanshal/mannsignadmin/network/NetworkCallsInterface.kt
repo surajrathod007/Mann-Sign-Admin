@@ -1,6 +1,8 @@
 package com.surajmanshal.mannsignadmin.network
 
 import com.surajmanshal.mannsignadmin.data.model.*
+import com.surajmanshal.mannsignadmin.data.model.auth.LoginRequest
+import com.surajmanshal.mannsignadmin.data.model.auth.LoginResponse
 import com.surajmanshal.mannsignadmin.data.model.auth.User
 import com.surajmanshal.mannsignadmin.data.model.ordering.Order
 import com.surajmanshal.mannsignadmin.data.model.ordering.Transaction
@@ -12,6 +14,24 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface NetworkCallsInterface {
+
+
+    //User Auth
+    @Headers("Content-Type: application/json")
+    @POST("user/register")
+    suspend fun registerUser(@Body user : User) : SimpleResponse
+
+    @Headers("Content-Type: application/json")
+    @POST("user/loginAsAdmin")
+    suspend fun loginAdmin(@Body loginReq: LoginRequest) : LoginResponse
+
+    @Headers("Content-Type: application/json")
+    @POST("user/otp")
+    suspend fun sendOtp(@Query("email") email : String) : SimpleResponse
+
+    @Headers("Content-Type: application/json")
+    @POST("user/resetpassword")
+    suspend fun resetPassword(@Query("email") email: String, @Query("newpas") newpas : String) : SimpleResponse
 
     @GET("materials")
     fun fetchMaterials() : Call<List<Material>>
