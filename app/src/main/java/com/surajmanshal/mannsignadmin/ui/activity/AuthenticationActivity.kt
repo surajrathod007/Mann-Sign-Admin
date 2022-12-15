@@ -10,6 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
+import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.lifecycleScope
@@ -27,11 +28,9 @@ import com.surajmanshal.mannsignadmin.databinding.ActivityAuthenticationBinding
 import com.surajmanshal.mannsignadmin.network.NetworkService
 import com.surajmanshal.mannsignadmin.utils.Constants
 import com.surajmanshal.mannsignadmin.utils.hide
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import com.surajmanshal.mannsignadmin.utils.show
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.concurrent.Executor
 
 class AuthenticationActivity : AppCompatActivity() {
@@ -43,6 +42,9 @@ class AuthenticationActivity : AppCompatActivity() {
     private var token : String? = null
     lateinit var d : LoadingScreen
     lateinit var dd : Dialog
+    var failedPasswordAttempts = 0
+    var biometricFailedAttempts = 0
+    var maxFailureAttempts = 5
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +52,48 @@ class AuthenticationActivity : AppCompatActivity() {
         setContentView(binding.root)
         d = LoadingScreen(this)
         dd = d.loadingScreen()
+
         CoroutineScope(Dispatchers.IO).launch{
+            val lockedFor = getStringPreferences(Constants.LOCKED_FOR)
+            if (lockedFor!=null){
+                lockedFor.toLong().apply {
+                    var tryAgainInMillies = this - System.currentTimeMillis()
+                    if(tryAgainInMillies>0){
+                        withContext(Dispatchers.Main){
+                            binding.apply {
+                                ivFingerPrint.hide()
+                                checkBoxRememberMe.hide()
+                                tvAttemptLeft.show()
+                                btnLogin.apply {
+                                    isEnabled = false
+                                    setBackgroundResource(R.drawable.disabled_button_bg)
+                                }
+                            }
+                        }
+                        do {
+                            withContext(Dispatchers.Main){
+                                with(binding){
+                                    tryAgainInMillies-=1000
+                                    val tryAgainInMinutes = tryAgainInMillies/60000
+                                    val tryAgainInSeconds = (tryAgainInMillies/1000)%60
+                                    tvAttemptLeft.setText("Try again in " +
+                                            "$tryAgainInMinutes:${if(tryAgainInSeconds>9) tryAgainInSeconds else "0$tryAgainInSeconds"}")
+                                }
+                            }
+                            delay(1000)
+                        }while (tryAgainInMillies>0)
+                    }
+                    storeStringPreferences(Constants.LOCKED_FOR,"0")
+                    withContext(Dispatchers.Main){
+                        binding.tvAttemptLeft.hide()
+                        binding.btnLogin.apply {
+                            isEnabled = true
+                            setBackgroundResource(R.drawable.button_bg)
+                        }
+                    }
+                }
+            }
+
             token = getStringPreferences(DataStore.JWT_TOKEN)
             val email = getStringPreferences(Constants.DATASTORE_EMAIL)
             if(token!=null){
@@ -72,7 +115,8 @@ class AuthenticationActivity : AppCompatActivity() {
                         }
                     }
                 }
-            }else{
+            }
+            else{
                 withContext(Dispatchers.Main){
                     with(binding){
                         emailInputLayout.apply {
@@ -107,9 +151,14 @@ class AuthenticationActivity : AppCompatActivity() {
 
                 override fun onAuthenticationFailed() {
                     super.onAuthenticationFailed()
-                    Toast.makeText(applicationContext, "Authentication failed",
-                        Toast.LENGTH_SHORT)
-                        .show()
+                    biometricFailedAttempts++
+                    if(biometricFailedAttempts==maxFailureAttempts){
+                        Toast.makeText(applicationContext, "Too many failed attempts",
+                            Toast.LENGTH_SHORT)
+                            .show()
+                        binding.ivFingerPrint.hide()
+                        onAuthenticationError(-1,"")
+                    }
                 }
             })
 
@@ -132,6 +181,12 @@ class AuthenticationActivity : AppCompatActivity() {
     suspend fun storeStringPreferences(key: String ,value : String){
         this.preferenceDataStoreAuth.edit {
             it[stringPreferencesKey(key)] = value
+        }
+    }
+
+    suspend fun clearPreferenceKey(key: String){
+        this.preferenceDataStoreAuth.edit {
+            clearPreferenceKey(key)
         }
     }
 
@@ -169,6 +224,17 @@ class AuthenticationActivity : AppCompatActivity() {
                     onSimpleResponse("Login",response.user)
                     Toast.makeText(this@AuthenticationActivity, response.simpleResponse.message, Toast.LENGTH_SHORT).show()
                 }else{
+                    failedPasswordAttempts++
+                    if(failedPasswordAttempts>=maxFailureAttempts){
+                        storeStringPreferences(Constants.LOCKED_FOR,System.currentTimeMillis().plus(900000).toString())
+                        d.toggleDialog(dd)
+                        return@launch
+                    }
+                    if(failedPasswordAttempts>maxFailureAttempts-3)
+                        binding.tvAttemptLeft.apply {
+                            show()
+                            setText("$text${maxFailureAttempts-failedPasswordAttempts}")
+                        }
                     ExceptionHandler.catchOnContext(this@AuthenticationActivity, response.simpleResponse.message)
                     d.toggleDialog(dd)
                 }

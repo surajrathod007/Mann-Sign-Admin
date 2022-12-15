@@ -28,5 +28,6 @@ object Constants {
 
     // Auth
     const val DATASTORE_EMAIL = "emailId"
+    const val LOCKED_FOR = "isLocked"
 
 }
