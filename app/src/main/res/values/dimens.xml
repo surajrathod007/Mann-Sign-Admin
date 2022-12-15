@@ -2,4 +2,8 @@
 <resources>
     <dimen name="text_margin">16dp</dimen>
     <dimen name="margin_low">8dp</dimen>
+    <dimen name="margin_medium">16dp</dimen>
+    <dimen name="padding_medium">16dp</dimen>
+    <dimen name="margin_high">24dp</dimen>
+    <dimen name="very_low_radius">4dp</dimen>
 </resources>

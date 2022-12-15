@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/ivProduct"
+        android:layout_width="180dp"
+        android:layout_height="240dp"
+        android:layout_gravity="center"
+        android:layout_margin="16dp"
+        app:shapeAppearance="@style/ShapeAppearanceOverlay.Material3.Chip"
+        app:srcCompat="@drawable/ic_action_choose_img"
+        android:background="@color/bg_color"
+        android:scaleType="centerCrop"
+        />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivRemove"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:src="@drawable/ic_remove_cross"
+        android:padding="8dp"
+        android:layout_margin="12dp"
+        android:layout_gravity="end"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/tvPosterLanguage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gujarati"
+        android:layout_margin="20dp"
+        android:background="@drawable/round_button_shape"
+        android:paddingHorizontal="8dp"
+        android:textSize="12sp"
+        android:layout_gravity="bottom|start"
+        android:textColor="@color/black"
+        android:visibility="gone"
+        />
+
+</FrameLayout>

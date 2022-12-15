@@ -26,7 +26,10 @@ class ProductsAdapter(val productList : List<Product>,val activity: ProductsActi
         val product = productList[position]
         with(holder){
             with(product){
-                val url = images?.get(0)?.let { Functions.urlMaker(it.url) }
+                val url = images?.apply {
+                    if(isNotEmpty())
+                        get(0).let { Functions.urlMaker(it.url) }
+                }
                 Glide.with(image.context).load(url).centerCrop().into(image)
                 title.text = posterDetails!!.title
                 card.setOnClickListener {

@@ -4,7 +4,6 @@ import com.surajmanshal.mannsignadmin.data.model.*
 import com.surajmanshal.mannsignadmin.data.model.ordering.Order
 import com.surajmanshal.mannsignadmin.data.model.product.Product
 import com.surajmanshal.mannsignadmin.network.NetworkService
-import com.surajmanshal.response.SimpleResponse
 import okhttp3.MultipartBody
 
 open class Repository() {
@@ -31,7 +30,7 @@ open class Repository() {
 
     fun fetchPosters() = server.fetchAllPosters()
 
-    suspend fun uploadImage(part: MultipartBody.Part) = server.uploadImage(part)
+    suspend fun uploadImage(part: MultipartBody.Part, languageId: Int) = server.uploadImage(part,languageId)
 
     suspend fun deleteCategory(id: Int) = server.deleteCategory(id)
 

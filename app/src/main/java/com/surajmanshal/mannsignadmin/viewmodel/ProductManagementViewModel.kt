@@ -1,11 +1,10 @@
 package com.surajmanshal.mannsignadmin.viewmodel
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.surajmanshal.mannsignadmin.data.model.*
 import com.surajmanshal.mannsignadmin.data.model.product.Product
-import com.surajmanshal.mannsignadmin.repository.Repository
 import com.surajmanshal.response.SimpleResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -26,6 +25,9 @@ class ProductManagementViewModel : ResourcesViewModel() {
     val productUploadResponse : LiveData<SimpleResponse> get() = _productUploadResponse  // PRODUCT UPLOADING PROGRESS
     private val _posters = MutableLiveData<List<Product>>()
     val posters : LiveData<List<Product>> get() = _posters                              // POSTERS
+
+    private val _productImages = MutableLiveData<MutableList<ImageLanguage>>(mutableListOf(ImageLanguage()))
+    val productImages : LiveData<MutableList<ImageLanguage>> get() = _productImages                 // PRODUCT IMAGES
 
 
     // -------------- DATA SETUP FUNCTIONS -------------------------------------------
@@ -76,13 +78,31 @@ class ProductManagementViewModel : ResourcesViewModel() {
             }
         })
     }
-    suspend fun sendImage(part: Part){
+    suspend fun sendImage(part: Part,languageId: Int){
         try {
-            val response = repository.uploadImage(part)
+            val response = repository.uploadImage(part,languageId)
             _serverResponse.postValue(response)
             _imageUploadResponse.postValue(response)
         }catch (e : Exception){
             println("$e ${serverResponse.value?.message}")
         }
     }
+    fun addImage(uri : Uri,languageId : Int){
+        _productImages.value?.apply {
+            add(last())
+            set(lastIndexOf(last())-1,ImageLanguage().apply {
+                fileUri = uri
+                this.languageId = languageId
+            })
+        }
+        refreshProductImages()
+    }
+
+    fun removeImage(item : ImageLanguage){
+        _productImages.value?.remove(item)
+        refreshProductImages()
+    }
+
+    fun refreshProductImages() = _productImages.postValue(_productImages.value)
+
 }

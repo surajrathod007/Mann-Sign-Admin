@@ -64,7 +64,7 @@ interface NetworkCallsInterface {
 
     @Multipart
     @POST("image/upload")
-    suspend fun uploadImage(@Part image : MultipartBody.Part) :SimpleResponse
+    suspend fun uploadImage(@Part image: MultipartBody.Part, @Query("languageId")languageId: Int) : SimpleResponse
 
     @GET("size")
     fun fetchSizeById(@Query("id") id:Int) : Call<Size>

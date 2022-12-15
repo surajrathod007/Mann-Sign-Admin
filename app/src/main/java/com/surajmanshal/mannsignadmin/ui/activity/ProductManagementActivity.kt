@@ -2,43 +2,45 @@ package com.surajmanshal.mannsignadmin.ui.activity
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.CheckBox
-import android.widget.GridLayout
-import android.widget.Toast
+import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.forEach
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.OrientationHelper
 import com.google.android.material.textfield.TextInputEditText
+import com.google.gson.internal.LinkedTreeMap
+import com.surajmanshal.mannsignadmin.adapter.recyclerView.ProductImageAdapter
 import com.surajmanshal.mannsignadmin.data.model.*
+import com.surajmanshal.mannsignadmin.data.model.product.Poster
+import com.surajmanshal.mannsignadmin.data.model.product.Product
 import com.surajmanshal.mannsignadmin.databinding.ActivityProductManagementBinding
+import com.surajmanshal.mannsignadmin.databinding.ModernSpinnerLayoutBinding
 import com.surajmanshal.mannsignadmin.utils.Constants
+import com.surajmanshal.mannsignadmin.utils.PageIndicator
 import com.surajmanshal.mannsignadmin.viewmodel.ProductManagementViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.lang.Exception
-import androidx.lifecycle.Observer
-import com.google.gson.internal.LinkedTreeMap
-import com.surajmanshal.mannsignadmin.data.model.product.Poster
-import com.surajmanshal.mannsignadmin.data.model.product.Product
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
 import java.io.FileOutputStream
+
 
 class ProductManagementActivity : AppCompatActivity() {
     private lateinit var _binding : ActivityProductManagementBinding
@@ -47,6 +49,7 @@ class ProductManagementActivity : AppCompatActivity() {
     private val mProduct = Product(0)
     private var imageUri : Uri? =null
     val mImages = mutableListOf<Image>()
+    val pagerIndicator = PageIndicator()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,16 +61,18 @@ class ProductManagementActivity : AppCompatActivity() {
         }
         with(binding){
             setContentView(root)
-            ivProduct.setOnClickListener {
+           /* ivProduct.setOnClickListener {
                 chooseImage()
-            }
+            }*/
             btnAddProduct.setOnClickListener {
-                mProduct.also{
-                    with(it) {
+                mProduct.also{ product ->
+                    with(product) {
 //                        val uploadedImages = setupImage()
                         CoroutineScope(Dispatchers.IO).launch {
-                            if(imageUri==null) return@launch
-                            setupImage()
+                            vm.productImages.value?.forEach {
+                                if(it.fileUri!=null)
+                                setupImage(it)
+                            }
                         }
                         sizes = getSelectedSizes(gvSizes)
                         materials = getSelectedMaterialsIds(gvMaterials)
@@ -90,6 +95,12 @@ class ProductManagementActivity : AppCompatActivity() {
                 }
                 override fun onNothingSelected(p0: AdapterView<*>?) {}
             }
+//            val snapHelper = PagerSnapHelper()
+            rvProductImages.apply {
+                layoutManager = LinearLayoutManager(this@ProductManagementActivity,OrientationHelper.HORIZONTAL,false)
+//                snapHelper.attachToRecyclerView(this)
+            }
+
         }
 
         // Observers
@@ -99,8 +110,10 @@ class ProductManagementActivity : AppCompatActivity() {
         vm.materials.observe(this, Observer{
             setupMaterialViews()
         })
-        vm.languages.observe(this, Observer{
-            setupLanguageViews()
+        vm.languages.observe(this, Observer{ languages ->
+            binding.rvProductImages.adapter = vm.productImages.value?.let { ProductImageAdapter(vm){
+                chooseImage()
+            }}
         })
         vm.subCategories.observe(this, Observer{
             setupSubcategoryViews()
@@ -114,7 +127,10 @@ class ProductManagementActivity : AppCompatActivity() {
         vm.imageUploadResponse.observe(this, Observer { response ->
             // todo : show some loading/progress ui
             val data = response.data as LinkedTreeMap<String,Any>
-            mImages.add(Image(id = data["id"].toString().toDouble().toInt(), url = data["url"].toString(), description = data["description"].toString()))
+            mImages.add(Image(id = data["id"].toString().toDouble().toInt(), url = data["url"].toString(),
+                description = data["description"].toString(),
+                data["languageId"].toString().toFloat().toInt()
+            ))
             CoroutineScope(Dispatchers.IO).launch {
                 mProduct.also {
                     it.images = mImages
@@ -122,6 +138,20 @@ class ProductManagementActivity : AppCompatActivity() {
                 vm.addProduct(mProduct)
             }
         })
+
+        vm.productImages.observe(this){
+            binding.rvProductImages.apply {
+                adapter = ProductImageAdapter(vm){
+                    chooseImage()
+                }
+//                pagerIndicator.setItemsCount(it.size)
+////                removeItemDecoration(pagerIndicator)
+//                invalidateItemDecorations()
+//                addItemDecoration(pagerIndicator)
+//                onResume()
+            }
+            setupLanguageViews()
+        }
 
     }
 
@@ -131,19 +161,19 @@ class ProductManagementActivity : AppCompatActivity() {
 
 
     // Utilities
-    private suspend fun setupImage() {
+    private suspend fun setupImage(imageLanguage: ImageLanguage) {
 
         val dir = applicationContext.filesDir
-        val file = File(dir, "image.png")
+        val file = File(dir, "image${imageLanguage.languageId}.png")
 
         val outputStream = FileOutputStream(file)
-        contentResolver.openInputStream(imageUri!!)?.copyTo(outputStream)
+        contentResolver.openInputStream(imageLanguage.fileUri!!)?.copyTo(outputStream)
 
         val requestBody = RequestBody.create(MediaType.parse("image/jpg"),file)
         val part = MultipartBody.Part.createFormData("product",file.name,requestBody)
         println("${part.body().contentType()}" +"}")
 
-        vm.sendImage(part)
+        vm.sendImage(part,imageLanguage.languageId!!)
     }
 
     private fun textOf(et: TextInputEditText): String {
@@ -168,8 +198,50 @@ class ProductManagementActivity : AppCompatActivity() {
                         val selectedImageUri = data.data!!
                         // todo:  storeImgOnServer(selectedImageUri)
                         imageUri = selectedImageUri
+                        val params = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT,
+                        )
+                            .apply {
+                                setMargins(8,0,8,0)
+                            }
 
-                        Glide.with(this).load(selectedImageUri).into(binding.ivProduct)
+                        val dialog = android.app.AlertDialog.Builder(this)
+                        dialog.setTitle("Select Poster language")
+                        val dialogContentLayout = LinearLayout(this).apply {
+                            orientation = OrientationHelper.VERTICAL
+                        }
+                        dialogContentLayout.setPadding(32,0,32,0)
+                        var languageId = -1
+                        val imageLanguageSelectionBinding = ModernSpinnerLayoutBinding.inflate(layoutInflater).apply {
+                            vm.languages.value?.let { languageList ->
+                                resSpinner.apply {
+                                    setText(languageList[0].name)
+                                    languageId = languageList[0].id
+                                    setAdapter(
+                                        ArrayAdapter(this@ProductManagementActivity,
+                                            androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
+                                            languageList.map { it.name })
+                                    )
+                                    setOnItemClickListener { adapterView, view, i, l ->
+                                        languageId = languageList[i].id
+                                    }
+                                }
+                            }
+                        }
+
+                        dialogContentLayout.addView(imageLanguageSelectionBinding.root)
+
+                        dialog.setView(dialogContentLayout)
+                        dialog.setCancelable(false)
+                        dialog.setPositiveButton("Set", object : DialogInterface.OnClickListener {
+                            override fun onClick(p0: DialogInterface?, p1: Int) {
+                                Toast.makeText(this@ProductManagementActivity,"$languageId", Toast.LENGTH_SHORT).show()
+                                vm.addImage(selectedImageUri,languageId)
+                            }
+                        })
+                        dialog.show()
+//                        Glide.with(this).load(selectedImageUri).into(binding.ivProduct)
                     }catch(e : Exception){
                         e.printStackTrace()
                     }
@@ -198,8 +270,14 @@ class ProductManagementActivity : AppCompatActivity() {
         }
     }
     fun setupLanguageViews(){
-        vm.languages.value?.forEach {
-            binding.gvLanguages.addView(createCheckBox(it.name))
+        binding.gvLanguages.removeAllViews()
+        vm.productImages.value?.forEach { imgLang->
+            vm.languages.value?.find { it.id == imgLang.languageId }?.let {
+                binding.gvLanguages.addView(createCheckBox(it.name).apply {
+                    isChecked = true
+                    isEnabled = false
+                })
+            }
         }
     }
     fun setupSubcategoryViews(){
@@ -237,4 +315,11 @@ class ProductManagementActivity : AppCompatActivity() {
         }
         return list
     }
+
+    fun createRadioButton(context: Context, text : String): RadioButton {
+        return RadioButton(context).apply {
+            setText(text)
+        }
+    }
+
 }

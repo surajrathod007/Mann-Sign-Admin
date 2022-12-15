@@ -67,8 +67,8 @@ class ProductDetailsFragment : Fragment() {
             // Set up Views  ----------------------------------------------------------------
 
                 with(Functions){
-                    Glide.with(this@ProductDetailsFragment)
-                        .load(urlMaker(it.images!![0].url)).into(ivProduct)
+                    /*Glide.with(this@ProductDetailsFragment)
+                        .load(urlMaker(it.images!![0].url)).into(ivProduct)*/
                     makeViewVisible(tvSubCategory)
                     makeViewGone(categorySpinner)
                     makeViewGone(btnAddProduct)
