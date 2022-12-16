@@ -155,7 +155,7 @@ class AuthenticationActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT)
                             .show()
                         binding.ivFingerPrint.hide()
-                        onAuthenticationError(-1,"")
+                        biometricPrompt.cancelAuthentication()
                     }
                 }
             })
