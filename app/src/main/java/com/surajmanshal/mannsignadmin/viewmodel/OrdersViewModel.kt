@@ -20,7 +20,7 @@ class OrdersViewModel : ViewModel() {
     //lateinit var  repository : Repository
 
 
-    private val _allOrders = MutableLiveData<List<Order>>()
+    private val _allOrders = MutableLiveData<List<Order>>(emptyList())
     val allOrders: LiveData<List<Order>> get() = _allOrders
 
     val isEmptyList = MutableLiveData<Boolean>(false)
@@ -66,8 +66,8 @@ class OrdersViewModel : ViewModel() {
         v.enqueue(object : Callback<List<Order>?> {
             override fun onResponse(call: Call<List<Order>?>, response: Response<List<Order>?>) {
                 _allOrders.postValue(response.body())
-                response.body().let {
-                    if (it!!.isEmpty()) {
+                response.body()?.let {
+                    if (it.isEmpty()) {
                         isEmptyList.postValue(true)
                     }
                 }
@@ -141,7 +141,7 @@ class OrdersViewModel : ViewModel() {
             })
 
         }catch (e : Exception){
-            _serverResponse.postValue(SimpleResponse(true,"${e.message.toString()}"))
+            _serverResponse.postValue(SimpleResponse(true, e.message.toString()))
         }
     }
 

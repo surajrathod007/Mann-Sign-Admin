@@ -101,8 +101,10 @@ class StatsViewModel : ViewModel() {
         val v = OrdersViewModel.repository.fetchAllOrders()
         v.enqueue(object : Callback<List<Order>?> {
             override fun onResponse(call: Call<List<Order>?>, response: Response<List<Order>?>) {
-                _allOrders.postValue(response.body())
-                _orderSize.postValue(response.body()!!.size)
+                response.body()?.let {
+                    _allOrders.postValue(it)
+                    _orderSize.postValue(response.body()?.size ?: 0)
+                }
                 isLoading.postValue(false)
             }
 

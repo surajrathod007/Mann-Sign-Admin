@@ -51,8 +51,10 @@ class OrdersFragment() : Fragment(), View.OnClickListener {
 
             viewModel.getAllOrders()
             viewModel.allOrders.observe(viewLifecycleOwner) {
-                    binding.rvOrders.adapter = OrdersAdapter(requireContext(), it)
-                    Toast.makeText(requireContext(),"${it.size} orders",Toast.LENGTH_LONG).show()
+                    if(it?.isNotEmpty()==true) {
+                        binding.rvOrders.adapter = OrdersAdapter(requireContext(), it)
+                        Toast.makeText(requireContext(),"${it.size} orders",Toast.LENGTH_LONG).show()
+                    }
             }
             viewModel.isEmptyList.observe(viewLifecycleOwner) {
                 if (it) {
