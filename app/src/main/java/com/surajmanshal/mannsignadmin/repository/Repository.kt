@@ -4,6 +4,7 @@ import com.surajmanshal.mannsignadmin.data.model.*
 import com.surajmanshal.mannsignadmin.data.model.ordering.Order
 import com.surajmanshal.mannsignadmin.data.model.product.Product
 import com.surajmanshal.mannsignadmin.network.NetworkService
+import com.surajmanshal.response.SimpleResponse
 import okhttp3.MultipartBody
 
 open class Repository() {
@@ -71,4 +72,6 @@ open class Repository() {
     suspend fun deleteMaterial(materialId: Int) = server.deleteMaterial(materialId)
 
     suspend fun deleteLanguage(languageId: Int) = server.deleteLanguage(languageId)
+
+    suspend fun insertArea(area: Area) = server.insertArea(area)
 }

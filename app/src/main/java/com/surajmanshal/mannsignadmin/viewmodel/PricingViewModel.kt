@@ -99,7 +99,7 @@ class PricingViewModel : ViewModel(), Serializable {
             println("$e")
         }
     }
-    fun allowToAdd(isAllowed:Boolean = false){
+    fun allowToAdd(isAllowed:Boolean){
         _allowAdding.value = isAllowed
     }
 
@@ -111,4 +111,13 @@ class PricingViewModel : ViewModel(), Serializable {
            println("$e")
        }
    }
+
+    suspend fun addArea(area: Area) {
+        try {
+            val response = repository.insertArea(area)
+            _serverResponse.postValue(response)
+        }catch (e : Exception){
+            println("$e")
+        }
+    }
 }
