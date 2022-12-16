@@ -112,6 +112,13 @@ class ResourcesManagementActivity : AppCompatActivity() {
                     }
                 }
             }
+            viewResButtons.last().setOnClickListener {
+                Toast.makeText(
+                    this@ResourcesManagementActivity,
+                    "To be implemented",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
 
 
             btnAddMaterial.setOnClickListener {
