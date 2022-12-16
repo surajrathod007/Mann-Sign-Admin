@@ -4,13 +4,16 @@ import android.app.Dialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
 import android.text.TextUtils
 import android.view.View.INVISIBLE
 import android.widget.TextView
 import android.widget.Toast
+import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
+import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
-import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.lifecycleScope
@@ -55,43 +58,8 @@ class AuthenticationActivity : AppCompatActivity() {
 
         CoroutineScope(Dispatchers.IO).launch{
             val lockedFor = getStringPreferences(Constants.LOCKED_FOR)
-            if (lockedFor!=null){
-                lockedFor.toLong().apply {
-                    var tryAgainInMillies = this - System.currentTimeMillis()
-                    if(tryAgainInMillies>0){
-                        withContext(Dispatchers.Main){
-                            binding.apply {
-                                ivFingerPrint.hide()
-                                checkBoxRememberMe.hide()
-                                tvAttemptLeft.show()
-                                btnLogin.apply {
-                                    isEnabled = false
-                                    setBackgroundResource(R.drawable.disabled_button_bg)
-                                }
-                            }
-                        }
-                        do {
-                            withContext(Dispatchers.Main){
-                                with(binding){
-                                    tryAgainInMillies-=1000
-                                    val tryAgainInMinutes = tryAgainInMillies/60000
-                                    val tryAgainInSeconds = (tryAgainInMillies/1000)%60
-                                    tvAttemptLeft.setText("Try again in " +
-                                            "$tryAgainInMinutes:${if(tryAgainInSeconds>9) tryAgainInSeconds else "0$tryAgainInSeconds"}")
-                                }
-                            }
-                            delay(1000)
-                        }while (tryAgainInMillies>0)
-                    }
-                    storeStringPreferences(Constants.LOCKED_FOR,"0")
-                    withContext(Dispatchers.Main){
-                        binding.tvAttemptLeft.hide()
-                        binding.btnLogin.apply {
-                            isEnabled = true
-                            setBackgroundResource(R.drawable.button_bg)
-                        }
-                    }
-                }
+            lockedFor?.let {
+                disableLoggingInModuleTill(it.toLong())
             }
 
             token = getStringPreferences(DataStore.JWT_TOKEN)
@@ -134,6 +102,36 @@ class AuthenticationActivity : AppCompatActivity() {
             }
         }
 
+
+        /*// FOR HARDWARE CONFIGURATION
+        val biometricManager = BiometricManager.from(this)
+        when (biometricManager.canAuthenticate(BIOMETRIC_STRONG or DEVICE_CREDENTIAL)) {
+            BiometricManager.BIOMETRIC_SUCCESS ->{
+                Toast.makeText(applicationContext, "You can enable biometrics login from system settings.",
+                    Toast.LENGTH_SHORT)
+                    .show()
+                binding.ivFingerPrint.setOnClickListener { val enrollIntent = Intent(Settings.ACTION_BIOMETRIC_ENROLL).apply {
+                    putExtra(Settings.EXTRA_BIOMETRIC_AUTHENTICATORS_ALLOWED,
+                        BIOMETRIC_STRONG or DEVICE_CREDENTIAL)
+                }
+                    startActivityForResult(enrollIntent, Constants.AUTH_CREDENTIALS_REQ_CODE)
+                }
+            }
+//                Log.d("MY_APP_TAG", "App can authenticate using biometrics.")
+            BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE ->
+                binding.ivFingerPrint.hide()
+//                Log.e("MY_APP_TAG", "No biometric features available on this device.")
+            BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE ->
+                Toast.makeText(applicationContext, "Biometric login is currently unavailable.",
+                    Toast.LENGTH_SHORT)
+                    .show()
+//                Log.e("MY_APP_TAG", "Biometric features are currently unavailable.")
+            BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
+                // Prompts the user to create credentials that your app accepts.
+                binding.ivFingerPrint.hide()
+            }
+        }*/
+
         executor = ContextCompat.getMainExecutor(this)
         biometricPrompt = BiometricPrompt(this, executor,
             object : BiometricPrompt.AuthenticationCallback() {
@@ -152,7 +150,7 @@ class AuthenticationActivity : AppCompatActivity() {
                 override fun onAuthenticationFailed() {
                     super.onAuthenticationFailed()
                     biometricFailedAttempts++
-                    if(biometricFailedAttempts==maxFailureAttempts){
+                    if(biometricFailedAttempts==maxFailureAttempts-1){
                         Toast.makeText(applicationContext, "Too many failed attempts",
                             Toast.LENGTH_SHORT)
                             .show()
@@ -172,6 +170,44 @@ class AuthenticationActivity : AppCompatActivity() {
     private fun showBiometricPrompt(){
         biometricPrompt.authenticate(promptInfo)
     }
+
+    private suspend fun disableLoggingInModuleTill(availableAfterMillis : Long){
+        var tryAgainInMillies = availableAfterMillis - System.currentTimeMillis()
+        if(tryAgainInMillies>0){
+            withContext(Dispatchers.Main){
+                binding.apply {
+                    ivFingerPrint.hide()
+                    checkBoxRememberMe.hide()
+                    tvAttemptLeft.show()
+                    btnLogin.apply {
+                        isEnabled = false
+                        setBackgroundResource(R.drawable.disabled_button_bg)
+                    }
+                }
+            }
+            do {
+                withContext(Dispatchers.Main){
+                    with(binding){
+                        tryAgainInMillies-=1000
+                        val tryAgainInMinutes = tryAgainInMillies/60000
+                        val tryAgainInSeconds = (tryAgainInMillies/1000)%60
+                        tvAttemptLeft.setText("Try again in " +
+                                "$tryAgainInMinutes:${if(tryAgainInSeconds>9) tryAgainInSeconds else "0$tryAgainInSeconds"}")
+                    }
+                }
+                delay(1000)
+            }while (tryAgainInMillies>0)
+        }
+        storeStringPreferences(Constants.LOCKED_FOR,"0")
+        withContext(Dispatchers.Main){
+            binding.tvAttemptLeft.hide()
+            binding.btnLogin.apply {
+                isEnabled = true
+                setBackgroundResource(R.drawable.button_bg)
+            }
+        }
+    }
+
 
     suspend fun getStringPreferences(key : String) : String? {
         val data = preferenceDataStoreAuth.data.first()
@@ -226,14 +262,17 @@ class AuthenticationActivity : AppCompatActivity() {
                 }else{
                     failedPasswordAttempts++
                     if(failedPasswordAttempts>=maxFailureAttempts){
-                        storeStringPreferences(Constants.LOCKED_FOR,System.currentTimeMillis().plus(900000).toString())
+                        val disableModuleForMillis = 900000L
+                        val availableAfter = System.currentTimeMillis().plus(disableModuleForMillis)
+                        storeStringPreferences(Constants.LOCKED_FOR,availableAfter.toString())
                         d.toggleDialog(dd)
+                        disableLoggingInModuleTill(availableAfter)
                         return@launch
                     }
-                    if(failedPasswordAttempts>maxFailureAttempts-3)
+                    if(failedPasswordAttempts>=maxFailureAttempts-3)
                         binding.tvAttemptLeft.apply {
                             show()
-                            setText("$text${maxFailureAttempts-failedPasswordAttempts}")
+                            setText("${resources.getString(R.string.attempts_left)}${maxFailureAttempts-failedPasswordAttempts}")
                         }
                     ExceptionHandler.catchOnContext(this@AuthenticationActivity, response.simpleResponse.message)
                     d.toggleDialog(dd)

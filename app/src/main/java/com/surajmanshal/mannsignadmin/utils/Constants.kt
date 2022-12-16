@@ -1,8 +1,7 @@
 package com.surajmanshal.mannsignadmin.utils
 
-import com.surajmanshal.mannsignadmin.URL
-
 object Constants {
+
     const val TYPE_POSTER = 1
     const val TYPE_BANNER = 2
     const val TYPE_ACP_BOARD = 3
@@ -22,9 +21,10 @@ object Constants {
     const val CHANGE_DELIVERY_PRICE = 2
 
     // Permission Codes
-    const val CHOOSE_IMAGE = 101
-    const val READ_EXTERNAL_STORAGE = 102
-    const val CHOOSE_FONT = 103
+    const val CHOOSE_IMAGE_REQ_CODE = 101
+    const val READ_EXTERNAL_STORAGE_REQ_CODE = 102
+    const val CHOOSE_FONT_REQ_CODE = 103
+    const val AUTH_CREDENTIALS_REQ_CODE = 104
 
     // Auth
     const val DATASTORE_EMAIL = "emailId"

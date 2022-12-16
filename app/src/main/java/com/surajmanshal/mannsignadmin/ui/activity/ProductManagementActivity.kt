@@ -183,16 +183,16 @@ class ProductManagementActivity : AppCompatActivity() {
         if(ContextCompat.checkSelfPermission(this,Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
             val storageIntent = Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             // IT IS DEPRECATED FIND LATEST METHOD FOR IT
-            startActivityForResult(storageIntent, Constants.CHOOSE_IMAGE)
+            startActivityForResult(storageIntent, Constants.CHOOSE_IMAGE_REQ_CODE)
         }else{
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),Constants.READ_EXTERNAL_STORAGE)
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),Constants.READ_EXTERNAL_STORAGE_REQ_CODE)
         }
     }
     @RequiresApi(Build.VERSION_CODES.M)
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(resultCode==Activity.RESULT_OK){
-            if(requestCode == Constants.CHOOSE_IMAGE){
+            if(requestCode == Constants.CHOOSE_IMAGE_REQ_CODE){
                 if(data!=null){
                     try{
                         val selectedImageUri = data.data!!

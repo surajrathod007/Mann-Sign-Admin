@@ -6,6 +6,7 @@
     <string name="Quantity">Quantity</string>
 
     <string name="generalErrorMsg">Something went wrong</string>
+    <string name="attempts_left">Attempts left :</string>
 
     <!-- Spinner OrderStatus -->
     <string-array name="order_status_array">

@@ -1,7 +1,6 @@
 package com.surajmanshal.mannsignadmin.ui.activity
 
 import android.Manifest
-import android.app.ActionBar
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -22,7 +21,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
-import com.surajmanshal.mannsignadmin.adapter.recyclerView.CategoryAdapter
 import com.surajmanshal.mannsignadmin.adapter.recyclerView.DeletableItemsAdapter
 import com.surajmanshal.mannsignadmin.data.model.Language
 import com.surajmanshal.mannsignadmin.data.model.Material
@@ -227,7 +225,7 @@ class ResourcesManagementActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(
                 this,
                 arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                Constants.READ_EXTERNAL_STORAGE
+                Constants.READ_EXTERNAL_STORAGE_REQ_CODE
             )
             openFileManager()
         }
@@ -239,12 +237,12 @@ class ResourcesManagementActivity : AppCompatActivity() {
             type = "font/*";
         }
         // IT IS DEPRECATED FIND LATEST METHOD FOR IT
-        startActivityForResult(storageIntent, Constants.CHOOSE_FONT)
+        startActivityForResult(storageIntent, Constants.CHOOSE_FONT_REQ_CODE)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == Constants.CHOOSE_FONT) {
+            if (requestCode == Constants.CHOOSE_FONT_REQ_CODE) {
                 if (data != null) {
                     try {
                         fileUri = data.data!!
