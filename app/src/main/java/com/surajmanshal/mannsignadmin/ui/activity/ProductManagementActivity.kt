@@ -135,7 +135,8 @@ class ProductManagementActivity : AppCompatActivity() {
                 mProduct.also {
                     it.images = mImages
                 }
-                vm.addProduct(mProduct)
+                if(vm.productImages.value!!.size-1==mImages.size)
+                    vm.addProduct(mProduct)
             }
         })
 
