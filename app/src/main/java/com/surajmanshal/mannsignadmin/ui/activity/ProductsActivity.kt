@@ -51,6 +51,8 @@ class ProductsActivity : AppCompatActivity() {
     override fun onBackPressed() {
         super.onBackPressed()
         if(supportFragmentManager.backStackEntryCount==0) finish()
+        vm._currentProductLanguage.value = null
+        vm._currentProductMaterial.value = null
     }
 
 }

@@ -48,6 +48,7 @@ class ProductDetailsFragment : Fragment() {
 
                 getCategoryById(it.category!!)
                 getSubCategoryById(it.subCategory!!)
+                var l = 0
                 it.languages?.forEach { getLanguageById(it) }
                 it.materials?.forEach { getMaterialById(it) }
                 _currentProductCategory.observe(viewLifecycleOwner, Observer {
@@ -57,10 +58,10 @@ class ProductDetailsFragment : Fragment() {
                     setupSubCategoryView(it.name)
                 })
                 _currentProductMaterial.observe(viewLifecycleOwner, Observer {
-                    setupMaterialViews(it.name)
+                    it?.let { setupMaterialViews(it.name) }
                 })
                 _currentProductLanguage.observe(viewLifecycleOwner, Observer {
-                    setupLanguageViews(it.name)
+                    it?.let { setupLanguageViews(it.name) }
                 })
             }
 
