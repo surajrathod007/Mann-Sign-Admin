@@ -3,18 +3,18 @@
     <item
         android:id="@+id/product"
         android:title="Product"
-        android:icon="@drawable/ic_baseline_import_contacts_24"  />
+        android:icon="@drawable/ic_box"  />
     <item
         android:id="@+id/material"
         android:title="Material"
-        android:icon="@drawable/ic_action_delete" />
+        android:icon="@drawable/ic_fabric" />
     <item
         android:id="@+id/deliveryCharge"
-        android:title="Shipping Charge"
-        android:icon="@drawable/ic_baseline_home_24" />
+        android:title="Shipping"
+        android:icon="@drawable/ic_delivery_truck" />
     <item
         android:id="@+id/discountCoupon"
         android:title="Discount"
-        android:icon="@drawable/ic_action_delete2" />
+        android:icon="@drawable/ic_discount" />
 
 </menu>
