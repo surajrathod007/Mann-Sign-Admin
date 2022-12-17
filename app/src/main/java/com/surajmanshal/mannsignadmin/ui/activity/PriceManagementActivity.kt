@@ -21,6 +21,7 @@ import com.surajmanshal.mannsignadmin.ui.fragments.resources_and_pricing.Discoun
 import com.surajmanshal.mannsignadmin.ui.fragments.resources_and_pricing.MaterialPricingFragment
 import com.surajmanshal.mannsignadmin.ui.fragments.resources_and_pricing.ProductPricingFragment
 import com.surajmanshal.mannsignadmin.utils.Functions
+import com.surajmanshal.mannsignadmin.utils.setInputTypeDecimalNumbers
 import com.surajmanshal.mannsignadmin.viewmodel.PricingViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -123,8 +124,8 @@ class PriceManagementActivity : AppCompatActivity() {
         etPinCode.hint = resources.getString(R.string.pinCode)
         etMinCharges.hint = "Minimum charges"
         etAreaName.hint = resources.getString(R.string.areaName)
+        etMinCharges.setInputTypeDecimalNumbers()
         Functions.setTypeNumber(etPinCode)
-        Functions.setTypeNumber(etMinCharges)
         val dialogContainerView =  DialogContainerBinding.inflate(layoutInflater)
         with(dialogContainerView.dialogContainer){
             addView(etPinCode)

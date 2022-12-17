@@ -13,6 +13,7 @@ import com.surajmanshal.mannsignadmin.data.model.product.ProductType
 import com.surajmanshal.mannsignadmin.databinding.FragmentItemBinding
 import com.surajmanshal.mannsignadmin.utils.Constants
 import com.surajmanshal.mannsignadmin.utils.Functions
+import com.surajmanshal.mannsignadmin.utils.setInputTypeDecimalNumbers
 import com.surajmanshal.mannsignadmin.viewmodel.PricingViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -79,7 +80,7 @@ class PricingAdapter(
                     val dialogContentLayout = LinearLayout(it.context)
                     dialogContentLayout.setPadding(32,0,32,0)
                     val etPrice = EditText(holder.name.context)
-                    Functions.setTypeNumber(etPrice)
+                    etPrice.setInputTypeDecimalNumbers()
                     etPrice.setText(editTextValue)
                     dialogContentLayout.addView(etPrice)
                     dialog.setView(dialogContentLayout)
