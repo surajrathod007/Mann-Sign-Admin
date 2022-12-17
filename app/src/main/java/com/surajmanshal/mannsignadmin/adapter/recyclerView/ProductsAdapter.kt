@@ -26,11 +26,11 @@ class ProductsAdapter(val productList : List<Product>,val activity: ProductsActi
         val product = productList[position]
         with(holder){
             with(product){
-                val url = images?.apply {
-                    if(isNotEmpty())
-                        get(0).let { Functions.urlMaker(it.url) }
+                val urls = images?.let {
+                    if(it.isNotEmpty())
+                        return@let it.get(0).let { Functions.urlMaker(it.url) } else "TODO : Replace with placeholder"
                 }
-                Glide.with(image.context).load(url).centerCrop().into(image)
+                Glide.with(image.context).load(urls).centerCrop().into(image)
                 title.text = posterDetails!!.title
                 card.setOnClickListener {
                     activity.replaceFragment(1,product)

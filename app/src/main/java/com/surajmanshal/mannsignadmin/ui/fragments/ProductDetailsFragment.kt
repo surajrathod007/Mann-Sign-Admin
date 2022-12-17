@@ -9,9 +9,15 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
+import androidx.core.view.get
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.OrientationHelper
 import com.bumptech.glide.Glide
 import com.surajmanshal.mannsignadmin.R
+import com.surajmanshal.mannsignadmin.adapter.recyclerView.ProductDetailsImageAdapter
+import com.surajmanshal.mannsignadmin.adapter.recyclerView.ProductImageAdapter
+import com.surajmanshal.mannsignadmin.data.model.Language
 import com.surajmanshal.mannsignadmin.data.model.Size
 import com.surajmanshal.mannsignadmin.data.model.product.Product
 import com.surajmanshal.mannsignadmin.databinding.ActivityProductManagementBinding
@@ -40,17 +46,16 @@ class ProductDetailsFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.activity_product_management, container, false)
         _binding = ActivityProductManagementBinding.bind(view)
-
-        mVM._currentProduct.value?.let {
+        val languageList = mutableListOf<Language>()
+        mVM._currentProduct.value?.let { product->
             with(binding){
             // Calls for resources -------------------------------------------------------
             with(mVM){
 
-                getCategoryById(it.category!!)
-                getSubCategoryById(it.subCategory!!)
-                var l = 0
-                it.languages?.forEach { getLanguageById(it) }
-                it.materials?.forEach { getMaterialById(it) }
+                getCategoryById(product.category!!)
+                getSubCategoryById(product.subCategory!!)
+                product.languages?.forEach { getLanguageById(it) }
+                product.materials?.forEach { getMaterialById(it) }
                 _currentProductCategory.observe(viewLifecycleOwner, Observer {
                     setupCategoryView(it.name)
                 })
@@ -60,26 +65,40 @@ class ProductDetailsFragment : Fragment() {
                 _currentProductMaterial.observe(viewLifecycleOwner, Observer {
                     it?.let { setupMaterialViews(it.name) }
                 })
-                _currentProductLanguage.observe(viewLifecycleOwner, Observer {
-                    it?.let { setupLanguageViews(it.name) }
+                _currentProductLanguage.observe(viewLifecycleOwner, Observer { language ->
+                    language?.let {
+                        setupLanguageViews(language.name)
+                        languageList.add(language)
+                        if (languageList.size == (product.images?.size ?: 0)) {
+                            rvProductImages.adapter = product.images?.let { it1 ->
+                                ProductDetailsImageAdapter(it1.map { image -> Pair(image.url
+                                    ,languageList.find { it.id == image.languageId }?.name ?:
+                                    Language(0,"Unavailable").name
+                                )
+                                })
+                            }
+                        }
+                    }
                 })
             }
 
             // Set up Views  ----------------------------------------------------------------
+                rvProductImages.apply {
+                    layoutManager = LinearLayoutManager(requireActivity()
+                        ,OrientationHelper.HORIZONTAL,false)
+                }
 
                 with(Functions){
-                    /*Glide.with(this@ProductDetailsFragment)
-                        .load(urlMaker(it.images!![0].url)).into(ivProduct)*/
                     makeViewVisible(tvSubCategory)
                     makeViewGone(categorySpinner)
                     makeViewGone(btnAddProduct)
                     makeViewVisible(tvBasePrice)
                 }
-                makeETDisableAndSetText(etTitle,it.posterDetails!!.title)
-                makeETDisableAndSetText(etShortDescription,it.posterDetails!!.short_desc)
-                it.posterDetails!!.long_desc?.let { makeETDisableAndSetText(etLongDescription, it) }
-                tvBasePrice.text = "${tvBasePrice.text} ${it.basePrice}"
-                it.sizes?.forEach { setupSizesViews(it) }
+                makeETDisableAndSetText(etTitle,product.posterDetails!!.title)
+                makeETDisableAndSetText(etShortDescription,product.posterDetails!!.short_desc)
+                product.posterDetails!!.long_desc?.let { makeETDisableAndSetText(etLongDescription, it) }
+                tvBasePrice.text = "${tvBasePrice.text} ${product.basePrice}"
+                product.sizes?.forEach { setupSizesViews(it) }
             }
         }
 
