@@ -35,7 +35,6 @@ class OrderItemDetailsActivity : AppCompatActivity() {
                     lid = orderItem.variant!!.languageId,
                     mid = orderItem.variant!!.materialId
                 )
-
             vm.fetchProductReview(orderItem.product!!.productId.toString())
         }
 
@@ -48,7 +47,7 @@ class OrderItemDetailsActivity : AppCompatActivity() {
         }
 
         vm.size.observe(this) {
-            binding.txtOrderItemDetailsSize.text = "${it.height}\" x ${it.width}\""
+            binding.txtOrderItemDetailsSize.text = "${it.width}\" x ${it.height}\""
         }
 
         vm.material.observe(this) {
