@@ -103,7 +103,7 @@ class StatsViewModel : ViewModel() {
             override fun onResponse(call: Call<List<Order>?>, response: Response<List<Order>?>) {
                 response.body()?.let {
                     _allOrders.postValue(it)
-                    _orderSize.postValue(response.body()?.size ?: 0)
+                    //_orderSize.postValue(response.body()?.size ?: 0)
                 }
                 isLoading.postValue(false)
             }
