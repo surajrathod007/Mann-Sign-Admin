@@ -77,10 +77,8 @@ class StatsViewModel : ViewModel() {
                             lst.add(TransactionItem(it))
                         }
                     }
-
                     _transactionItems.postValue(lst)
                     isLoading.postValue(false)
-
                 }
 
                 override fun onFailure(call: Call<List<Transaction>?>, t: Throwable) {

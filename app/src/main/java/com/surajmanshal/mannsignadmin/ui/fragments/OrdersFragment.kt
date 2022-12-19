@@ -45,6 +45,7 @@ class OrdersFragment() : Fragment(), View.OnClickListener {
         binding.txtConfirmedOrders.setOnClickListener(this)
 
 
+        binding.loading.startShimmer()
 
 
         if (NetworkService.checkForInternet(requireContext())) {
