@@ -30,6 +30,9 @@ class OrdersViewModel : ViewModel() {
     private val _user = MutableLiveData<User>()
     val user : LiveData<User> get() = _user
 
+    var _msg = MutableLiveData<String>()
+    val msg : LiveData<String> get() = _msg
+
     //orderitem size,language and materials
     val _size = MutableLiveData<Size>()
     val size : LiveData<Size> get() = _size
@@ -62,21 +65,27 @@ class OrdersViewModel : ViewModel() {
 
     fun getAllOrders() {
         isLoading.postValue(true)
-        val v = NetworkService.networkInstance.fetchAllOrders()
-        v.enqueue(object : Callback<List<Order>?> {
-            override fun onResponse(call: Call<List<Order>?>, response: Response<List<Order>?>) {
-                _allOrders.postValue(response.body())
-                response.body()?.let {
-                    if (it.isEmpty()) {
-                        isEmptyList.postValue(true)
+        try{
+            val v = NetworkService.networkInstance.fetchAllOrders()
+            v.enqueue(object : Callback<List<Order>?> {
+                override fun onResponse(call: Call<List<Order>?>, response: Response<List<Order>?>) {
+                    _allOrders.postValue(response.body())
+                    response.body()?.let {
+                        if (it.isEmpty()) {
+                            isEmptyList.postValue(true)
+                        }
                     }
+                    isLoading.postValue(false)
                 }
-                isLoading.postValue(false)
-            }
-            override fun onFailure(call: Call<List<Order>?>, t: Throwable) {
-                isLoading.postValue(false)
-            }
-        })
+                override fun onFailure(call: Call<List<Order>?>, t: Throwable) {
+                    _msg.postValue("Failed ${t.message}")
+                    isLoading.postValue(false)
+                }
+            })
+        }catch (e : Exception){
+            _msg.postValue(e.message.toString())
+        }
+
     }
 
     fun getMyOrders(){

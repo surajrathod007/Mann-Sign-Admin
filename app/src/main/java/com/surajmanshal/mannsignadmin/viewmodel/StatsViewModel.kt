@@ -77,10 +77,8 @@ class StatsViewModel : ViewModel() {
                             lst.add(TransactionItem(it))
                         }
                     }
-
                     _transactionItems.postValue(lst)
                     isLoading.postValue(false)
-
                 }
 
                 override fun onFailure(call: Call<List<Transaction>?>, t: Throwable) {
@@ -103,7 +101,7 @@ class StatsViewModel : ViewModel() {
             override fun onResponse(call: Call<List<Order>?>, response: Response<List<Order>?>) {
                 response.body()?.let {
                     _allOrders.postValue(it)
-                    _orderSize.postValue(response.body()?.size ?: 0)
+                    //_orderSize.postValue(response.body()?.size ?: 0)
                 }
                 isLoading.postValue(false)
             }

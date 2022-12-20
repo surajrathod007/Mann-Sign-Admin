@@ -175,6 +175,13 @@
                 android:layout_height="match_parent">
 
 
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/loading"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <include
+                        layout="@layout/orders_loading_place_holder"/>
+                </com.facebook.shimmer.ShimmerFrameLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:visibility="gone"
@@ -189,10 +196,10 @@
 
 
         </LinearLayout>
-        <ProgressBar
-            android:layout_gravity="center"
-            android:id="@+id/loading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+
+
+
+
+
     </FrameLayout>
 </layout>

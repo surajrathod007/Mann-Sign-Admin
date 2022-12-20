@@ -45,6 +45,7 @@ class OrdersFragment() : Fragment(), View.OnClickListener {
         binding.txtConfirmedOrders.setOnClickListener(this)
 
 
+        binding.loading.startShimmer()
 
 
         if (NetworkService.checkForInternet(requireContext())) {
@@ -53,7 +54,7 @@ class OrdersFragment() : Fragment(), View.OnClickListener {
             viewModel.allOrders.observe(viewLifecycleOwner) {
                     if(it?.isNotEmpty()==true) {
                         binding.rvOrders.adapter = OrdersAdapter(requireContext(), it)
-                        Toast.makeText(requireContext(),"${it.size} orders",Toast.LENGTH_LONG).show()
+                        //Toast.makeText(requireContext(),"${it.size} orders",Toast.LENGTH_LONG).show()
                     }
             }
             viewModel.isEmptyList.observe(viewLifecycleOwner) {
@@ -70,6 +71,9 @@ class OrdersFragment() : Fragment(), View.OnClickListener {
                     binding.rvOrders.visibility = View.VISIBLE
                     binding.refreshLayout.finishRefreshing()
                 }
+            }
+            viewModel.msg.observe(viewLifecycleOwner){
+                Toast.makeText(requireContext(),it.toString(),Toast.LENGTH_LONG).show()
             }
             binding.refreshLayout.setOnRefreshListener(object : LiquidRefreshLayout.OnRefreshListener {
                 override fun completeRefresh() {

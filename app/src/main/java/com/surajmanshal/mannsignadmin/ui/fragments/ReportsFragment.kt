@@ -95,7 +95,7 @@ class ReportsFragment : Fragment() {
         }
 
         vm.orderSize.observe(viewLifecycleOwner){
-            Toast.makeText(requireContext(),"Size is $it",Toast.LENGTH_LONG).show()
+            //Toast.makeText(requireContext(),"Size is $it",Toast.LENGTH_LONG).show()
         }
 
         vm.serverResponse.observe(viewLifecycleOwner) {
