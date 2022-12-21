@@ -63,7 +63,7 @@ interface NetworkCallsInterface {
     fun updateOrder(@Body order: Order) : Call<SimpleResponse>
 
     @Multipart
-    @POST("image/upload")
+    @POST("productImage/upload")
     suspend fun uploadImage(@Part image: MultipartBody.Part, @Query("languageId")languageId: Int) : SimpleResponse
 
     @GET("size")
