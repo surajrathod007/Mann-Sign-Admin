@@ -1,5 +1,6 @@
 package com.surajmanshal.mannsignadmin.network
 
+import com.surajmanshal.mannsign.data.model.ordering.ChatMessage
 import com.surajmanshal.mannsignadmin.data.model.*
 import com.surajmanshal.mannsignadmin.data.model.auth.LoginRequest
 import com.surajmanshal.mannsignadmin.data.model.auth.LoginResponse
@@ -163,5 +164,11 @@ interface NetworkCallsInterface {
 
     @POST("area/add")
     suspend fun insertArea(@Body area: Area): SimpleResponse
+
+    @GET("chat/getByOrderId")
+    fun loadChats(@Query("orderId") orderId : String) : Call<List<ChatMessage>>
+
+    @POST("chat/add")
+    fun addChat(@Body msg : ChatMessage) : Call<SimpleResponse>
 
 }

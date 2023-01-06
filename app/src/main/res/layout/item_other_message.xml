@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:gravity="left"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.card.MaterialCardView
+            app:cardElevation="0dp"
+            android:layout_margin="4dp"
+            app:cardCornerRadius="22dp"
+            android:backgroundTint="@color/bg_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_margin="10dp"
+                android:textColor="@color/title_text_color"
+                android:textSize="16sp"
+                android:fontFamily="@font/satoshi_medium"
+                android:id="@+id/txtMessageOther"
+                android:text="Hello how are you?"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:layout_marginHorizontal="10dp"
+            android:id="@+id/txtMessageTimeOther"
+            android:text="15:09 Pm"
+            android:textSize="10sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</layout>

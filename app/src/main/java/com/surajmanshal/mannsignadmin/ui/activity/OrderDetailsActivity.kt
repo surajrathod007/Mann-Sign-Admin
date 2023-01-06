@@ -5,13 +5,13 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
 import com.itextpdf.io.image.ImageDataFactory
@@ -112,6 +112,13 @@ class OrderDetailsActivity : AppCompatActivity() {
         binding.btnProductBack.setOnClickListener {
             onBackPressed()
         }
+
+        binding.btnOrderChat.setOnClickListener {
+            val i = Intent(this,ChatActivity::class.java)
+            i.putExtra("id",order.orderId)
+            startActivity(i)
+        }
+
 
     }
 
