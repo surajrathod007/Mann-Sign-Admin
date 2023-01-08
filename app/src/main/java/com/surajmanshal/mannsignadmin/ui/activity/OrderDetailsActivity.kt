@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.ViewModelProvider
 import com.itextpdf.io.image.ImageDataFactory
 import com.itextpdf.kernel.pdf.PdfDocument
@@ -31,10 +32,13 @@ import com.surajmanshal.mannsignadmin.data.model.ordering.Order
 import com.surajmanshal.mannsignadmin.data.model.ordering.OrderItem
 import com.surajmanshal.mannsignadmin.databinding.ActivityOrderDetailsBinding
 import com.surajmanshal.mannsignadmin.utils.Constants
+import com.surajmanshal.mannsignadmin.utils.auth.DataStore.preferenceDataStoreAuth
 import com.surajmanshal.mannsignadmin.viewmodel.OrdersViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -114,12 +118,23 @@ class OrderDetailsActivity : AppCompatActivity() {
         }
 
         binding.btnOrderChat.setOnClickListener {
-            val i = Intent(this,ChatActivity::class.java)
-            i.putExtra("id",order.orderId)
-            startActivity(i)
+            CoroutineScope(Dispatchers.IO).launch {
+                val email = getStringPreferences(Constants.DATASTORE_EMAIL)
+                withContext(Dispatchers.Main){
+                    val i = Intent(this@OrderDetailsActivity,ChatActivity::class.java)
+                    i.putExtra("id",order.orderId)
+                    i.putExtra("email",email)
+                    startActivity(i)
+                }
+            }
         }
 
 
+    }
+
+    suspend fun getStringPreferences(key : String) : String? {
+        val data = preferenceDataStoreAuth.data.first()
+        return data[stringPreferencesKey(key)]
     }
 
 
