@@ -1,11 +1,9 @@
 package com.surajmanshal.mannsignadmin.ui.activity
 
-import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import com.surajmanshal.mannsign.data.model.ordering.ChatMessage
@@ -24,37 +22,15 @@ class ChatActivity : AppCompatActivity() {
     lateinit var mHandler: Handler
     lateinit var mRunnable: Runnable
 
-    //TODO : Do api call in every 1-2 seconds , using handler
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityChatBinding.inflate(layoutInflater)
         vm = ViewModelProvider(this).get(ChatViewModel::class.java)
 
-        val sharedPreference = getSharedPreferences("user_e", Context.MODE_PRIVATE)
-//        email = sharedPreference.getString("email", "")
         email = intent.getStringExtra("email")?:""
         id = intent.getStringExtra("id")
         setContentView(binding.root)
-
-
-        if (!id.isNullOrEmpty() && !email.isNullOrEmpty()) {
-            vm.loadChats(id!!)
-        } else {
-            Functions.makeToast(this, "Email or orderId is empty")
-        }
-
-        mHandler = Handler()
-        mHandler.post(object : Runnable {
-            override fun run() {
-                mRunnable = this
-                if (!id.isNullOrEmpty()) {
-                    vm.loadChats(id!!)
-                }
-                mHandler.postDelayed(this, 500)
-            }
-        })
-
 
         setupObserver()
         btnClickListners()
@@ -65,6 +41,28 @@ class ChatActivity : AppCompatActivity() {
         if (mRunnable != null) {
             mHandler.removeCallbacks(mRunnable)
         }
+    }
+
+    override fun onStart() {
+        mHandler = Handler()
+        super.onStart()
+    }
+
+    override fun onResume() {
+        if (!id.isNullOrEmpty() && !email.isNullOrEmpty()) {
+            mHandler.post(object : Runnable {
+                override fun run() {
+                    mRunnable = this
+                    if (!id.isNullOrEmpty()) {
+                        vm.loadChats(id!!)
+                    }
+                    mHandler.postDelayed(this, 1000)
+                }
+            })
+        } else {
+            Functions.makeToast(this, "Email or orderId is empty")
+        }
+        super.onResume()
     }
 
     override fun onBackPressed() {
@@ -141,15 +139,8 @@ class ChatActivity : AppCompatActivity() {
             smoothScroller.targetPosition = toPos
             layoutManager?.startSmoothScroll(smoothScroller)
         } catch (e: Exception) {
-
+            println("$e")
         }
     }
 
-    fun firstVisiblePostion(): Int {
-        val manager = binding.rvChats.layoutManager
-        if (manager is LinearLayoutManager) {
-            return (manager as LinearLayoutManager).findFirstVisibleItemPosition()
-        }
-        return 0
-    }
 }
