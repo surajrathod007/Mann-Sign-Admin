@@ -2,10 +2,10 @@ package com.surajmanshal.mannsignadmin.ui.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.surajmanshal.mannsignadmin.R
 import com.surajmanshal.mannsignadmin.databinding.FragmentDashboardBinding
 import com.surajmanshal.mannsignadmin.ui.activity.CategoryManagementActivity
@@ -37,10 +37,33 @@ class DashboardFragment : Fragment() {
         _binding = FragmentDashboardBinding.bind(view)
 
         with(binding){
-            btnProductManagement.setOnClickListener{ startActivity(Intent(activity, ProductsActivity::class.java)) }
-            btnCategoryManagement.setOnClickListener{ startActivity(Intent(activity, CategoryManagementActivity::class.java)) }
-            btnPriceManagement.setOnClickListener{ startActivity(Intent(activity, PriceManagementActivity::class.java)) }
-            btnResManagement.setOnClickListener { startActivity(Intent(activity, ResourcesManagementActivity::class.java))  }
+            btnProductManagement.root.setOnClickListener{ startActivity(Intent(activity, ProductsActivity::class.java)) }
+            btnCategoryManagement.root.setOnClickListener{ startActivity(Intent(activity, CategoryManagementActivity::class.java)) }
+            btnPriceManagement.root.setOnClickListener{ startActivity(Intent(activity, PriceManagementActivity::class.java)) }
+            btnResManagement.root.setOnClickListener { startActivity(Intent(activity, ResourcesManagementActivity::class.java))  }
+
+            val managementCardViews = arrayOf(
+                btnProductManagement,btnCategoryManagement,btnPriceManagement,btnResManagement
+            )
+            val cardLabels = arrayOf(
+                "Products Management",
+                "Category Management",
+                "Price Management",
+                "Resources Management"
+            )
+            val cardIcons = arrayOf(
+                R.drawable.ic_box,
+                R.drawable.ic_baseline_import_contacts_24,
+                R.drawable.ic_money,
+                R.drawable.ic_fabric
+            )
+            for(i in managementCardViews.indices){
+                managementCardViews[i].apply {
+                    tvUserName.text = cardLabels[i]
+                    ivCardIcon.setImageResource(cardIcons[i])
+                }
+            }
+
         }
         return binding.root
     }
