@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import com.surajmanshal.mannsignadmin.R
 import com.surajmanshal.mannsignadmin.databinding.FragmentDashboardBinding
@@ -57,10 +58,20 @@ class DashboardFragment : Fragment() {
                 R.drawable.ic_money,
                 R.drawable.ic_fabric
             )
+
+            val cardColors = arrayOf(
+                R.color.title_text_color,
+                R.color.authButtonColor,
+                R.color.gold,
+                R.color.purple_700
+            )
             for(i in managementCardViews.indices){
                 managementCardViews[i].apply {
                     tvUserName.text = cardLabels[i]
-                    ivCardIcon.setImageResource(cardIcons[i])
+                    ivCardIcon.apply {
+                        setImageResource(cardIcons[i])
+                        imageTintList = AppCompatResources.getColorStateList(requireContext(),cardColors[i])
+                    }
                 }
             }
 

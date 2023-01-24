@@ -16,5 +16,6 @@
     <color name="text_normal_color">#374457</color>
 
     <color name="authButtonColor">#3253e0</color>
+    <color name="gold">#db9902</color>
 
 </resources>
