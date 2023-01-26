@@ -54,7 +54,7 @@
                 android:layout_height="36dp"
                 android:layout_margin="4dp"
                 android:padding="4dp"
-                app:tint="@color/black" />
+                 />
 
         </FrameLayout>
 
@@ -303,10 +303,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp" />
 
-                <Spinner
-                    android:id="@+id/spOrderStatus"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnUpdateOrder"

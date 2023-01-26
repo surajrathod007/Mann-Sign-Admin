@@ -149,7 +149,7 @@ class ChatActivity : AppCompatActivity() {
 
     fun setupObserver() {
         vm.msg.observe(this) {
-            Functions.makeToast(this@ChatActivity, it)
+            Functions.makeToast(this@ChatActivity, "msg : "+it)
         }
         vm.chats.observe(this) {
             //val count = (binding.rvChats.adapter as ChatAdapter).itemCount
@@ -157,6 +157,10 @@ class ChatActivity : AppCompatActivity() {
                 binding.rvChats.adapter = ChatAdapter(this@ChatActivity, it, email)
                 vm.msgSize.postValue(it.size)
                 //Functions.makeToast(this@ChatActivity,"In if")
+                val pos = (binding.rvChats.adapter as ChatAdapter).itemCount - 1
+                binding.rvChats.smoothScroll(pos, 200) {
+
+                }
             } else if (it.size > vm.msgSize.value!!) {
                 //Functions.makeToast(this@ChatActivity,"In else if")
                 binding.rvChats.adapter = ChatAdapter(this@ChatActivity, it, email)

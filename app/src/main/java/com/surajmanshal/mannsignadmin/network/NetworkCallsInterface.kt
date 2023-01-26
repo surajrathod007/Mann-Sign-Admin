@@ -178,4 +178,7 @@ interface NetworkCallsInterface {
     @POST("chat/add")
     suspend fun addImageChat(@Body msg : ChatMessage) : SimpleResponse
 
+    @POST("order/id")
+    fun getOrderById(@Query("id") id : String) : Call<Order>
+
 }

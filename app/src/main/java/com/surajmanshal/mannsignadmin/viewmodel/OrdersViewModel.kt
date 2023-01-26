@@ -46,6 +46,10 @@ class OrdersViewModel : ViewModel() {
     val _reviews = MutableLiveData<List<Review>>()
     val reviews : LiveData<List<Review>> get() = _reviews
 
+    val _order = MutableLiveData<Order>()
+    val order : LiveData<Order> get() = _order
+
+
     companion object {
         val repository = Repository()
     }
@@ -112,7 +116,7 @@ class OrdersViewModel : ViewModel() {
                         response: Response<SimpleResponse?>
                     ) {
                         _serverResponse.postValue(response.body())
-
+                        getOrderById(order.orderId)
                         //this is not working
                         /*
                         CoroutineScope(Dispatchers.IO).launch {
@@ -208,6 +212,34 @@ class OrdersViewModel : ViewModel() {
 
             }
         })
+    }
+
+    fun getOrderById(id : String){
+        isLoading.postValue(true)
+
+        try{
+            val r = NetworkService.networkInstance.getOrderById(id)
+            r.enqueue(object : Callback<Order?> {
+                override fun onResponse(call: Call<Order?>, response: Response<Order?>) {
+                    if(response.body() != null){
+                        _order.postValue(response.body())
+                        //_msg.postValue("${response.body()}")
+                    }else{
+                        _msg.postValue("No order found of this id $id")
+                    }
+                    isLoading.postValue(false)
+                }
+
+                override fun onFailure(call: Call<Order?>, t: Throwable) {
+                    _msg.postValue("Throwable : ${t.message}")
+                    isLoading.postValue(false)
+                }
+            })
+        }catch (e : Exception){
+            _msg.postValue("Exception : ${e.message}")
+            isLoading.postValue(false)
+        }
+
     }
 
 }
