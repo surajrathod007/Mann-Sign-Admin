@@ -7,6 +7,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:animateLayoutChanges="true"
+    android:background="@color/white"
     >
 
     <TextView
@@ -15,7 +16,8 @@
         android:layout_height="56dp"
         android:gravity="center"
         android:textSize="18dp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:textColor="@color/title_text_color"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvItems"

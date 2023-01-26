@@ -9,6 +9,8 @@
     <string name="attempts_left">Attempts left :</string>
     <string name="pinCode">PIN Code</string>
     <string name="areaName">Area name</string>
+    <string name="sizes">Sizes</string>
+    <string name="materials">Materials</string>
 
     <!-- Spinner OrderStatus -->
     <string-array name="order_status_array">

@@ -13,7 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import android.widget.LinearLayout
+import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -55,6 +55,10 @@ class ResourcesManagementActivity : AppCompatActivity() {
 
         with(binding) {
 
+            allResLayout.apply {
+                root.layoutParams = FrameLayout.LayoutParams(0,0)
+            }
+
             inputFields = arrayOf(etWidth,
                 etHeight,
                 etLanguageName,
@@ -94,7 +98,7 @@ class ResourcesManagementActivity : AppCompatActivity() {
                 textView.setOnClickListener {
                     hideDialogs()
                     allResLayout.apply {
-                        root.layoutParams = LinearLayout.LayoutParams(
+                        root.layoutParams = FrameLayout.LayoutParams(
                             ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT)
                         tvToolbar.text = when(viewResButtons.indexOf(textView)){
@@ -109,6 +113,7 @@ class ResourcesManagementActivity : AppCompatActivity() {
                             1 -> vm.getMaterials()
                             2 -> vm.getLanguages()
                         }
+                        root.show()
                     }
                 }
             }
@@ -342,7 +347,7 @@ class ResourcesManagementActivity : AppCompatActivity() {
                 buttonsLayout.show()
                 hideDialogs()
                 allResLayout.apply {
-                    root.layoutParams = LinearLayout.LayoutParams(0,0)
+                    root.layoutParams = FrameLayout.LayoutParams(0,0)
                 }
             }else super.onBackPressed()
         }
