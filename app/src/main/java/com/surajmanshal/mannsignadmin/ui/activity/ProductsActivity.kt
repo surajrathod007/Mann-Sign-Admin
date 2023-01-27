@@ -1,7 +1,8 @@
 package com.surajmanshal.mannsignadmin.ui.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN
 import androidx.lifecycle.ViewModelProvider
 import com.surajmanshal.mannsignadmin.data.model.product.Product
 import com.surajmanshal.mannsignadmin.databinding.ActivityProductsBinding
@@ -21,29 +22,13 @@ class ProductsActivity : AppCompatActivity() {
         setContentView(binding.root)
         vm = ViewModelProvider(this)[ProductsViewModel::class.java]
 
-        replaceFragment(0,null)
-//        binding.rvProducts.layoutManager = GridLayoutManager(this,columCount)
-//
-//        // Views Setup
-//        with(binding){
-//            btnAddProduct.setOnClickListener {
-//                startActivity(Intent(this@ProductsActivity, ProductManagementActivity::class.java))
-//            }
-//        }
-//        vm.products.observe(this, Observer {
-//            setAdapterWithList(it)
-//        })
-//        vm.getPosters()
+        replaceFragment(0, null)
     }
-//
-//    fun setAdapterWithList(list: List<Product>){
-//        if (list.isNotEmpty()) binding.rvProducts.adapter = ProductsAdapter(list)
-//    }
     fun replaceFragment(code : Int,product: Product?){
         product?.let { vm._currentProduct.value = product }
-        val fragment = if(code==0)ProductsListFragment.newInstance(vm,this)
+        val fragment = if(code==0) ProductsListFragment.newInstance(vm,this)
         else ProductDetailsFragment.newInstance(vm)
-        supportFragmentManager.beginTransaction().addToBackStack(null)
+        supportFragmentManager.beginTransaction().setTransition(TRANSIT_FRAGMENT_OPEN).addToBackStack(null)
             .replace(binding.fragmentContainerView.id,
             fragment).commit()
     }

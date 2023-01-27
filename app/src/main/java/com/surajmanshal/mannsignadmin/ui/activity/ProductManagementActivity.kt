@@ -19,8 +19,9 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.forEach
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.OrientationHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.internal.LinkedTreeMap
 import com.surajmanshal.mannsignadmin.adapter.recyclerView.ProductImageAdapter
@@ -34,6 +35,7 @@ import com.surajmanshal.mannsignadmin.utils.PageIndicator
 import com.surajmanshal.mannsignadmin.viewmodel.ProductManagementViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -71,7 +73,7 @@ class ProductManagementActivity : AppCompatActivity() {
                         CoroutineScope(Dispatchers.IO).launch {
                             vm.productImages.value?.forEach {
                                 if(it.fileUri!=null)
-                                setupImage(it)
+                                    setupImage(it)
                             }
                         }
                         sizes = getSelectedSizes(gvSizes)
@@ -97,7 +99,8 @@ class ProductManagementActivity : AppCompatActivity() {
             }
 //            val snapHelper = PagerSnapHelper()
             rvProductImages.apply {
-                layoutManager = LinearLayoutManager(this@ProductManagementActivity,OrientationHelper.HORIZONTAL,false)
+                layoutManager = LinearLayoutManager(this@ProductManagementActivity,
+                    RecyclerView.HORIZONTAL,false)
 //                snapHelper.attachToRecyclerView(this)
             }
 
@@ -119,13 +122,21 @@ class ProductManagementActivity : AppCompatActivity() {
             setupSubcategoryViews()
         })
         vm.serverResponse.observe(this, Observer {
-            Toast.makeText(this@ProductManagementActivity, it.message, Toast.LENGTH_SHORT).show()
+
         })
         vm.productUploadResponse.observe(this, Observer {
-            // todo : show some loading/progress ui
+            if(it.success) {
+                Toast.makeText(this@ProductManagementActivity, "Product Added", Toast.LENGTH_SHORT)
+                    .show()
+                lifecycleScope.launch {
+                    delay(1500)
+                    onBackPressed()
+                }
+            }
         })
         vm.imageUploadResponse.observe(this, Observer { response ->
             // todo : show some loading/progress ui
+            Toast.makeText(this@ProductManagementActivity, response.message, Toast.LENGTH_SHORT).show()
             val data = response.data as LinkedTreeMap<String,Any>
             mImages.add(Image(id = data["id"].toString().toDouble().toInt(), url = data["url"].toString(),
                 description = data["description"].toString(),
@@ -156,10 +167,11 @@ class ProductManagementActivity : AppCompatActivity() {
 
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onBackPressed() {
+        startActivity(Intent(this,ProductsActivity::class.java))
+        finish()
+        super.onBackPressed()
     }
-
 
     // Utilities
     private suspend fun setupImage(imageLanguage: ImageLanguage) {
@@ -210,7 +222,7 @@ class ProductManagementActivity : AppCompatActivity() {
                         val dialog = android.app.AlertDialog.Builder(this)
                         dialog.setTitle("Select Poster language")
                         val dialogContentLayout = LinearLayout(this).apply {
-                            orientation = OrientationHelper.VERTICAL
+                            orientation = LinearLayout.VERTICAL
                         }
                         dialogContentLayout.setPadding(32,0,32,0)
                         var languageId = -1

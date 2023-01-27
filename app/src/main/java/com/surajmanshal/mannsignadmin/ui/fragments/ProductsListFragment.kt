@@ -2,16 +2,15 @@ package com.surajmanshal.mannsignadmin.ui.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.surajmanshal.mannsignadmin.R
 import com.surajmanshal.mannsignadmin.adapter.recyclerView.ProductsAdapter
 import com.surajmanshal.mannsignadmin.data.model.product.Product
-import com.surajmanshal.mannsignadmin.databinding.FragmentProductDetailsBinding
 import com.surajmanshal.mannsignadmin.databinding.FragmentProductsListBinding
 import com.surajmanshal.mannsignadmin.ui.activity.ProductManagementActivity
 import com.surajmanshal.mannsignadmin.ui.activity.ProductsActivity
@@ -45,6 +44,7 @@ class ProductsListFragment : Fragment() {
         with(binding){
             btnAddProduct.setOnClickListener {
                 startActivity(Intent(activity, ProductManagementActivity::class.java))
+                activity?.finish()
             }
         }
         mVM.products.observe(viewLifecycleOwner, Observer {
@@ -55,7 +55,7 @@ class ProductsListFragment : Fragment() {
     }
 
     fun setAdapterWithList(list: List<Product>){
-        if (list.isNotEmpty()) binding.rvProducts.adapter = ProductsAdapter(list,mActivity)
+        if (list.isNotEmpty()) binding.rvProducts.adapter = ProductsAdapter(list.reversed(),mActivity)
     }
 
 
