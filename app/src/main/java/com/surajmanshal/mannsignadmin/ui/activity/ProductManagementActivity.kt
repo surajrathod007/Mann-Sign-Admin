@@ -69,6 +69,14 @@ class ProductManagementActivity : AppCompatActivity() {
             btnAddProduct.setOnClickListener {
                 mProduct.also{ product ->
                     with(product) {
+                        etProductCode.text.apply {
+                            if(isNullOrBlank()) {
+                                Toast.makeText(this@ProductManagementActivity, "Product code is required", Toast.LENGTH_SHORT).show()
+                                etProductCode.requestFocus()
+                                return@setOnClickListener
+                            }
+                            productCode = this.toString()
+                        }
 //                        val uploadedImages = setupImage()
                         CoroutineScope(Dispatchers.IO).launch {
                             vm.productImages.value?.forEach {

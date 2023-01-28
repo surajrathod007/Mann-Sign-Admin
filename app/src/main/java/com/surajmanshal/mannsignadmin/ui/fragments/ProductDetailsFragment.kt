@@ -99,7 +99,7 @@ class ProductDetailsFragment : Fragment() {
                 etTitle.setText(product.posterDetails!!.title)
                 etShortDescription.setText(product.posterDetails!!.short_desc)
                 product.posterDetails!!.long_desc?.let { etLongDescription.setText(it) }
-
+                etProductCode.setText(product.productCode)
                 tvBasePrice.text = "${tvBasePrice.text} ${product.basePrice}"
                 product.sizes?.forEach { setupSizesViews(it) }
             }
