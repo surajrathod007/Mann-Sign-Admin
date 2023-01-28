@@ -2,6 +2,7 @@ package com.surajmanshal.mannsignadmin.adapter.recyclerView
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,11 +41,16 @@ class OrderItemsAdapter(val context: Context, val orderItems: List<OrderItem>) :
             txtOrderItemBasePrice.text = "Base Price : ₹" + o.product!!.basePrice.toString()
             txtOrderItemTotalPrice.text = "₹" + o.totalPrice.toString()
             with(o) {
-                val url = product?.images?.let {
-                    if(it.isNotEmpty())
-                        Functions.urlMaker(it[0].url)
+                if (!product?.images.isNullOrEmpty()) {
+                    Glide.with(context)
+                        .load(Uri.parse(Functions.urlMaker(product?.images?.get(0)?.url.toString())))
+                        .placeholder(
+                            R.drawable.no_photo
+                        )
+                        .into(imgProduct)
+                }else{
+                    Functions.makeToast(context, "No image url !")
                 }
-                Glide.with(imgProduct.context).load(url).into(imgProduct)
             }
             if (o.product!!.posterDetails != null) {
                 txtOrderItemTitle.text = o.product!!.posterDetails!!.title.toString()

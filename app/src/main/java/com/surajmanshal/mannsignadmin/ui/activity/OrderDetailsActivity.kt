@@ -32,6 +32,7 @@ import com.surajmanshal.mannsignadmin.data.model.ordering.Order
 import com.surajmanshal.mannsignadmin.data.model.ordering.OrderItem
 import com.surajmanshal.mannsignadmin.databinding.ActivityOrderDetailsBinding
 import com.surajmanshal.mannsignadmin.utils.Constants
+import com.surajmanshal.mannsignadmin.utils.Functions
 import com.surajmanshal.mannsignadmin.utils.auth.DataStore.preferenceDataStoreAuth
 import com.surajmanshal.mannsignadmin.viewmodel.OrdersViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -46,7 +47,7 @@ import java.time.LocalDate
 
 class OrderDetailsActivity : AppCompatActivity() {
 
-    lateinit var spinner: Spinner
+    //lateinit var spinner: Spinner
     lateinit var paymentStatusSpinner: Spinner
     lateinit var binding: ActivityOrderDetailsBinding
     lateinit var vm: OrdersViewModel
@@ -55,7 +56,7 @@ class OrderDetailsActivity : AppCompatActivity() {
     lateinit var order: Order
 
     companion object{
-        val statuses = arrayOf("Pending","Confirmed","Processing","Ready","Delivered","Canceled")
+        val statuses = arrayOf("Pending","Confirmed","Processing","Ready","Out for delivery","Delivered","Canceled")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,18 +68,19 @@ class OrderDetailsActivity : AppCompatActivity() {
         status = i.getIntExtra("status", 0)
         order = i.getSerializableExtra("order") as Order
 
+        vm.getOrderById(order.orderId)
         setContentView(binding.root)
-        spinner = findViewById(R.id.spOrderStatus)
+        //spinner = findViewById(R.id.spOrderStatus)
         paymentStatusSpinner = findViewById(R.id.spOrderPaymentStatus)
 
         CoroutineScope(Dispatchers.IO).launch {
             vm.fetchUserByEmail(order.emailId)
         }
-        setupSpinner()
+        //setupSpinner()
         setUpPaymentStatus()
-        setupOrderDetails(order)
-        setupOrderItems(order.orderItems)
-        setupUpdateButton(order.orderStatus)
+        //setupOrderDetails(order)
+        //setupOrderItems(order.orderItems)
+        //setupUpdateButton(order.orderStatus)
 
         vm.serverResponse.observe(this) {
             Toast.makeText(this@OrderDetailsActivity, "${it.message}", Toast.LENGTH_SHORT).show()
@@ -95,13 +97,23 @@ class OrderDetailsActivity : AppCompatActivity() {
             }
         }
 
+        vm.msg.observe(this){
+            Functions.makeToast(this,it)
+        }
+
+        vm.order.observe(this){
+            setupOrderDetails(it)
+            setupOrderItems(it.orderItems)
+            setupUpdateButton(it.orderStatus)
+        }
+
         binding.btnUpdateOrder.setOnClickListener {
 
             if(binding.edEstimatedDays.text.toString() == "0" || binding.edEstimatedDays.text.toString().isNullOrEmpty()){
                 Toast.makeText(this,"Please enter the estimated days !",Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
-            if(orderStatus == Constants.ORDER_DELIVERED && binding.edTrackingUrl.text.toString().isNullOrEmpty())
+            if(orderStatus == Constants.ORDER_OUT_FOR_DELIVERY && binding.edTrackingUrl.text.toString().isNullOrEmpty())
             {
                 Toast.makeText(this,"Please Provide The Tracking Url ! !",Toast.LENGTH_LONG).show()
                 return@setOnClickListener
@@ -157,21 +169,28 @@ class OrderDetailsActivity : AppCompatActivity() {
             }
 
             Constants.ORDER_READY -> {
+                orderStatus = Constants.ORDER_OUT_FOR_DELIVERY
+                binding.btnUpdateOrder.text = "Make Order Out For Delivery"
+            }
+
+            Constants.ORDER_OUT_FOR_DELIVERY -> {
                 orderStatus = Constants.ORDER_DELIVERED
-                binding.btnUpdateOrder.text = "Make Order Delivered"
+                binding.btnUpdateOrder.text = "Make order delivered"
+                //binding.btnUpdateOrder.isEnabled = false
             }
 
             Constants.ORDER_DELIVERED -> {
-                orderStatus = Constants.ORDER_DELIVERED
-                binding.btnUpdateOrder.text = "Order Is Delivered !"
+                orderStatus = Constants.ORDER_CANCELED
+                binding.btnUpdateOrder.text = "Order Delivered !"
                 binding.btnUpdateOrder.isEnabled = false
             }
 
             Constants.ORDER_CANCELED -> {
                 orderStatus = Constants.ORDER_CANCELED
-                binding.btnUpdateOrder.text = "Order Is Canceled !"
+                binding.btnUpdateOrder.text = "Order canceled !"
                 binding.btnUpdateOrder.isEnabled = false
             }
+
         }
     }
 
@@ -186,6 +205,7 @@ class OrderDetailsActivity : AppCompatActivity() {
         builder.setMessage("After setting order to \"${statuses.get(orderStatus)}\" it can not be undone...")
         builder.setPositiveButton("Change Status"){dialog,which ->
 
+            val o = vm.order.value
             order.also {
                 it.orderStatus = orderStatus
                 //it.paymentStatus = paymentStatusSpinner.selectedItemPosition
@@ -224,7 +244,7 @@ class OrderDetailsActivity : AppCompatActivity() {
                 edTrackingUrl.setText(order.trackingUrl)
             }
             paymentStatusSpinner.setSelection(order.paymentStatus)
-            spinner.setSelection(order.orderStatus)
+            //spinner.setSelection(order.orderStatus)
         }
     }
 
@@ -243,7 +263,7 @@ class OrderDetailsActivity : AppCompatActivity() {
             R.layout.custom_spinner_item,
             resources.getStringArray(R.array.order_status_array)
         )
-        spinner.adapter = adp
+        //spinner.adapter = adp
 
     }
 

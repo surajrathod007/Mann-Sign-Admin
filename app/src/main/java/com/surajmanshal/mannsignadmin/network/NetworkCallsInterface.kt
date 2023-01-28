@@ -171,4 +171,14 @@ interface NetworkCallsInterface {
     @POST("chat/add")
     fun addChat(@Body msg : ChatMessage) : Call<SimpleResponse>
 
+    @Multipart
+    @POST("chat/uploadImage")
+    suspend fun uploadChatImage(@Part image: MultipartBody.Part) : SimpleResponse
+
+    @POST("chat/add")
+    suspend fun addImageChat(@Body msg : ChatMessage) : SimpleResponse
+
+    @POST("order/id")
+    fun getOrderById(@Query("id") id : String) : Call<Order>
+
 }
