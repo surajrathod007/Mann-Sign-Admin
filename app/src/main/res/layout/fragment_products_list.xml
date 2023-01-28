@@ -1,32 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.fragments.ProductsListFragment">
+    tools:context=".ui.fragments.ProductsListFragment"
+    android:orientation="vertical"
+    android:background="@color/black"
+    >
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvProducts"
-        android:layout_width="wrap_content"
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:paddingHorizontal="@dimen/margin_medium"
+        android:paddingTop="16dp"
+        android:background="@drawable/bottomsheet_background"
+        android:backgroundTint="@color/white"
+        >
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/etSearch"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:iconifiedByDefault="false"
+                app:queryHint="Name, id or code"
+                android:foregroundTint="@color/text_normal_color"
+                android:background="@drawable/box_edittext"
+                />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        />
+        android:background="@color/white">
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/btnAddProduct"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add Product"
-        android:textAllCaps="false"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.9"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.95" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvProducts"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/tvNoProducts"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_marginBottom="72dp"
+            android:text="No products found"
+            android:textSize="16sp"
+            android:textColor="@color/title_text_color"
+            android:background="@color/white"
+            android:visibility="gone"
+            />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/btnAddProduct"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Product"
+            android:textAllCaps="false"
+            android:textStyle="bold"
+            android:layout_gravity="bottom|end"
+            android:gravity="center"
+            android:layout_margin="24dp"/>
+
+    </FrameLayout>
+
+</LinearLayout>
