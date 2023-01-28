@@ -1,27 +1,20 @@
 package com.surajmanshal.mannsignadmin.ui.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
-import androidx.core.view.get
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.OrientationHelper
-import com.bumptech.glide.Glide
+import androidx.recyclerview.widget.RecyclerView
 import com.surajmanshal.mannsignadmin.R
 import com.surajmanshal.mannsignadmin.adapter.recyclerView.ProductDetailsImageAdapter
-import com.surajmanshal.mannsignadmin.adapter.recyclerView.ProductImageAdapter
 import com.surajmanshal.mannsignadmin.data.model.Language
 import com.surajmanshal.mannsignadmin.data.model.Size
-import com.surajmanshal.mannsignadmin.data.model.product.Product
 import com.surajmanshal.mannsignadmin.databinding.ActivityProductManagementBinding
-import com.surajmanshal.mannsignadmin.ui.activity.ProductsActivity
 import com.surajmanshal.mannsignadmin.utils.Functions
 import com.surajmanshal.mannsignadmin.viewmodel.ProductsViewModel
 
@@ -85,18 +78,28 @@ class ProductDetailsFragment : Fragment() {
             // Set up Views  ----------------------------------------------------------------
                 rvProductImages.apply {
                     layoutManager = LinearLayoutManager(requireActivity()
-                        ,OrientationHelper.HORIZONTAL,false)
+                        , RecyclerView.HORIZONTAL,false)
                 }
 
                 with(Functions){
                     makeViewVisible(tvSubCategory)
                     makeViewGone(categorySpinner)
-                    makeViewGone(btnAddProduct)
+                    /*makeViewGone(btnAddProduct)*/
+                    btnAddProduct.apply {
+                        text = "Update Details"
+                        setOnClickListener {
+
+                        }
+                    }
                     makeViewVisible(tvBasePrice)
                 }
-                makeETDisableAndSetText(etTitle,product.posterDetails!!.title)
+                /*makeETDisableAndSetText(etTitle,product.posterDetails!!.title)
                 makeETDisableAndSetText(etShortDescription,product.posterDetails!!.short_desc)
-                product.posterDetails!!.long_desc?.let { makeETDisableAndSetText(etLongDescription, it) }
+                product.posterDetails!!.long_desc?.let { makeETDisableAndSetText(etLongDescription, it) }*/
+                etTitle.setText(product.posterDetails!!.title)
+                etShortDescription.setText(product.posterDetails!!.short_desc)
+                product.posterDetails!!.long_desc?.let { etLongDescription.setText(it) }
+
                 tvBasePrice.text = "${tvBasePrice.text} ${product.basePrice}"
                 product.sizes?.forEach { setupSizesViews(it) }
             }
