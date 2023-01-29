@@ -34,27 +34,6 @@
                 android:layout_height="wrap_content"/>
 
 
-        <!--
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:tabIndicatorColor="@color/purple_200"
-                android:textSize="10dp"
-                app:tabTextColor="@color/black"/>
-
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/viewPagerOrders"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-
-        </LinearLayout>
-        -->
 
         <HorizontalScrollView
             android:padding="10dp"
@@ -135,6 +114,20 @@
                     android:foreground="?attr/selectableItemBackground"/>
 
                 <TextView
+                    android:padding="10dp"
+                    android:id="@+id/txtOutForDeliveryOrders"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:clickable="true"
+                    android:textAllCaps="false"
+                    android:textColor="@color/title_text_color"
+                    android:fontFamily="@font/satoshi_medium"
+                    android:text="Out for delivery"
+                    android:background="@drawable/textview_background"
+                    android:foreground="?attr/selectableItemBackground"/>
+
+                <TextView
                     android:fontFamily="@font/satoshi_medium"
                     android:padding="10dp"
                     android:layout_marginLeft="10dp"
@@ -175,22 +168,27 @@
                 android:layout_height="match_parent">
 
 
-                <com.facebook.shimmer.ShimmerFrameLayout
-                    android:id="@+id/loading"
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-                    <include
-                        layout="@layout/orders_loading_place_holder"/>
-                </com.facebook.shimmer.ShimmerFrameLayout>
+                    <com.facebook.shimmer.ShimmerFrameLayout
+                        android:id="@+id/loading"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <include
+                            layout="@layout/orders_loading_place_holder"/>
+                    </com.facebook.shimmer.ShimmerFrameLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:visibility="gone"
-                    android:layout_margin="10dp"
-                    android:id="@+id/rvOrders"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/item_order_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:visibility="gone"
+                        android:layout_margin="10dp"
+                        android:id="@+id/rvOrders"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/item_order_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+                </FrameLayout>
+
             </com.madapps.liquid.LiquidRefreshLayout>
 
 

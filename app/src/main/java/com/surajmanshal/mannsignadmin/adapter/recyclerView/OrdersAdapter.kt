@@ -66,6 +66,11 @@ class OrdersAdapter(val context: Context, val orders: List<Order>) :
                 holder.txtOrderStatus.setTextColor(context.resources.getColor(R.color.white))
                 holder.txtOrderStatus.text = "Ready"
             }
+            Constants.ORDER_OUT_FOR_DELIVERY -> {
+                holder.txtOrderStatus.setBackgroundColor(context.resources.getColor(R.color.order_selected_text_color))
+                holder.txtOrderStatus.setTextColor(context.resources.getColor(R.color.white))
+                holder.txtOrderStatus.text = "Out for delivery"
+            }
             Constants.ORDER_DELIVERED -> {
                 holder.txtOrderStatus.setBackgroundColor(context.resources.getColor(R.color.order_selected_text_color))
                 holder.txtOrderStatus.setTextColor(context.resources.getColor(R.color.white))

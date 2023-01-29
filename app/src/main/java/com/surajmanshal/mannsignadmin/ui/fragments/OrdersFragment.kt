@@ -43,6 +43,7 @@ class OrdersFragment() : Fragment(), View.OnClickListener {
         binding.txtDeliveredOrders.setOnClickListener(this)
         binding.txtCanceledOrders.setOnClickListener(this)
         binding.txtConfirmedOrders.setOnClickListener(this)
+        binding.txtOutForDeliveryOrders.setOnClickListener(this)
 
 
         binding.loading.startShimmer()
@@ -149,6 +150,15 @@ class OrdersFragment() : Fragment(), View.OnClickListener {
                     binding.rvOrders.adapter = OrdersAdapter(
                         requireContext(),
                         viewModel.allOrders.value!!.filter { it.orderStatus == Constants.ORDER_READY })
+                }
+                R.id.txtOutForDeliveryOrders -> {
+                    if (viewModel.allOrders.value!!.filter { it.orderStatus == Constants.ORDER_OUT_FOR_DELIVERY }
+                            .isEmpty())
+                        Toast.makeText(requireContext(), "No Orders", Toast.LENGTH_SHORT)
+                            .show()
+                    binding.rvOrders.adapter = OrdersAdapter(
+                        requireContext(),
+                        viewModel.allOrders.value!!.filter { it.orderStatus == Constants.ORDER_OUT_FOR_DELIVERY })
                 }
                 R.id.txtDeliveredOrders -> {
                     if (viewModel.allOrders.value!!.filter { it.orderStatus == Constants.ORDER_DELIVERED }
