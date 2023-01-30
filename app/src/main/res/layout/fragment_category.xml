@@ -7,12 +7,17 @@
     android:layout_height="match_parent"
     tools:context=".ui.fragments.category.CategoryFragment">
 
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/base_toolbar_layout"
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCategories"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="12dp"/>
+        android:padding="12dp"
+        android:layout_marginTop="56dp"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/alertDialog"

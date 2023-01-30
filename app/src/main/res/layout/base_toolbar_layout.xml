@@ -21,7 +21,7 @@
         android:id="@+id/ivBack"
         android:layout_width="56dp"
         android:layout_height="56dp"
-        android:padding="12dp"
+        android:padding="16dp"
         android:src="@drawable/ic_baseline_arrow_back_ios_24"
         android:layout_gravity="center_vertical"
         />
@@ -30,7 +30,7 @@
         android:id="@+id/ivAction"
         android:layout_width="56dp"
         android:layout_height="56dp"
-        android:padding="12dp"
+        android:padding="16dp"
         android:src="@drawable/ic_baseline_edit_24"
         android:layout_gravity="end|center_vertical"
         app:tint="@color/black" />

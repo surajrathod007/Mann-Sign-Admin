@@ -13,9 +13,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.surajmanshal.mannsignadmin.R
 import com.surajmanshal.mannsignadmin.adapter.recyclerView.SubCategoryAdapter
-import com.surajmanshal.mannsignadmin.data.model.Category
 import com.surajmanshal.mannsignadmin.data.model.SubCategory
 import com.surajmanshal.mannsignadmin.databinding.FragmentCategoryBinding
+import com.surajmanshal.mannsignadmin.utils.hide
 import com.surajmanshal.mannsignadmin.viewmodel.CategoryViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -67,6 +67,11 @@ class SubCategoryFragment : CategoryFragment() {
                     }
                 })
                 dialog.show()
+            }
+            toolbar.apply {
+                ivBack.setOnClickListener { activity?.onBackPressed() }
+                ivAction.hide()
+                tvToolBarTitle.text = "Subcategories"
             }
         }
         vm.subCategories.observe(viewLifecycleOwner, Observer {

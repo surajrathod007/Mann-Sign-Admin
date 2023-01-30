@@ -16,6 +16,7 @@ import com.surajmanshal.mannsignadmin.adapter.recyclerView.CategoryAdapter
 import com.surajmanshal.mannsignadmin.data.model.Category
 import com.surajmanshal.mannsignadmin.databinding.FragmentCategoryBinding
 import com.surajmanshal.mannsignadmin.ui.fragments.AdapterFragment
+import com.surajmanshal.mannsignadmin.utils.hide
 import com.surajmanshal.mannsignadmin.viewmodel.CategoryViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -58,6 +59,11 @@ open class CategoryFragment : AdapterFragment() {
             }
             btnAddCategory.setOnClickListener {
                 setupInputDialog().show()
+            }
+            toolbar.apply {
+                ivBack.setOnClickListener { activity?.onBackPressed() }
+                ivAction.hide()
+                tvToolBarTitle.text = "Categories"
             }
         }
         vm.categories.observe(viewLifecycleOwner, Observer {
