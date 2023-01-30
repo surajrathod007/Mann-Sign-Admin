@@ -62,7 +62,7 @@ class ProductManagementActivity : AppCompatActivity() {
            mProduct = if(it==null) Product(0)
            else it as Product
         }
-        Toast.makeText(this, "$mProduct", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this, "$mProduct", Toast.LENGTH_SHORT).show()
         vm = ViewModelProvider(this).get(ProductManagementViewModel::class.java)
 
         var selectedCategory : Int? = 0
@@ -184,7 +184,7 @@ class ProductManagementActivity : AppCompatActivity() {
         })
         vm.imageUploadResponse.observe(this, Observer { response ->
             // todo : show some loading/progress ui
-            Toast.makeText(this@ProductManagementActivity, response.message, Toast.LENGTH_SHORT).show()
+//            Toast.makeText(this@ProductManagementActivity, response.message, Toast.LENGTH_SHORT).show()
             val data = response.data as LinkedTreeMap<String,Any>
             mImages.add(Image(id = data["id"].toString().toDouble().toInt(), url = data["url"].toString(),
                 description = data["description"].toString(),
@@ -299,7 +299,7 @@ class ProductManagementActivity : AppCompatActivity() {
                         dialog.setCancelable(false)
                         dialog.setPositiveButton("Set", object : DialogInterface.OnClickListener {
                             override fun onClick(p0: DialogInterface?, p1: Int) {
-                                Toast.makeText(this@ProductManagementActivity,"$languageId", Toast.LENGTH_SHORT).show()
+//                                Toast.makeText(this@ProductManagementActivity,"$languageId", Toast.LENGTH_SHORT).show()
                                 vm.addImage(selectedImageUri,languageId)
                             }
                         })
