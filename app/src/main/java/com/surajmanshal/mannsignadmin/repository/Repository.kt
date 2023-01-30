@@ -4,7 +4,6 @@ import com.surajmanshal.mannsignadmin.data.model.*
 import com.surajmanshal.mannsignadmin.data.model.ordering.Order
 import com.surajmanshal.mannsignadmin.data.model.product.Product
 import com.surajmanshal.mannsignadmin.network.NetworkService
-import com.surajmanshal.response.SimpleResponse
 import okhttp3.MultipartBody
 
 open class Repository() {
@@ -28,6 +27,8 @@ open class Repository() {
     suspend fun updateOrder(order: Order) = server.updateOrder(order)
 
     suspend fun sendProduct(product: Product) = server.sendProduct(product)
+
+    suspend fun updateProduct(product: Product) = server.updateProduct(product)
 
     fun fetchPosters() = server.fetchAllPosters()
 

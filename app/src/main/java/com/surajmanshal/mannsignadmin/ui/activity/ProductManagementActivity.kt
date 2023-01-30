@@ -10,6 +10,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
@@ -48,7 +49,7 @@ class ProductManagementActivity : AppCompatActivity() {
     private lateinit var _binding : ActivityProductManagementBinding
     private val binding get() = _binding
     private lateinit var vm : ProductManagementViewModel
-    private val mProduct = Product(0)
+    private lateinit var mProduct : Product
     private var imageUri : Uri? =null
     val mImages = mutableListOf<Image>()
     val pagerIndicator = PageIndicator()
@@ -56,49 +57,63 @@ class ProductManagementActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityProductManagementBinding.inflate(layoutInflater)
+         intent.getSerializableExtra("product").let {
+           mProduct = if(it==null) Product(0)
+           else it as Product
+        }
+        Toast.makeText(this, "$mProduct", Toast.LENGTH_SHORT).show()
         vm = ViewModelProvider(this).get(ProductManagementViewModel::class.java)
+
         var selectedCategory : Int? = 0
         CoroutineScope(Dispatchers.IO).launch {
             vm.setupViewModelDataMembers()
         }
         with(binding){
             setContentView(root)
-           /* ivProduct.setOnClickListener {
-                chooseImage()
-            }*/
-            btnAddProduct.setOnClickListener {
-                mProduct.also{ product ->
-                    with(product) {
-                        etProductCode.text.apply {
-                            if(isNullOrBlank()) {
-                                Toast.makeText(this@ProductManagementActivity, "Product code is required", Toast.LENGTH_SHORT).show()
-                                etProductCode.requestFocus()
-                                return@setOnClickListener
+
+                btnAddProduct.apply {
+                    setOnClickListener {
+                        mProduct.also{ product ->
+                            with(product) {
+                                etProductCode.text.apply {
+                                    if(isNullOrBlank()) {
+                                        Toast.makeText(this@ProductManagementActivity, "Product code is required", Toast.LENGTH_SHORT).show()
+                                        etProductCode.requestFocus()
+                                        return@setOnClickListener
+                                    }
+                                    productCode = this.toString()
+                                }
+                                sizes = getSelectedSizes(gvSizes)
+                                materials = getSelectedMaterialsIds(gvMaterials)
+                                typeId = Constants.TYPE_POSTER
+                                subCategory = selectedCategory
+                                category = vm.subCategories.value?.get(binding.categorySpinner.selectedItemPosition)?.mainCategoryId
+                                posterDetails = Poster(
+                                    title = textOf(etTitle),
+                                    short_desc = textOf(etShortDescription),
+                                    long_desc = textOf(etLongDescription)
+                                )
+
+                                if(mProduct.productId==0) {
+                                    languages = getSelectedLanguagesIds(gvLanguages)
+                                    CoroutineScope(Dispatchers.IO).launch {
+                                        vm.productImages.value?.forEach {
+                                            if (it.fileUri != null)
+                                                setupImage(it) // Passively calls insert product after image insertion
+                                        }
+                                    }
+                                }else{
+                                    CoroutineScope(Dispatchers.IO).launch {
+                                        vm.updateProduct(mProduct)
+                                    }
+                                }
+
                             }
-                            productCode = this.toString()
                         }
-//                        val uploadedImages = setupImage()
-                        CoroutineScope(Dispatchers.IO).launch {
-                            vm.productImages.value?.forEach {
-                                if(it.fileUri!=null)
-                                    setupImage(it)
-                            }
-                        }
-                        sizes = getSelectedSizes(gvSizes)
-                        materials = getSelectedMaterialsIds(gvMaterials)
-                        languages = getSelectedLanguagesIds(gvLanguages)
-                        typeId = Constants.TYPE_POSTER
-                        subCategory = selectedCategory
-                        category = vm.subCategories.value?.get(binding.categorySpinner.selectedItemPosition)?.mainCategoryId
-                        posterDetails = Poster(
-                            title = textOf(etTitle),
-                            short_desc = textOf(etShortDescription),
-                            long_desc = textOf(etLongDescription)
-                        )
-//                        if(uploadedImages.isNotEmpty()) images = uploadedImages else return@setOnClickListener
                     }
+                    text = if(mProduct.productId!=0) "Update Details" else "Add Product"
                 }
-            }
+
             categorySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                     selectedCategory = vm.subCategories.value?.get(p2)!!.id
@@ -130,10 +145,17 @@ class ProductManagementActivity : AppCompatActivity() {
             setupSubcategoryViews()
         })
         vm.serverResponse.observe(this, Observer {
-
+            if(it.success){
+                Toast.makeText(this@ProductManagementActivity, it.message, Toast.LENGTH_SHORT)
+                    .show()
+            }else{
+                Log.d("Product Management",it.message)
+                Toast.makeText(this@ProductManagementActivity, "Retry", Toast.LENGTH_SHORT)
+                    .show()
+            }
         })
         vm.productUploadResponse.observe(this, Observer {
-            if(it.success) {
+            if(it.productId > 0){
                 Toast.makeText(this@ProductManagementActivity, "Product Added", Toast.LENGTH_SHORT)
                     .show()
                 lifecycleScope.launch {

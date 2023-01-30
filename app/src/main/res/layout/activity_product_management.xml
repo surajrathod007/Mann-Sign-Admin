@@ -7,11 +7,24 @@
     tools:context=".ui.activity.ProductManagementActivity"
     android:background="@color/white">
 
+<androidx.appcompat.widget.LinearLayoutCompat
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/base_toolbar_layout"
+        android:visibility="gone"
+        />
+
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingHorizontal="16dp">
+
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvProductImages"
@@ -229,10 +242,11 @@
             android:id="@+id/btnAddProduct"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Add Product"
             android:background="@drawable/round_button_shape"
             android:layout_marginVertical="16dp"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.appcompat.widget.LinearLayoutCompat>
 
 </ScrollView>

@@ -66,6 +66,7 @@
             android:textStyle="bold"
             android:layout_gravity="bottom|end"
             android:gravity="center"
+            android:textColor="@color/white"
             android:layout_margin="24dp"/>
 
     </FrameLayout>

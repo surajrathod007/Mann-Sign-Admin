@@ -3,7 +3,9 @@ package com.surajmanshal.mannsignadmin.viewmodel
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.surajmanshal.mannsignadmin.data.model.*
+import com.surajmanshal.mannsignadmin.data.model.ImageLanguage
+import com.surajmanshal.mannsignadmin.data.model.SubCategory
+import com.surajmanshal.mannsignadmin.data.model.Variant
 import com.surajmanshal.mannsignadmin.data.model.product.Product
 import com.surajmanshal.response.SimpleResponse
 import kotlinx.coroutines.CoroutineScope
@@ -21,8 +23,8 @@ class ProductManagementViewModel : ResourcesViewModel() {
     val subCategories: LiveData<List<SubCategory>> get() = _subCategories               //CATEGORIES
     private val _imageUploadResponse = MutableLiveData<SimpleResponse>()
     val imageUploadResponse : LiveData<SimpleResponse> get() = _imageUploadResponse     // IMAGE UPLOADING PROGRESS
-    private val _productUploadResponse = MutableLiveData<SimpleResponse>()
-    val productUploadResponse : LiveData<SimpleResponse> get() = _productUploadResponse  // PRODUCT UPLOADING PROGRESS
+    private val _productUploadResponse = MutableLiveData<Variant>()
+    val productUploadResponse : LiveData<Variant> get() = _productUploadResponse  // PRODUCT UPLOADING PROGRESS
     private val _posters = MutableLiveData<List<Product>>()
     val posters : LiveData<List<Product>> get() = _posters                              // POSTERS
 
@@ -58,8 +60,17 @@ class ProductManagementViewModel : ResourcesViewModel() {
     suspend fun addProduct(product: Product) {
         try {
             val response = repository.sendProduct(product)
-            _serverResponse.postValue(response)
             _productUploadResponse.postValue(response)
+        }catch (e : Exception){
+            println("$e")
+        }
+    }
+
+
+    suspend fun updateProduct(product: Product) {
+        try {
+            val response = repository.updateProduct(product)
+            _serverResponse.postValue(response)
         }catch (e : Exception){
             println("$e")
         }

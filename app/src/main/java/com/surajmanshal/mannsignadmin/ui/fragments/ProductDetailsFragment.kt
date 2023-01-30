@@ -1,5 +1,6 @@
 package com.surajmanshal.mannsignadmin.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import com.surajmanshal.mannsignadmin.adapter.recyclerView.ProductDetailsImageAd
 import com.surajmanshal.mannsignadmin.data.model.Language
 import com.surajmanshal.mannsignadmin.data.model.Size
 import com.surajmanshal.mannsignadmin.databinding.ActivityProductManagementBinding
+import com.surajmanshal.mannsignadmin.ui.activity.ProductManagementActivity
 import com.surajmanshal.mannsignadmin.utils.Functions
 import com.surajmanshal.mannsignadmin.viewmodel.ProductsViewModel
 
@@ -84,24 +86,33 @@ class ProductDetailsFragment : Fragment() {
                 with(Functions){
                     makeViewVisible(tvSubCategory)
                     makeViewGone(categorySpinner)
-                    /*makeViewGone(btnAddProduct)*/
-                    btnAddProduct.apply {
-                        text = "Update Details"
-                        setOnClickListener {
-
-                        }
-                    }
+                    makeViewGone(btnAddProduct)
                     makeViewVisible(tvBasePrice)
+                    makeViewVisible(toolbar.root)
                 }
-                /*makeETDisableAndSetText(etTitle,product.posterDetails!!.title)
+                makeETDisableAndSetText(etTitle,product.posterDetails!!.title)
                 makeETDisableAndSetText(etShortDescription,product.posterDetails!!.short_desc)
-                product.posterDetails!!.long_desc?.let { makeETDisableAndSetText(etLongDescription, it) }*/
-                etTitle.setText(product.posterDetails!!.title)
+                product.posterDetails!!.long_desc?.let { makeETDisableAndSetText(etLongDescription, it) }
+                product.productCode?.let { makeETDisableAndSetText(etProductCode, it) }
+                /*etTitle.setText(product.posterDetails!!.title)
                 etShortDescription.setText(product.posterDetails!!.short_desc)
                 product.posterDetails!!.long_desc?.let { etLongDescription.setText(it) }
-                etProductCode.setText(product.productCode)
+                etProductCode.setText(product.productCode)*/
                 tvBasePrice.text = "${tvBasePrice.text} ${product.basePrice}"
                 product.sizes?.forEach { setupSizesViews(it) }
+                activity?.let { activity ->
+                    toolbar.apply {
+                        ivBack.setOnClickListener {
+                            activity.onBackPressed()
+                        }
+                        ivAction.setOnClickListener {
+                            activity.startActivity(Intent(requireContext(),ProductManagementActivity::class.java).apply {
+                                putExtra("product",product)
+                            })
+                        }
+                        tvToolBarTitle.text = getString(R.string.product_details)
+                    }
+                }
             }
         }
 
