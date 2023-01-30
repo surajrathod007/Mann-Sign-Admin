@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.internal.LinkedTreeMap
+import com.surajmanshal.mannsignadmin.adapter.recyclerView.ProductDetailsImageAdapter
 import com.surajmanshal.mannsignadmin.adapter.recyclerView.ProductImageAdapter
 import com.surajmanshal.mannsignadmin.data.model.*
 import com.surajmanshal.mannsignadmin.data.model.product.Poster
@@ -148,6 +149,15 @@ class ProductManagementActivity : AppCompatActivity() {
             binding.rvProductImages.adapter = vm.productImages.value?.let { ProductImageAdapter(vm){
                 chooseImage()
             }}
+            if(!mProduct.isNewProduct()){
+                binding.rvProductImages.adapter = mProduct.images?.let { it1 ->
+                    ProductDetailsImageAdapter(it1.map { image -> Pair(image.url
+                        ,languages?.find { it.id == image.languageId }?.name ?:
+                        Language(0,"Unavailable").name
+                    )
+                    })
+                }
+            }
         })
         vm.subCategories.observe(this, Observer{
             setupSubcategoryViews()
@@ -189,18 +199,20 @@ class ProductManagementActivity : AppCompatActivity() {
             }
         })
 
-        vm.productImages.observe(this){
-            binding.rvProductImages.apply {
-                adapter = ProductImageAdapter(vm){
-                    chooseImage()
-                }
+        if(mProduct.isNewProduct()){
+            vm.productImages.observe(this) {
+                binding.rvProductImages.apply {
+                    adapter = ProductImageAdapter(vm) {
+                        chooseImage()
+                    }
 //                pagerIndicator.setItemsCount(it.size)
 ////                removeItemDecoration(pagerIndicator)
 //                invalidateItemDecorations()
 //                addItemDecoration(pagerIndicator)
 //                onResume()
+                }
+                setupLanguageViews()
             }
-            setupLanguageViews()
         }
 
     }

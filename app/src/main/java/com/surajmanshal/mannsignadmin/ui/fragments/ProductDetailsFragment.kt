@@ -64,7 +64,8 @@ class ProductDetailsFragment : Fragment() {
                     language?.let {
                         setupLanguageViews(language.name)
                         languageList.add(language)
-                        if (languageList.size == (product.images?.size ?: 0)) {
+//                        if (languageList.size == (product.images?.size ?: 0)) {
+                        if (languageList.size == product.languages!!.size) {
                             rvProductImages.adapter = product.images?.let { it1 ->
                                 ProductDetailsImageAdapter(it1.map { image -> Pair(image.url
                                     ,languageList.find { it.id == image.languageId }?.name ?:
@@ -109,6 +110,7 @@ class ProductDetailsFragment : Fragment() {
                             activity.startActivity(Intent(requireContext(),ProductManagementActivity::class.java).apply {
                                 putExtra("product",product)
                             })
+                            activity.finish()
                         }
                         tvToolBarTitle.text = getString(R.string.product_details)
                     }
