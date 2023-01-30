@@ -71,60 +71,68 @@ class ProductManagementActivity : AppCompatActivity() {
         with(binding){
             setContentView(root)
 
-                btnAddProduct.apply {
-                    setOnClickListener {
-                        mProduct.also{ product ->
-                            with(product) {
-                                etProductCode.text.apply {
-                                    if(isNullOrBlank()) {
-                                        Toast.makeText(this@ProductManagementActivity, "Product code is required", Toast.LENGTH_SHORT).show()
-                                        etProductCode.requestFocus()
-                                        return@setOnClickListener
-                                    }
-                                    productCode = this.toString()
-                                }
-                                sizes = getSelectedSizes(gvSizes)
-                                materials = getSelectedMaterialsIds(gvMaterials)
-                                typeId = Constants.TYPE_POSTER
-                                subCategory = selectedCategory
-                                category = vm.subCategories.value?.get(binding.categorySpinner.selectedItemPosition)?.mainCategoryId
-                                posterDetails = Poster(
-                                    title = textOf(etTitle),
-                                    short_desc = textOf(etShortDescription),
-                                    long_desc = textOf(etLongDescription)
-                                )
+            rvProductImages.apply {
+                layoutManager = LinearLayoutManager(this@ProductManagementActivity,
+                    RecyclerView.HORIZONTAL,false)
+            }
 
-                                if(mProduct.productId==0) {
-                                    languages = getSelectedLanguagesIds(gvLanguages)
-                                    CoroutineScope(Dispatchers.IO).launch {
-                                        vm.productImages.value?.forEach {
-                                            if (it.fileUri != null)
-                                                setupImage(it) // Passively calls insert product after image insertion
-                                        }
-                                    }
-                                }else{
-                                    CoroutineScope(Dispatchers.IO).launch {
-                                        vm.updateProduct(mProduct)
-                                    }
-                                }
+            with(mProduct){
+                etProductCode.setText(productCode)
+                posterDetails?.let {
+                    etTitle.setText(it.title)
+                    etShortDescription.setText(it.short_desc)
+                    etLongDescription.setText(it.long_desc)
+                }
+            }
 
+            btnAddProduct.apply {
+                setOnClickListener {
+                    mProduct.also{ product ->
+                        with(product) {
+                            etProductCode.text.apply {
+                                if(isNullOrBlank()) {
+                                    Toast.makeText(this@ProductManagementActivity, "Product code is required", Toast.LENGTH_SHORT).show()
+                                    etProductCode.requestFocus()
+                                    return@setOnClickListener
+                                }
+                                productCode = this.toString()
                             }
+                            sizes = getSelectedSizes(gvSizes)
+                            materials = getSelectedMaterialsIds(gvMaterials)
+                            typeId = Constants.TYPE_POSTER
+                            subCategory = selectedCategory
+                            category = vm.subCategories.value?.get(binding.categorySpinner.selectedItemPosition)?.mainCategoryId
+                            posterDetails = Poster(
+                                title = textOf(etTitle),
+                                short_desc = textOf(etShortDescription),
+                                long_desc = textOf(etLongDescription)
+                            )
+
+                            if(mProduct.productId==0) {
+                                languages = getSelectedLanguagesIds(gvLanguages)
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    vm.productImages.value?.forEach {
+                                        if (it.fileUri != null)
+                                            setupImage(it) // Passively calls insert product after image insertion
+                                    }
+                                }
+                            }else{
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    vm.updateProduct(mProduct)
+                                }
+                            }
+
                         }
                     }
-                    text = if(mProduct.productId!=0) "Update Details" else "Add Product"
                 }
+                text = if(mProduct.productId!=0) "Update Details" else "Add Product"
+            }
 
             categorySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                     selectedCategory = vm.subCategories.value?.get(p2)!!.id
                 }
                 override fun onNothingSelected(p0: AdapterView<*>?) {}
-            }
-//            val snapHelper = PagerSnapHelper()
-            rvProductImages.apply {
-                layoutManager = LinearLayoutManager(this@ProductManagementActivity,
-                    RecyclerView.HORIZONTAL,false)
-//                snapHelper.attachToRecyclerView(this)
             }
 
         }
@@ -296,20 +304,24 @@ class ProductManagementActivity : AppCompatActivity() {
        super.onActivityResult(requestCode, resultCode, data)
     }
 
-    private fun createCheckBox(text : String): CheckBox {
+    private fun createCheckBox(text : String, checked : Boolean = false): CheckBox {
         val checkBox = CheckBox(this)
         checkBox.text = text
+        checkBox.isChecked = checked
         return checkBox
     }
 
     fun setupSizesViews(){
         vm.sizes.value?.forEach {
-            binding.gvSizes.addView(createCheckBox("${it.width} x ${it.height}"))
+            binding.gvSizes.addView(
+                createCheckBox("${it.width} x ${it.height}",
+                    mProduct.sizes?.contains(it) ?: false
+            ))
         }
     }
     fun setupMaterialViews(){
         vm.materials.value?.forEach {
-            binding.gvMaterials.addView(createCheckBox(it.name))
+            binding.gvMaterials.addView(createCheckBox(it.name,mProduct.materials?.contains(it.id)?: false ))
         }
     }
     fun setupLanguageViews(){
@@ -328,7 +340,20 @@ class ProductManagementActivity : AppCompatActivity() {
         vm.subCategories.value?.forEach {
             list.add(it.name)
         }
-        binding.categorySpinner.adapter = ArrayAdapter(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,list)
+
+        binding.categorySpinner.apply {
+            adapter = ArrayAdapter(
+                this@ProductManagementActivity,
+                androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
+                list
+            )
+            setSelection(
+                (adapter as ArrayAdapter<String>)
+                    .getPosition(
+                    vm.subCategories.value?.find { it.id == mProduct.subCategory }?.name
+                    )
+            )
+        }
     }
 
     fun getSelectedSizes(container : GridLayout): List<Size> {
@@ -364,5 +389,7 @@ class ProductManagementActivity : AppCompatActivity() {
             setText(text)
         }
     }
+
+    private fun Product.isNewProduct() = this.productId == 0
 
 }
