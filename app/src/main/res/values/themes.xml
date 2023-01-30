@@ -25,4 +25,8 @@
     <style name="satoshiTypeFace">
         <item name="fontFamily">@font/satoshi_regular</item>
     </style>
+
+    <style name="themeFontColor">
+        <item name="android:textColor">@color/title_text_color</item>
+    </style>
 </resources>

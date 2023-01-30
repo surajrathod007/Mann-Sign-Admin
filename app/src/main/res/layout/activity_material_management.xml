@@ -249,7 +249,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/white"
-                    android:hint="Enter Link or Choose File"
+                    android:hint="Choose a font file"
                     android:textSize="18sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
