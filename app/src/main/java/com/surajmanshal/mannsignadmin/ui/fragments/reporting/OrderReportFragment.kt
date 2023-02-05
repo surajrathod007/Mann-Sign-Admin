@@ -61,7 +61,7 @@ class OrderReportFragment : Fragment() {
         binding = FragmentOrderReportBinding.bind(view)
         setupSpinner()
         vm = ViewModelProvider(requireActivity()).get(StatsViewModel::class.java)
-        vm.setupViewModelDataMembers()
+        vm.getAllOrders()
 
 
         vm.allOrders.observe(viewLifecycleOwner){
