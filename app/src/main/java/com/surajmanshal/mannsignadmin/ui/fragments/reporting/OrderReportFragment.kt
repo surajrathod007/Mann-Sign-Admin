@@ -271,6 +271,9 @@ class OrderReportFragment : Fragment() {
                         Constants.ORDER_PROCCESSING -> {
                             addCell("Proccesing").setFontSize(8f)
                         }
+                        Constants.ORDER_OUT_FOR_DELIVERY -> {
+                            addCell("Out for delivery").setFontSize(8f)
+                        }
                         Constants.ORDER_READY -> {
                             addCell("Ready").setFontSize(8f)
                         }
@@ -326,6 +329,8 @@ class OrderReportFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        vm.getAllOrders()
+        if(vm.allOrders.value.isNullOrEmpty()){
+            vm.getAllOrders()
+        }
     }
 }

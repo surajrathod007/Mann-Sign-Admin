@@ -303,5 +303,9 @@ class TransactionReportFragment : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
+
 
 }

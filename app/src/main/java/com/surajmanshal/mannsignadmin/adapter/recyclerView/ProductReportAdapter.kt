@@ -4,8 +4,10 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.surajmanshal.mannsignadmin.data.model.product.Product
 import com.surajmanshal.mannsignadmin.databinding.ItemProductReportLayoutBinding
+import com.surajmanshal.mannsignadmin.utils.Functions
 
 class ProductReportAdapter(val lst: List<Product>, val c: Context) :
     RecyclerView.Adapter<ProductReportAdapter.ProductReportViewHolder>() {
@@ -31,6 +33,11 @@ class ProductReportAdapter(val lst: List<Product>, val c: Context) :
         val p = lst[position]
         with(holder){
 
+            val urls = p.images?.let {
+                if(it.isNotEmpty())
+                    return@let it.get(0).let { Functions.urlMaker(it.url) } else "TODO : Replace with placeholder"
+            }
+            Glide.with(c).load(urls).centerCrop().into(imgProduct)
             if (p.posterDetails != null) {
                 title.text = p.posterDetails!!.title.toString()
                 category.text = "Poster"
