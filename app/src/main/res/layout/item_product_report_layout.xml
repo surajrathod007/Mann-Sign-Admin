@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:elevation="0dp"
+        app:cardElevation="0dp"
+        android:layout_marginHorizontal="6dp"
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/imgProductReport"
+                android:src="@drawable/no_photo"
+                android:scaleType="fitCenter"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="56dp"
+                android:layout_height="60dp"/>
+
+            <TextView
+                android:layout_marginLeft="6dp"
+                android:layout_marginTop="6dp"
+                app:layout_constraintLeft_toRightOf="@id/imgProductReport"
+                app:layout_constraintTop_toTopOf="parent"
+                android:id="@+id/txtProductTitleReport"
+                android:fontFamily="@font/satoshi_medium"
+                android:text="Sample product title"
+                android:textColor="@color/title_text_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_marginTop="6dp"
+                android:layout_marginLeft="6dp"
+                android:textSize="11sp"
+                android:background="@drawable/gridview_bg"
+                android:paddingHorizontal="6dp"
+                android:paddingBottom="2dp"
+                app:layout_constraintLeft_toRightOf="@id/imgProductReport"
+                app:layout_constraintTop_toBottomOf="@id/txtProductTitleReport"
+                android:id="@+id/txtProductCategoryReport"
+                android:fontFamily="@font/satoshi_medium"
+                android:text="Sample product title"
+                android:textColor="@color/title_text_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>

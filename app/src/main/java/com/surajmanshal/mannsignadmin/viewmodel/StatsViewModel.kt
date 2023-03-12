@@ -177,14 +177,17 @@ class StatsViewModel : ViewModel() {
     val products: LiveData<List<Product>> get() = _products
 
     fun getPosters() {
+        isLoading.postValue(true)
         val response = NetworkService.networkInstance.fetchAllPosters()
         response.enqueue(object : Callback<List<Product>> {
             override fun onResponse(call: Call<List<Product>>, response: Response<List<Product>>) {
                 response.body()?.let { _products.value = it }
+                isLoading.postValue(false)
             }
 
             override fun onFailure(call: Call<List<Product>>, t: Throwable) {
                 println(t.toString())
+                isLoading.postValue(false)
             }
         })
     }

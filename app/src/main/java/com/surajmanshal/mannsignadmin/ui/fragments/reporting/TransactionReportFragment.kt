@@ -49,7 +49,7 @@ class TransactionReportFragment : Fragment() {
         super.onCreate(savedInstanceState)
         vm = ViewModelProvider(requireActivity()).get(StatsViewModel::class.java)
         CoroutineScope(Dispatchers.IO).launch {
-            vm.setupViewModelDataMembers()
+            vm.getAllTransactions()
         }
 
     }
@@ -301,6 +301,10 @@ class TransactionReportFragment : Fragment() {
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(i)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
     }
 
 

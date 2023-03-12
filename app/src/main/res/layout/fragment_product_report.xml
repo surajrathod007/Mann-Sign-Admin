@@ -1,14 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.fragments.reporting.ProductReportFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <data>
+
+    </data>
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Product Report" />
+        android:background="@color/bg_color"
+        android:orientation="vertical"
+        tools:context=".ui.fragments.reporting.ProductReportFragment">
 
-</FrameLayout>
+        <ProgressBar
+            android:id="@+id/progressReport"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <Spinner
+                android:id="@+id/spProductCategories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnGenerateProductReport"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="6dp"
+                android:layout_marginTop="6dp"
+                android:backgroundTint="@color/order_selected_text_color"
+                android:fontFamily="@font/satoshi_medium"
+                android:text="Generate Report"
+                android:textAllCaps="false" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvProductReports"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:listitem="@layout/item_product_report_layout" />
+
+        </LinearLayout>
+    </FrameLayout>
+</layout>

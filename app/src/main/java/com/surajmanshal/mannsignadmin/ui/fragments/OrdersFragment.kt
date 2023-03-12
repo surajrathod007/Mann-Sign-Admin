@@ -53,10 +53,10 @@ class OrdersFragment() : Fragment(), View.OnClickListener {
 
             viewModel.getAllOrders()
             viewModel.allOrders.observe(viewLifecycleOwner) {
-                    if(it?.isNotEmpty()==true) {
-                        binding.rvOrders.adapter = OrdersAdapter(requireContext(), it)
-                        //Toast.makeText(requireContext(),"${it.size} orders",Toast.LENGTH_LONG).show()
-                    }
+                if (it?.isNotEmpty() == true) {
+                    binding.rvOrders.adapter = OrdersAdapter(requireContext(), it)
+                    //Toast.makeText(requireContext(),"${it.size} orders",Toast.LENGTH_LONG).show()
+                }
             }
             viewModel.isEmptyList.observe(viewLifecycleOwner) {
                 if (it) {
@@ -64,19 +64,20 @@ class OrdersFragment() : Fragment(), View.OnClickListener {
                 }
             }
             viewModel.isLoading.observe(viewLifecycleOwner) {
-                if(it){
+                if (it) {
                     binding.loading.visibility = View.VISIBLE
                     binding.rvOrders.visibility = View.GONE
-                }else{
+                } else {
                     binding.loading.visibility = View.GONE
                     binding.rvOrders.visibility = View.VISIBLE
                     binding.refreshLayout.finishRefreshing()
                 }
             }
-            viewModel.msg.observe(viewLifecycleOwner){
-                Toast.makeText(requireContext(),it.toString(),Toast.LENGTH_LONG).show()
+            viewModel.msg.observe(viewLifecycleOwner) {
+                Toast.makeText(requireContext(), it.toString(), Toast.LENGTH_LONG).show()
             }
-            binding.refreshLayout.setOnRefreshListener(object : LiquidRefreshLayout.OnRefreshListener {
+            binding.refreshLayout.setOnRefreshListener(object :
+                LiquidRefreshLayout.OnRefreshListener {
                 override fun completeRefresh() {
 
                 }
@@ -97,8 +98,9 @@ class OrdersFragment() : Fragment(), View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
-
+        if (viewModel.allOrders.value.isNullOrEmpty()) {
             viewModel.getAllOrders()
+        }
 
     }
 
