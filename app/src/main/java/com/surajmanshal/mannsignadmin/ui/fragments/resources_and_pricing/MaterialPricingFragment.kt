@@ -1,17 +1,17 @@
 package com.surajmanshal.mannsignadmin.ui.fragments.resources_and_pricing
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.surajmanshal.mannsignadmin.R
 import com.surajmanshal.mannsignadmin.adapter.recyclerView.PricingAdapter
+import com.surajmanshal.mannsignadmin.utils.Constants
 import com.surajmanshal.mannsignadmin.viewmodel.PricingViewModel
 
 
@@ -39,9 +39,9 @@ class MaterialPricingFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                vm.getMaterials()
+                vm.getMaterials(listOf(Constants.TYPE_POSTER,Constants.TYPE_BANNER))
 
-                vm.material.observe(viewLifecycleOwner, Observer {
+                vm.materials.observe(viewLifecycleOwner, Observer {
                     adapter = PricingAdapter(it,vm)
                 })
             }

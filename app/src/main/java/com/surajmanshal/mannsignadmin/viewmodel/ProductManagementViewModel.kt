@@ -7,6 +7,7 @@ import com.surajmanshal.mannsignadmin.data.model.ImageLanguage
 import com.surajmanshal.mannsignadmin.data.model.SubCategory
 import com.surajmanshal.mannsignadmin.data.model.Variant
 import com.surajmanshal.mannsignadmin.data.model.product.Product
+import com.surajmanshal.mannsignadmin.utils.Constants
 import com.surajmanshal.response.SimpleResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -35,7 +36,7 @@ class ProductManagementViewModel : ResourcesViewModel() {
     // -------------- DATA SETUP FUNCTIONS -------------------------------------------
     suspend fun setupViewModelDataMembers(){
         CoroutineScope(Dispatchers.IO).launch { getSizes() }
-        CoroutineScope(Dispatchers.IO).launch { getMaterials() }
+        CoroutineScope(Dispatchers.IO).launch { getMaterials(listOf(Constants.TYPE_POSTER)) }
         CoroutineScope(Dispatchers.IO).launch { getLanguages() }
         CoroutineScope(Dispatchers.IO).launch { getSubCategories() }
         CoroutineScope(Dispatchers.IO).launch { getPosters() }

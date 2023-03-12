@@ -110,7 +110,7 @@ class ResourcesManagementActivity : AppCompatActivity() {
                         }
                         when(viewResButtons.indexOf(textView)){
                             0 -> vm.getSizes()
-                            1 -> vm.getMaterials()
+                            1 -> vm.getMaterials(Constants.TYPE_ALL)
                             2 -> vm.getLanguages()
                         }
                         root.show()
@@ -133,7 +133,12 @@ class ResourcesManagementActivity : AppCompatActivity() {
                             Material(
                                 0,
                                 etMaterialName.text.toString(),
-                                etMaterialPrice.text.toString().toFloat()
+                                etMaterialPrice.text.toString().toFloat(),
+                                when(radioGroupProductType.checkedRadioButtonId){
+                                    productTypePoster.id -> Constants.TYPE_POSTER
+                                    productTypeBanner.id -> Constants.TYPE_BANNER
+                                    else -> Constants.TYPE_POSTER
+                                }
                             )
                         )
                     }
@@ -191,7 +196,7 @@ class ResourcesManagementActivity : AppCompatActivity() {
             deletionResponse.observe(this@ResourcesManagementActivity) {
                 if(it.success) when(deletionMode.value){
                     is Size -> getSizes()
-                    is Material -> getMaterials()
+                    is Material -> getMaterials(Constants.TYPE_ALL)
                     is Language -> getLanguages()
                 }
                 Toast.makeText(this@ResourcesManagementActivity, it.message, Toast.LENGTH_SHORT).show()

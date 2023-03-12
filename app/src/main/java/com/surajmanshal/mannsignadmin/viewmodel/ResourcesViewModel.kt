@@ -3,9 +3,10 @@ package com.surajmanshal.mannsignadmin.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.surajmanshal.mannsignadmin.data.model.*
+import com.surajmanshal.mannsignadmin.data.model.Language
+import com.surajmanshal.mannsignadmin.data.model.Material
+import com.surajmanshal.mannsignadmin.data.model.Size
 import com.surajmanshal.mannsignadmin.repository.Repository
-
 import com.surajmanshal.response.SimpleResponse
 import okhttp3.MultipartBody
 import retrofit2.Call
@@ -67,8 +68,8 @@ open class ResourcesViewModel : ViewModel() {
         })
     }
 
-    fun getMaterials(){
-        val response = repository.fetchMaterials()
+    fun getMaterials(productTypeIds: List<Int>){
+        val response = repository.fetchMaterials(productTypeIds)
         println("Response is $response")
         response.enqueue(object : Callback<List<Material>> {
             override fun onResponse(call: Call<List<Material>>, response: Response<List<Material>>) {

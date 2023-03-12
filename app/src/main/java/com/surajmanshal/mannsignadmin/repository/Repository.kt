@@ -8,7 +8,7 @@ import okhttp3.MultipartBody
 
 open class Repository() {
     private val server = NetworkService.networkInstance
-    fun fetchMaterials() = server.fetchMaterials()
+    fun fetchMaterials(productTypeId: List<Int>) = server.fetchMaterials(productTypeId)
 
     fun fetchLanguages() = server.fetchLanguages()
 

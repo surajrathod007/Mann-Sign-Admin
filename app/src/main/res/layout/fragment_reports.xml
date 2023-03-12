@@ -7,21 +7,23 @@
 
     </data>
 
-    <FrameLayout
+    <LinearLayout
         android:background="@color/black"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.fragments.ReportsFragment">
+        tools:context=".ui.fragments.ReportsFragment"
+        android:orientation="vertical">
+
 
         <com.factor.bouncy.BouncyNestedScrollView
-            android:background="@drawable/bottomsheet_background"
-            android:backgroundTint="@color/bg_color"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/bg_color"
             app:fling_animation_size=".5"
             app:overscroll_animation_size=".6"
             app:bouncy_scrollview_damping_ratio="DAMPING_RATIO_MEDIUM_BOUNCY"
-            app:bouncy_scrollview_stiffness="STIFFNESS_LOW">
+            app:bouncy_scrollview_stiffness="STIFFNESS_LOW"
+            >
 
             <LinearLayout
 
@@ -29,16 +31,18 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
+
                 <TextView
-                    android:layout_marginVertical="16dp"
                     android:text="Analytics"
                     android:gravity="center"
                     android:textSize="20sp"
                     android:textColor="@color/title_text_color"
                     android:fontFamily="@font/satoshi_bold"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bottomsheet_background"
+                    android:backgroundTint="@color/bg_color"
+                    />
                 <!--<GridLayout
                     android:layout_marginTop="10dp"
                     android:layout_width="wrap_content"
@@ -222,6 +226,21 @@
                     <!--                </GridLayout>-->
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+                <include
+                    android:id="@+id/transactionsLineGraphLayout"
+                    layout="@layout/line_chart_layout"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_marginHorizontal="@dimen/margin_medium"
+                    android:visibility="gone"/>
+
+                <include
+                    android:id="@+id/transactionsPieGraphLayout"
+                    layout="@layout/pie_chart_layout"
+                    android:visibility="gone"/>
+
+
                 <com.google.android.material.card.MaterialCardView
                     app:cardElevation="0dp"
                     android:clickable="true"
@@ -290,5 +309,5 @@
             </LinearLayout>
         </com.factor.bouncy.BouncyNestedScrollView>
 
-    </FrameLayout>
+    </LinearLayout>
 </layout>

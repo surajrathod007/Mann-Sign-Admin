@@ -34,8 +34,8 @@ interface NetworkCallsInterface {
     @POST("user/resetpassword")
     suspend fun resetPassword(@Query("email") email: String, @Query("newpas") newpas : String) : SimpleResponse
 
-    @GET("materials")
-    fun fetchMaterials() : Call<List<Material>>
+    @POST("materials")
+    fun fetchMaterials(@Body productTypeId: List<Int>): Call<List<Material>>
 
     @GET("languages")
     fun fetchLanguages() : Call<List<Language>>

@@ -1,46 +1,33 @@
 package com.surajmanshal.mannsignadmin.ui.fragments
 
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.os.Environment
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.FileProvider
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.itextpdf.io.image.ImageDataFactory
-import com.itextpdf.kernel.pdf.PdfDocument
-import com.itextpdf.kernel.pdf.PdfWriter
-import com.itextpdf.layout.Document
-import com.itextpdf.layout.element.Cell
-import com.itextpdf.layout.element.Image
-import com.itextpdf.layout.element.Paragraph
-import com.itextpdf.layout.element.Table
-import com.itextpdf.layout.properties.HorizontalAlignment
-import com.itextpdf.layout.properties.TextAlignment
-import com.itextpdf.layout.properties.VerticalAlignment
+import com.github.mikephil.charting.animation.Easing
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.data.*
 import com.surajmanshal.mannsignadmin.R
 import com.surajmanshal.mannsignadmin.databinding.FragmentReportsBinding
 import com.surajmanshal.mannsignadmin.ui.activity.ReportDetailsActivity
+import com.surajmanshal.mannsignadmin.utils.XAxisFormatter
+import com.surajmanshal.mannsignadmin.utils.YAxisFormatter
 import com.surajmanshal.mannsignadmin.viewmodel.StatsViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileOutputStream
-import java.time.LocalDate
+
 
 class ReportsFragment : Fragment() {
 
     lateinit var binding: FragmentReportsBinding
     lateinit var vm: StatsViewModel
+    lateinit var lineChart: LineChart
+    lateinit var activeDataSet: LineDataSet
+    lateinit var pieChart : PieChart
+    lateinit var pieDataSet: PieDataSet
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,6 +66,22 @@ class ReportsFragment : Fragment() {
                 }
                 binding.txtTotalEarnings.text = "₹" + t
             }
+            // LineChart setup
+            lineChart = binding.transactionsLineGraphLayout.graph
+            setupChartView()
+            val series = createGraphSeries(it
+                .map {
+                    Pair(it.transaction.date.toEpochDay().toFloat()
+                    ,it.transaction.amount)
+                })
+            activeDataSet = createLineDataSet(series, "")
+            lineChart.data = LineData(activeDataSet)
+            // PieChart setup
+            pieChart = binding.transactionsPieGraphLayout.graph
+            pieChart.data = PieData(PieDataSet(it
+                .map {
+                    PieEntry(it.transaction.amount)
+                },""))
         }
 
         vm.allUsers.observe(viewLifecycleOwner) {
@@ -102,30 +105,76 @@ class ReportsFragment : Fragment() {
             Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
         }
 
-        //card click listners
-        binding.cardTransaction.setOnClickListener {
-            val i = Intent(it.context, ReportDetailsActivity::class.java)
-            i.putExtra("index", 1)
-            startActivity(i)
-        }
-        binding.cardOrders.setOnClickListener {
-            val i = Intent(it.context, ReportDetailsActivity::class.java)
-            i.putExtra("index", 0)
-            startActivity(i)
-        }
-        binding.cardProducts.setOnClickListener {
-            val i = Intent(it.context, ReportDetailsActivity::class.java)
-            i.putExtra("index", 2)
-            startActivity(i)
-        }
-        binding.cardUsers.setOnClickListener {
-            val i = Intent(it.context, ReportDetailsActivity::class.java)
-            i.putExtra("index", 3)
-            startActivity(i)
-        }
+        with(binding) {
 
+            transactionsLineGraphLayout.graphLabel.text = "Transactions"
+            transactionsPieGraphLayout.graphLabel.text = "Transaction Modes"
+            //card click listeners
+            cardTransaction.setOnClickListener {
+                val i = Intent(it.context, ReportDetailsActivity::class.java)
+                i.putExtra("index", 1)
+                startActivity(i)
+            }
+            cardOrders.setOnClickListener {
+                val i = Intent(it.context, ReportDetailsActivity::class.java)
+                i.putExtra("index", 0)
+                startActivity(i)
+            }
+            cardProducts.setOnClickListener {
+                val i = Intent(it.context, ReportDetailsActivity::class.java)
+                i.putExtra("index", 2)
+                startActivity(i)
+            }
+            cardUsers.setOnClickListener {
+                val i = Intent(it.context, ReportDetailsActivity::class.java)
+                i.putExtra("index", 3)
+                startActivity(i)
+            }
+        }
         return binding.root
     }
 
+    private fun setupChartView() {
+        lineChart.apply {
+            description.isEnabled = false
+            xAxis.labelRotationAngle = 0f
+            axisRight.isEnabled = false
+            axisLeft.axisMinimum = 0f
+            axisLeft.valueFormatter = YAxisFormatter("")
+            xAxis.valueFormatter = XAxisFormatter()
 
+            setTouchEnabled(true)
+            animateX(500, Easing.EaseInOutSine)
+            // Setting up the marker on Tap
+//            val markerView = GraphMarker(requireContext(), R.layout.graph_marker, "INR")
+//            marker = markerView
+        }
+    }
+
+    fun setupDatasetTheme(dataSet: LineDataSet) {
+        dataSet.setDrawValues(false)
+        dataSet.lineWidth = 0f
+        dataSet.setDrawCircles(false)
+        dataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
+        dataSet.fillAlpha = 255
+        dataSet.setDrawFilled(true)
+        dataSet.formLineWidth = 0f
+        dataSet.formSize = 0f
+        dataSet.highLightColor = resources.getColor(R.color.teal_200)
+        dataSet.highlightLineWidth = 2f
+        dataSet.setDrawHorizontalHighlightIndicator(false)
+    }
+
+    private fun createLineDataSet(series: ArrayList<Entry>, name: String) =
+        LineDataSet(series, name).apply {
+
+        }
+    private fun createGraphSeries(priceList: List<Pair<Float, Float>>): ArrayList<Entry> {
+        val entries = ArrayList<Entry>()
+        for (i in (priceList.indices)) {
+            println(priceList[i].first)
+            entries.add(Entry(i.toFloat(), priceList[i].second)) // todo : change entry of x by timestamp
+        }
+        return entries
+    }
 }

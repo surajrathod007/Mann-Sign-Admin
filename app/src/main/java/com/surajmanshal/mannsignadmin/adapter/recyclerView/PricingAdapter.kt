@@ -12,7 +12,6 @@ import com.surajmanshal.mannsignadmin.data.model.Material
 import com.surajmanshal.mannsignadmin.data.model.product.ProductType
 import com.surajmanshal.mannsignadmin.databinding.FragmentItemBinding
 import com.surajmanshal.mannsignadmin.utils.Constants
-import com.surajmanshal.mannsignadmin.utils.Functions
 import com.surajmanshal.mannsignadmin.utils.setInputTypeDecimalNumbers
 import com.surajmanshal.mannsignadmin.viewmodel.PricingViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -91,7 +90,7 @@ class PricingAdapter(
                                 vm.setNewPrice(id!!, etPrice.text.toString().toFloat(), changeFor)
                                 when (item) {
                                     is ProductType -> vm.getProductTypes()
-                                    is Material -> vm.getMaterials()
+                                    is Material -> vm.getMaterials(listOf(Constants.TYPE_POSTER, Constants.TYPE_BANNER))
                                     is Area -> vm.getAreas()
                                 }
                             }
