@@ -75,4 +75,10 @@ open class Repository() {
     suspend fun deleteLanguage(languageId: Int) = server.deleteLanguage(languageId)
 
     suspend fun insertArea(area: Area) = server.insertArea(area)
+
+    suspend fun updateSize(size : Size) = server.updateSize(size)
+
+    suspend fun updateMaterial(material : Material) = server.updateMaterial(material)
+
+    suspend fun updateLanguage(language : Language) = server.updateLanguage(language)
 }

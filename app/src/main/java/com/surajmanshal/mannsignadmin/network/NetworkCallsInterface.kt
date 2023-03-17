@@ -184,4 +184,11 @@ interface NetworkCallsInterface {
     @POST("order/id")
     fun getOrderById(@Query("id") id : String) : Call<Order>
 
+    @POST("size/update")
+    suspend fun updateSize(@Body size : Size) : SimpleResponse
+    @POST("material/update")
+    suspend fun updateMaterial(@Body material : Material) : SimpleResponse
+    @POST("language/update")
+    suspend fun updateLanguage(@Body language : Language) : SimpleResponse
+
 }

@@ -17,7 +17,7 @@
 
 
         <TextView
-            android:layout_weight="8"
+            android:layout_weight="6"
             android:id="@+id/tvName"
             android:layout_width="256dp"
             android:layout_height="match_parent"
@@ -26,6 +26,16 @@
             android:paddingBottom="4dp"
             android:layout_marginStart="8dp"
             />
+
+        <ImageView
+            android:id="@+id/ivEdit"
+            android:layout_weight="2"
+            android:layout_width="16dp"
+            android:layout_marginVertical="8dp"
+            android:layout_marginEnd="@dimen/margin_low"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_baseline_edit_24"
+            app:tint="@color/black" />
 
         <ImageView
             android:id="@+id/ivDelete"

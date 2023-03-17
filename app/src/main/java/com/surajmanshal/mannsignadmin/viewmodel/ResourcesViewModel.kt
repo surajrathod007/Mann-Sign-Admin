@@ -26,7 +26,9 @@ open class ResourcesViewModel : ViewModel() {
     val languages  : LiveData<List<Language>> get() = _languages                        // LANGUAGES
     protected val _deletionResponse = MutableLiveData<SimpleResponse>()
     val deletionResponse : LiveData<SimpleResponse> get() = _deletionResponse
-    val deletionMode =  MutableLiveData<Any>()
+    protected val _updateResponse = MutableLiveData<SimpleResponse>()
+    val updateResponse : LiveData<SimpleResponse> get() = _updateResponse
+    val resourceMode =  MutableLiveData<Any>()
 
 
     suspend fun sendFont(part: MultipartBody.Part){
@@ -97,7 +99,7 @@ open class ResourcesViewModel : ViewModel() {
     }
 
     suspend fun deleteResource(res: Any) {
-        setDeletionMode(res)
+        setResourceMode(res)
         when(res){
             is Size -> deleteSize(res.sid)
             is Material  -> deleteMaterial(res.id!!)
@@ -105,13 +107,24 @@ open class ResourcesViewModel : ViewModel() {
         }
 
     }
+    suspend fun updateResource(res: Any) {
+        setResourceMode(res)
+        when(res){
+            is Size -> updateSize(res)
+            is Material  -> updateMaterial(res)
+            is Language -> updateLanguage(res)
+        }
+    }
 
     protected suspend fun deleteSize(sizeId : Int) = _deletionResponse.postValue(repository.deleteSize(sizeId))
 
     protected suspend fun deleteMaterial(materialId : Int) = _deletionResponse.postValue(repository.deleteMaterial(materialId))
 
     protected suspend fun deleteLanguage(languageId : Int) = _deletionResponse.postValue(repository.deleteLanguage(languageId))
+    protected suspend fun updateLanguage(language : Language) = _updateResponse.postValue(repository.updateLanguage(language))
+    protected suspend fun updateMaterial(material: Material) = _updateResponse.postValue(repository.updateMaterial(material))
+    protected suspend fun updateSize(size: Size) = _updateResponse.postValue(repository.updateSize(size))
 
-    fun setDeletionMode(mode : Any) = deletionMode.postValue(mode)
+    fun setResourceMode(mode : Any) = resourceMode.postValue(mode)
 
 }

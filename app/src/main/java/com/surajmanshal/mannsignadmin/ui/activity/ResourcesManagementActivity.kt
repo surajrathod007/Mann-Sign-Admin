@@ -21,7 +21,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
-import com.surajmanshal.mannsignadmin.adapter.recyclerView.DeletableItemsAdapter
+import com.surajmanshal.mannsignadmin.adapter.recyclerView.ResourceItemsAdapter
 import com.surajmanshal.mannsignadmin.data.model.Language
 import com.surajmanshal.mannsignadmin.data.model.Material
 import com.surajmanshal.mannsignadmin.data.model.Size
@@ -194,11 +194,13 @@ class ResourcesManagementActivity : AppCompatActivity() {
             }
 
             deletionResponse.observe(this@ResourcesManagementActivity) {
-                if(it.success) when(deletionMode.value){
-                    is Size -> getSizes()
-                    is Material -> getMaterials(Constants.TYPE_ALL)
-                    is Language -> getLanguages()
-                }
+                if(it.success)
+                    fetchResources(resourceMode.value)
+                Toast.makeText(this@ResourcesManagementActivity, it.message, Toast.LENGTH_SHORT).show()
+            }
+            updateResponse.observe(this@ResourcesManagementActivity) {
+                if(it.success)
+                    fetchResources(resourceMode.value)
                 Toast.makeText(this@ResourcesManagementActivity, it.message, Toast.LENGTH_SHORT).show()
             }
 
@@ -216,6 +218,13 @@ class ResourcesManagementActivity : AppCompatActivity() {
 
     }
 
+    fun fetchResources(res : Any?){
+        when(res){
+            is Size -> vm.getSizes()
+            is Material -> vm.getMaterials(Constants.TYPE_ALL)
+            is Language -> vm.getLanguages()
+        }
+    }
     private suspend fun setupFile() {
 
         val dir = applicationContext.filesDir
@@ -339,11 +348,17 @@ class ResourcesManagementActivity : AppCompatActivity() {
     }
 
     fun setAllResAdapter(list: List<Any>){
-        binding.allResLayout.rvItems.adapter = DeletableItemsAdapter(list){ item ->
-            CoroutineScope(Dispatchers.IO).launch{
-                vm.deleteResource(item)
+        binding.allResLayout.rvItems.adapter = ResourceItemsAdapter(list,
+            { deletable ->
+                CoroutineScope(Dispatchers.IO).launch{
+                    vm.deleteResource(deletable)
+                }
+            }, { editable ->
+                CoroutineScope(Dispatchers.IO).launch{
+                    vm.updateResource(editable)
+                }
             }
-        }
+        )
     }
 
     override fun onBackPressed() {
