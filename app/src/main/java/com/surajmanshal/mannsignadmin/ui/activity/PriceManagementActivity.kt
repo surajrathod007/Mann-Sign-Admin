@@ -1,11 +1,11 @@
 package com.surajmanshal.mannsignadmin.ui.activity
 
 import android.content.DialogInterface
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
@@ -21,6 +21,7 @@ import com.surajmanshal.mannsignadmin.ui.fragments.resources_and_pricing.Discoun
 import com.surajmanshal.mannsignadmin.ui.fragments.resources_and_pricing.MaterialPricingFragment
 import com.surajmanshal.mannsignadmin.ui.fragments.resources_and_pricing.ProductPricingFragment
 import com.surajmanshal.mannsignadmin.utils.Functions
+import com.surajmanshal.mannsignadmin.utils.Functions.enableOrDisableDialogPositiveButton
 import com.surajmanshal.mannsignadmin.utils.setInputTypeDecimalNumbers
 import com.surajmanshal.mannsignadmin.viewmodel.PricingViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -101,13 +102,13 @@ class PriceManagementActivity : AppCompatActivity() {
         val d = dialog.create()
 
         etValue.doOnTextChanged{ text, _, _, _ ->
-            enableOrDisableAddButton(etValue,etCode,etQty,d)
+            enableOrDisableDialogPositiveButton(listOf(etValue,etCode,etQty),d)
         }
         etQty.doOnTextChanged{ text, _, _, _ ->
-            enableOrDisableAddButton(etValue,etCode,etQty,d)
+            enableOrDisableDialogPositiveButton(listOf(etValue,etCode,etQty),d)
         }
         etCode.doOnTextChanged{ text, _, _, _ ->
-            enableOrDisableAddButton(etValue,etCode,etQty,d)
+            enableOrDisableDialogPositiveButton(listOf(etValue,etCode,etQty),d)
         }
         d.show()
         d.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
@@ -150,27 +151,24 @@ class PriceManagementActivity : AppCompatActivity() {
         val d = dialog.create()
 
         etAreaName.doOnTextChanged{ text, _, _, _ ->
-            enableOrDisableAddButton(etAreaName,etPinCode,etMinCharges,d)
+            enableOrDisableDialogPositiveButton(listOf(etAreaName,etPinCode,etMinCharges),d)
         }
         etMinCharges.doOnTextChanged{ text, _, _, _ ->
             if (text != null) {
                 if(text.length>7) etMinCharges.clearFocus()
             }
-            enableOrDisableAddButton(etAreaName,etPinCode,etMinCharges,d)
+            enableOrDisableDialogPositiveButton(listOf(etAreaName,etPinCode,etMinCharges),d)
         }
         etPinCode.doOnTextChanged{ text, _, _, _ ->
             if (text != null) {
                 if(text.length>5) etAreaName.requestFocus()
             }
-            enableOrDisableAddButton(etAreaName,etPinCode,etMinCharges,d)
+            enableOrDisableDialogPositiveButton(listOf(etAreaName,etPinCode,etMinCharges),d)
         }
         d.show()
         d.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
     }
 
-    private fun enableOrDisableAddButton(et1: EditText,et2: EditText,et3: EditText,d: android.app.AlertDialog) {
-        d.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = et1.text.isNotEmpty()&&et2.text.isNotEmpty()&&et3.text.isNotEmpty()
-    }
 
     fun setupViewPager(){
         val fragmentList = listOf(

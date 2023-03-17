@@ -2,7 +2,7 @@ package com.surajmanshal.mannsignadmin.data.model
 
 data class Material(
     val id : Int? = null,
-    val name : String,
+    var name : String = "",
     val price : Float,
     val productTypeId : Int
 )

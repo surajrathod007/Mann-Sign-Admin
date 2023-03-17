@@ -4,6 +4,6 @@ import java.io.Serializable
 
 data class Size(
     val sid: Int,
-    val width: Int,
-    val height: Int,
+    var width: Int = 1,
+    var height: Int = 1,
 ) : Serializable

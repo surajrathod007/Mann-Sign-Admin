@@ -3,6 +3,7 @@ package com.surajmanshal.mannsignadmin.ui.activity
 import android.Manifest
 import android.app.Activity
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
@@ -16,17 +17,23 @@ import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import com.surajmanshal.mannsignadmin.adapter.recyclerView.ResourceItemsAdapter
 import com.surajmanshal.mannsignadmin.data.model.Language
 import com.surajmanshal.mannsignadmin.data.model.Material
 import com.surajmanshal.mannsignadmin.data.model.Size
 import com.surajmanshal.mannsignadmin.databinding.ActivityMaterialManagementBinding
+import com.surajmanshal.mannsignadmin.databinding.DialogContainerBinding
 import com.surajmanshal.mannsignadmin.utils.*
+import com.surajmanshal.mannsignadmin.utils.Functions.enablePositiveBtnWhenValueChanged
+import com.surajmanshal.mannsignadmin.utils.Functions.setTypeNumber
+import com.surajmanshal.mannsignadmin.utils.Functions.toResourceType
 import com.surajmanshal.mannsignadmin.viewmodel.ResourcesViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -354,11 +361,89 @@ class ResourcesManagementActivity : AppCompatActivity() {
                     vm.deleteResource(deletable)
                 }
             }, { editable ->
-                CoroutineScope(Dispatchers.IO).launch{
-                    vm.updateResource(editable)
-                }
+                setUpResourceUpdateDialog(editable)
             }
         )
+    }
+
+    private fun setUpResourceUpdateDialog(resource: Any) {
+        val dialog = android.app.AlertDialog.Builder(this@ResourcesManagementActivity)
+        dialog.setTitle("Update ${resource.toResourceType().name}")
+
+        val etField1 = EditText(this@ResourcesManagementActivity)
+        val etField2 = EditText(this@ResourcesManagementActivity)
+        var etField1Initial : String = ""
+        var etField2Initial : String = ""
+        val dialogContainerView = DialogContainerBinding.inflate(layoutInflater).also {
+            it.dialogContainer.addView(etField1)
+        }
+
+        when(resource){
+           is Size -> {
+                etField1.apply {
+                    hint = "Width"
+                    setText(resource.width.toString())
+                    etField1Initial = resource.width.toString()
+                }
+                etField2.apply{
+                    hint = "Height"
+                    setText(resource.height.toString())
+                    etField2Initial = resource.height.toString()
+                }
+                setTypeNumber(etField1)
+                setTypeNumber(etField2)
+                dialogContainerView.dialogContainer.addView(etField2)
+            }
+           is Material -> {
+                etField1.apply{
+                    hint = "Material"
+                    setText(resource.name)
+                    etField1Initial = resource.name
+                }
+            }
+           is Language -> {
+                etField1.apply{
+                    hint = "Language"
+                    setText(resource.name)
+                    etField1Initial = resource.name
+                }
+            }
+        }
+
+        dialog.setView(dialogContainerView.root)
+        dialog.setPositiveButton("Update", object : DialogInterface.OnClickListener {
+            override fun onClick(p0: DialogInterface?, p1: Int) {
+                CoroutineScope(Dispatchers.IO).launch{
+                    resource.apply {
+                        when(this){
+                            is Size -> {
+                                width = etField1.text.toString().toInt()
+                                height = etField2.text.toString().toInt()
+                            }
+                            is Material -> {
+                                name = etField1.text.toString()
+                            }
+                            is Language -> {
+                                name = etField1.text.toString()
+                            }
+                        }
+                    }
+                    vm.updateResource(resource)
+                }
+            }
+        })
+        val d = dialog.create()
+
+        etField1.doOnTextChanged { _, _, _, _ ->
+            enablePositiveBtnWhenValueChanged(etField1Initial,etField1,d)
+        }
+        etField2.doOnTextChanged { _, _, _, _ ->
+            enablePositiveBtnWhenValueChanged(etField2Initial,etField2,d)
+        }
+
+        d.show()
+        d.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
+
     }
 
     override fun onBackPressed() {
