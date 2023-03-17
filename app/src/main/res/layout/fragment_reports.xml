@@ -15,7 +15,7 @@
         android:orientation="vertical">
 
 
-        <com.factor.bouncy.BouncyNestedScrollView
+       <!-- <com.factor.bouncy.BouncyNestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/bg_color"
@@ -23,10 +23,11 @@
             app:overscroll_animation_size=".6"
             app:bouncy_scrollview_damping_ratio="DAMPING_RATIO_MEDIUM_BOUNCY"
             app:bouncy_scrollview_stiffness="STIFFNESS_LOW"
-            >
+            >-->
 
             <LinearLayout
-
+                android:background="@drawable/bottomsheet_background"
+                android:backgroundTint="@color/bg_color"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
@@ -36,12 +37,11 @@
                     android:text="Analytics"
                     android:gravity="center"
                     android:textSize="20sp"
+                    android:layout_marginVertical="@dimen/margin_low"
                     android:textColor="@color/title_text_color"
                     android:fontFamily="@font/satoshi_bold"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bottomsheet_background"
-                    android:backgroundTint="@color/bg_color"
                     />
                 <!--<GridLayout
                     android:layout_marginTop="10dp"
@@ -307,7 +307,7 @@
                 </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
-        </com.factor.bouncy.BouncyNestedScrollView>
+<!--        </com.factor.bouncy.BouncyNestedScrollView>-->
 
     </LinearLayout>
 </layout>
