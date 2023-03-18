@@ -443,7 +443,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/white"
-                    android:hint="Width"
+                    android:hint="Width (inches)"
                     android:inputType="numberDecimal"
                     android:textSize="18sp" />
 
@@ -463,7 +463,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/white"
-                    android:hint="Height"
+                    android:hint="Height (inches)"
                     android:inputType="numberDecimal"
                     android:textSize="18sp" />
 
