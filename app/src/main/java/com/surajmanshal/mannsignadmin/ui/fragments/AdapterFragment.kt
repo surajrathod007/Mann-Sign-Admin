@@ -1,13 +1,12 @@
 package com.surajmanshal.mannsignadmin.ui.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.surajmanshal.mannsignadmin.R
-import com.surajmanshal.mannsignadmin.data.model.Category
 
 
 open class AdapterFragment : Fragment() {
@@ -20,7 +19,7 @@ open class AdapterFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_adapter, container, false)
     }
     fun setAdapterWithList(list: List<Any>, recyclerView: RecyclerView, adapter : RecyclerView.Adapter<*>){
-        if(!list.isEmpty()) recyclerView.adapter = adapter
+        recyclerView.adapter = adapter
     }
     companion object {
         /**

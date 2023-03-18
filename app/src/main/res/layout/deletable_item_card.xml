@@ -35,7 +35,8 @@
             android:layout_marginEnd="@dimen/margin_low"
             android:layout_height="match_parent"
             android:src="@drawable/ic_baseline_edit_24"
-            app:tint="@color/black" />
+            app:tint="@color/black"
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/ivDelete"

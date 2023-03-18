@@ -7,6 +7,7 @@ import com.surajmanshal.mannsignadmin.data.model.Language
 import com.surajmanshal.mannsignadmin.data.model.Material
 import com.surajmanshal.mannsignadmin.data.model.Size
 import com.surajmanshal.mannsignadmin.databinding.DeletableItemCardBinding
+import com.surajmanshal.mannsignadmin.utils.show
 
 class ResourceItemsAdapter(val list : List<Any>, private val deleter : (Any) -> Unit, private val editor : (Any) -> Unit) :
     RecyclerView.Adapter<ResourceItemsAdapter.ViewHolder>() {
@@ -37,7 +38,10 @@ class ResourceItemsAdapter(val list : List<Any>, private val deleter : (Any) -> 
                 else -> ""
             }
             btnDelete.setOnClickListener { deleter(item) }
-            btnEdit.setOnClickListener { editor(item) }
+            btnEdit.apply{
+                show()
+                setOnClickListener { editor(item) }
+            }
         }
     }
 }
