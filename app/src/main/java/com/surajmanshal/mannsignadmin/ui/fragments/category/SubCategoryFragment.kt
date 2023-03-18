@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.surajmanshal.mannsignadmin.R
 import com.surajmanshal.mannsignadmin.adapter.recyclerView.SubCategoryAdapter
 import com.surajmanshal.mannsignadmin.data.model.SubCategory
+import com.surajmanshal.mannsignadmin.databinding.DialogContainerBinding
 import com.surajmanshal.mannsignadmin.databinding.FragmentCategoryBinding
 import com.surajmanshal.mannsignadmin.utils.hide
 import com.surajmanshal.mannsignadmin.viewmodel.CategoryViewModel
@@ -57,7 +58,9 @@ class SubCategoryFragment : CategoryFragment() {
                 val dialog = AlertDialog.Builder(activity)
                 dialog.setTitle("New Subcategory")
                 val etName = EditText(activity)
-                dialog.setView(etName)
+                dialog.setView(DialogContainerBinding.inflate(layoutInflater).also {
+                    it.dialogContainer.addView(etName)
+                }.root)
                 dialog.setPositiveButton("Add", object : DialogInterface.OnClickListener {
                     override fun onClick(p0: DialogInterface?, p1: Int) {
                         CoroutineScope(Dispatchers.IO).launch {

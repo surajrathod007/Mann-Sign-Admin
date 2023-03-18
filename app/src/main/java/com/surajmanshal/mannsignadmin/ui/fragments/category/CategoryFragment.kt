@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.surajmanshal.mannsignadmin.R
 import com.surajmanshal.mannsignadmin.adapter.recyclerView.CategoryAdapter
 import com.surajmanshal.mannsignadmin.data.model.Category
+import com.surajmanshal.mannsignadmin.databinding.DialogContainerBinding
 import com.surajmanshal.mannsignadmin.databinding.FragmentCategoryBinding
 import com.surajmanshal.mannsignadmin.ui.fragments.AdapterFragment
 import com.surajmanshal.mannsignadmin.utils.hide
@@ -78,10 +79,12 @@ open class CategoryFragment : AdapterFragment() {
         return binding.root
     }
     protected fun setupInputDialog(): AlertDialog.Builder {
-        val dialog = AlertDialog.Builder(activity)
+        val dialog = AlertDialog.Builder(requireContext())
         dialog.setTitle("Add New Category")
-        val etName = EditText(activity)
-        dialog.setView(etName)
+        val etName = EditText(requireContext())
+        dialog.setView(DialogContainerBinding.inflate(layoutInflater).also {
+            it.dialogContainer.addView(etName)
+        }.root)
         dialog.setPositiveButton("Add", object : DialogInterface.OnClickListener {
             override fun onClick(p0: DialogInterface?, p1: Int) {
                 CoroutineScope(Dispatchers.IO).launch {

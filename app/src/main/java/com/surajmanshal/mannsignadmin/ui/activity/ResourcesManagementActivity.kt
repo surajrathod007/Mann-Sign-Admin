@@ -188,7 +188,7 @@ class ResourcesManagementActivity : AppCompatActivity() {
                 } else {
                     Toast.makeText(
                         this@ResourcesManagementActivity,
-                        "Can't Upload",
+                        "Please choose a file",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
