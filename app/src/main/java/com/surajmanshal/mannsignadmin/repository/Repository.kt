@@ -81,4 +81,6 @@ open class Repository() {
     suspend fun updateMaterial(material : Material) = server.updateMaterial(material)
 
     suspend fun updateLanguage(language : Language) = server.updateLanguage(language)
+    suspend fun updateCategory(category: Category) = server.updateCategory(category)
+    suspend fun updateSubcategory(category: SubCategory) = server.updateSubcategory(category)
 }

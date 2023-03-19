@@ -157,4 +157,21 @@ class CategoryViewModel:ViewModel() {
         }
     }
 
+    suspend fun updateCategory(category: Category) {
+        try {
+            val response = repository.updateCategory(category)
+            _serverResponse.postValue(response)
+        }catch (e : Exception){
+            println("$e")
+        }
+    }
+    suspend fun updateSubcategory(category: SubCategory) {
+        try {
+            val response = repository.updateSubcategory(category)
+            _serverResponse.postValue(response)
+        }catch (e : Exception){
+            println("$e")
+        }
+    }
+
 }

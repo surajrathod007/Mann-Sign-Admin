@@ -77,8 +77,10 @@ class SubCategoryFragment : CategoryFragment() {
                 tvToolBarTitle.text = "Subcategories"
             }
         }
-        vm.subCategories.observe(viewLifecycleOwner, Observer {
-            setAdapterWithList(it,binding.rvCategories, SubCategoryAdapter(vm))
+        vm.subCategories.observe(viewLifecycleOwner, Observer { it ->
+            setAdapterWithList(it,binding.rvCategories, SubCategoryAdapter(vm){
+                setupUpdateDialog(it,id).show()
+            })
         })
         vm.isDeleting.observe(viewLifecycleOwner, Observer {
             binding.alertDialog.visibility = if (it) View.VISIBLE else View.GONE
