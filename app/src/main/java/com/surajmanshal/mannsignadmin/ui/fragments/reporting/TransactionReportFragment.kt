@@ -228,7 +228,7 @@ class TransactionReportFragment : Fragment() {
             val path =
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
                     .toString()
-            val file = File(path, "order_report${System.currentTimeMillis()}.pdf")
+            val file = File(path, "transaction_report${System.currentTimeMillis()}.pdf")
             val output = FileOutputStream(file)
 
             val writer = PdfWriter(file)
