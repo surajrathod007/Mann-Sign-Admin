@@ -119,4 +119,12 @@ dependencies {
 
     // Graphs
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
+    //paging 3
+    def paging_version = "3.1.1"
+
+    implementation "androidx.paging:paging-runtime:$paging_version"
+
+    // alternatively - without Android dependencies for tests
+    testImplementation "androidx.paging:paging-common:$paging_version"
 }

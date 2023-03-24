@@ -14,6 +14,7 @@ import com.surajmanshal.mannsignadmin.R
 import com.surajmanshal.mannsignadmin.adapter.recyclerView.OrdersAdapter
 import com.surajmanshal.mannsignadmin.databinding.FragmentOrdersBinding
 import com.surajmanshal.mannsignadmin.network.NetworkService
+import com.surajmanshal.mannsignadmin.paging.PagedOrderAdapter
 import com.surajmanshal.mannsignadmin.utils.Constants
 import com.surajmanshal.mannsignadmin.viewmodel.OrdersViewModel
 
@@ -52,13 +53,19 @@ class OrdersFragment() : Fragment(), View.OnClickListener {
 
         if (NetworkService.checkForInternet(requireContext())) {
 
+//            val adapter = PagedOrderAdapter()
+//            binding.rvOrders.adapter = adapter
             viewModel.getAllOrders()
             viewModel.allOrders.observe(viewLifecycleOwner) {
                 if (it?.isNotEmpty() == true) {
                     binding.rvOrders.adapter = OrdersAdapter(requireContext(), it)
-                    //Toast.makeText(requireContext(),"${it.size} orders",Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(),"${it.size} orders",Toast.LENGTH_LONG).show()
                 }
             }
+//            viewModel.pagedOrders.observe(viewLifecycleOwner){
+//                adapter.submitData(lifecycle,it)
+//                Toast.makeText(requireContext(), "${it.toString()}", Toast.LENGTH_LONG).show()
+//            }
             viewModel.isEmptyList.observe(viewLifecycleOwner) {
                 if (it) {
                     Toast.makeText(requireContext(), "No Orders", Toast.LENGTH_LONG).show()

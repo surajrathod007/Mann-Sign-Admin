@@ -9,6 +9,7 @@ import com.surajmanshal.mannsignadmin.data.model.ordering.Order
 import com.surajmanshal.mannsignadmin.data.model.ordering.Transaction
 import com.surajmanshal.mannsignadmin.data.model.product.Product
 import com.surajmanshal.mannsignadmin.data.model.product.ProductType
+import com.surajmanshal.mannsignadmin.paging.PagedOrders
 import com.surajmanshal.response.SimpleResponse
 import okhttp3.MultipartBody
 import retrofit2.Call
@@ -190,5 +191,8 @@ interface NetworkCallsInterface {
     suspend fun updateMaterial(@Body material : Material) : SimpleResponse
     @POST("language/update")
     suspend fun updateLanguage(@Body language : Language) : SimpleResponse
+
+    @GET("order/all")
+    suspend fun getPaginatedOrders(@Query("page") page : Int) : PagedOrders
 
 }

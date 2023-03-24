@@ -1,93 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="10dp"
-    app:cardElevation="0dp"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
 
-    >
+    </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.card.MaterialCardView
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <LinearLayout
-            android:id="@+id/linearOrderDetails"
-            android:layout_margin="5dp"
-            android:orientation="vertical"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            >
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        app:cardElevation="0dp"
 
-            <TextView
-                android:id="@+id/txtOrderId"
-                android:text="Order Id"
-                android:textColor="@color/title_text_color"
-                android:fontFamily="@font/satoshi_medium"
+
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/linearOrderDetails"
+                android:layout_margin="5dp"
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txtOrderId"
+                    android:text="Order Id"
+                    android:textColor="@color/title_text_color"
+                    android:fontFamily="@font/satoshi_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/txtOrderDate"
+                    android:layout_width="wrap_content"
+                    android:fontFamily="@font/satoshi_medium"
+                    android:layout_height="wrap_content"
+                    android:textSize="10sp"
+                    android:textColor="@color/text_normal_color"
+                    android:text="Order Date" />
+
+                <TextView
+                    android:id="@+id/txtOrderEmailId"
+                    android:textSize="10sp"
+                    android:fontFamily="@font/satoshi_medium"
+                    android:textColor="@color/text_normal_color"
+                    android:text="surajsinhrathod007@gmail.com"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginRight="5dp"
+                android:id="@+id/linearOrderPrice"
+                android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"/>
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
 
-            <TextView
-                android:id="@+id/txtOrderDate"
-                android:layout_width="wrap_content"
-                android:fontFamily="@font/satoshi_medium"
-                android:layout_height="wrap_content"
-                android:textSize="10sp"
-                android:textColor="@color/text_normal_color"
-                android:text="Order Date"/>
+                <TextView
+                    android:id="@+id/txtOrderTotal"
+                    android:text="$500.00"
+                    android:textStyle="bold"
+                    android:textColor="@color/order_selected_text_color"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
-            <TextView
-                android:id="@+id/txtOrderEmailId"
-                android:textSize="10sp"
-                android:fontFamily="@font/satoshi_medium"
-                android:textColor="@color/text_normal_color"
-                android:text="surajsinhrathod007@gmail.com"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                <TextView
+                    android:paddingRight="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingBottom="2dp"
+                    android:id="@+id/txtOrderStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/satoshi_medium"
+                    android:textSize="8sp"
+                    android:textColor="@color/title_text_color"
+                    android:text="Pendnig"
+                    android:background="@drawable/textview_background" />
 
-        </LinearLayout>
-        <LinearLayout
-            android:layout_marginRight="5dp"
-            android:id="@+id/linearOrderPrice"
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
-
-            <TextView
-                android:id="@+id/txtOrderTotal"
-                android:text="$500.00"
-                android:textStyle="bold"
-                android:textColor="@color/order_selected_text_color"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:paddingRight="10dp"
-                android:paddingLeft="10dp"
-                android:paddingBottom="2dp"
-                android:id="@+id/txtOrderStatus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/satoshi_medium"
-                android:textSize="8sp"
-                android:textColor="@color/title_text_color"
-                android:text="Pendnig"
-                android:background="@drawable/textview_background"/>
-
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-
-
-</com.google.android.material.card.MaterialCardView>
+    </com.google.android.material.card.MaterialCardView>
+</layout>
