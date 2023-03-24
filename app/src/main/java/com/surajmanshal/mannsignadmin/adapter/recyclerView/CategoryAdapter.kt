@@ -8,13 +8,15 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.surajmanshal.mannsignadmin.R
 import com.surajmanshal.mannsignadmin.databinding.DeletableItemCardBinding
+import com.surajmanshal.mannsignadmin.utils.show
 import com.surajmanshal.mannsignadmin.viewmodel.CategoryViewModel
 
-open class CategoryAdapter(private val vm: CategoryViewModel) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
+open class CategoryAdapter(private val vm: CategoryViewModel , val editor : (Any) -> Unit) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
 
     class CategoryViewHolder(binding: DeletableItemCardBinding):RecyclerView.ViewHolder(binding.root){
         val name = binding.tvName
         val btnDelete = binding.ivDelete
+        val btnEdit = binding.ivEdit
         val card = binding.root
     }
 
@@ -25,17 +27,21 @@ open class CategoryAdapter(private val vm: CategoryViewModel) : RecyclerView.Ada
     }
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
-        val c = vm.categories.value!![position]
-        println(c)
-        Log.d("category","$c")
+        val category = vm.categories.value!![position]
+        println(category)
+        Log.d("category","$category")
         with(holder){
-            name.text = c.name
+            name.text = category.name
             btnDelete.setOnClickListener {
-                vm.onDeleteAlert(c)
+                vm.onDeleteAlert(category)
+            }
+            btnEdit.apply{
+                show()
+                setOnClickListener { editor(category) }
             }
             card.setOnClickListener {
                 val bundle =Bundle()
-                c.id?.let { it1 -> bundle.putInt("id", it1) }
+                category.id?.let { it1 -> bundle.putInt("id", it1) }
                 Navigation.findNavController(it).navigate(R.id.action_categoryFragment_to_subCategoryFragment,bundle)
 //                Toast.makeText(it.context, "${c.id}", Toast.LENGTH_SHORT).show()
             }

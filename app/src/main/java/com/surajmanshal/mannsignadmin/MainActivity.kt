@@ -2,25 +2,18 @@ package com.surajmanshal.mannsignadmin
 
 import android.Manifest
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProvider
 import com.onesignal.OneSignal
 import com.surajmanshal.mannsignadmin.adapter.MainViewPagerAdapter
 import com.surajmanshal.mannsignadmin.databinding.ActivityMainBinding
-import com.surajmanshal.mannsignadmin.network.NetworkService
 import com.surajmanshal.mannsignadmin.ui.fragments.DashboardFragment
 import com.surajmanshal.mannsignadmin.ui.fragments.OrdersFragment
 import com.surajmanshal.mannsignadmin.ui.fragments.ReportsFragment
-import com.surajmanshal.mannsignadmin.viewmodel.OrdersViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
 
@@ -39,8 +32,6 @@ class MainActivity : AppCompatActivity() {
 
 
 
-
-
         setupViewPager()
         permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){
             isRead = it[Manifest.permission.READ_EXTERNAL_STORAGE] ?: isRead
@@ -52,10 +43,6 @@ class MainActivity : AppCompatActivity() {
         val uid = OneSignal.getDeviceState()?.userId
         Toast.makeText(this,"Player id " + uid, Toast.LENGTH_LONG).show()
 
-
-    }
-
-    private suspend fun getPaginatedOrders() {
 
     }
 
@@ -89,4 +76,6 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+
+
 }

@@ -110,7 +110,7 @@ class ProductManagementActivity : AppCompatActivity() {
                             )
 
                             if(mProduct.productId==0) {
-                                languages = getSelectedLanguagesIds(gvLanguages)
+                                languages = getSelectedLanguagesIds(gvLanguages)   // May be reason of wrong language reference
                                 CoroutineScope(Dispatchers.IO).launch {
                                     vm.productImages.value?.forEach {
                                         if (it.fileUri != null)
@@ -391,7 +391,11 @@ class ProductManagementActivity : AppCompatActivity() {
         container.forEach {
             val option = it as CheckBox
             if (option.isChecked)
-                list.add(vm.languages.value!!.get(container.indexOfChild(option)).id)
+                vm.languages.value!!.find {
+                    it.name == option.text.toString()
+                }?.let {
+                        language -> list.add(language.id)
+                }
         }
         return list
     }

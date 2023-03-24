@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.surajmanshal.mannsignadmin.R
 import com.surajmanshal.mannsignadmin.adapter.recyclerView.CategoryAdapter
 import com.surajmanshal.mannsignadmin.data.model.Category
+import com.surajmanshal.mannsignadmin.data.model.SubCategory
 import com.surajmanshal.mannsignadmin.databinding.DialogContainerBinding
 import com.surajmanshal.mannsignadmin.databinding.FragmentCategoryBinding
 import com.surajmanshal.mannsignadmin.ui.fragments.AdapterFragment
@@ -67,8 +68,10 @@ open class CategoryFragment : AdapterFragment() {
                 tvToolBarTitle.text = "Categories"
             }
         }
-        vm.categories.observe(viewLifecycleOwner, Observer {
-            setAdapterWithList(it,binding.rvCategories, CategoryAdapter(vm))
+        vm.categories.observe(viewLifecycleOwner, Observer { it ->
+            setAdapterWithList(it,binding.rvCategories, CategoryAdapter(vm){
+                setupUpdateDialog(it as Category).show()
+            })
         })
         vm.isDeleting.observe(viewLifecycleOwner, Observer {
             binding.alertDialog.visibility = if (it) View.VISIBLE else View.GONE
@@ -90,6 +93,43 @@ open class CategoryFragment : AdapterFragment() {
                 CoroutineScope(Dispatchers.IO).launch {
                     vm.addNewCategory(Category(name = etName.text.toString()))
                     vm.getCategories()
+                }
+            }
+        })
+        return dialog
+    }
+
+    protected fun setupUpdateDialog(category : Any, categoryId : Int? = null): AlertDialog.Builder {
+        val dialog = AlertDialog.Builder(requireContext())
+        val etName = EditText(requireContext())
+        dialog.setTitle("Update ${
+            when (category) {
+                is Category -> {
+                    etName.setText(category.name)
+                    "Category"
+                }
+                is SubCategory -> {
+                    etName.setText(category.name)
+                    "Subcategory"
+                }
+                else -> {
+                    ""
+                }
+            }
+        }")
+        dialog.setView(DialogContainerBinding.inflate(layoutInflater).also {
+            it.dialogContainer.addView(etName)
+        }.root)
+        dialog.setPositiveButton("Update", object : DialogInterface.OnClickListener {
+            override fun onClick(p0: DialogInterface?, p1: Int) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    if(category is Category){
+                        vm.updateCategory(category.apply { name = etName.text.toString() })
+                        vm.getCategories()
+                    }else if(category is SubCategory){
+                        vm.updateSubcategory(category.apply { name = etName.text.toString() })
+                        vm.getSubCategories(categoryId)
+                    }
                 }
             }
         })

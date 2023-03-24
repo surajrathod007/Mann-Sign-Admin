@@ -5,14 +5,17 @@ import android.view.ViewGroup
 import com.surajmanshal.mannsignadmin.databinding.DeletableItemCardBinding
 import com.surajmanshal.mannsignadmin.viewmodel.CategoryViewModel
 
-class SubCategoryAdapter(val vm: CategoryViewModel) : CategoryAdapter(vm) {
+class SubCategoryAdapter(val vm: CategoryViewModel, editor : (Any) -> Unit) : CategoryAdapter(vm,editor) {
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
-        val s = vm.subCategories.value!![position]
+        val subCategory = vm.subCategories.value!![position]
         with(holder){
-            name.text = s.name
+            name.text = subCategory.name
             btnDelete.setOnClickListener {
-                vm.onDeleteAlert(s)
+                vm.onDeleteAlert(subCategory)
+            }
+            btnEdit.setOnClickListener {
+                editor(subCategory)
             }
         }
     }

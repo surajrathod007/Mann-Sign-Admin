@@ -191,6 +191,10 @@ interface NetworkCallsInterface {
     suspend fun updateMaterial(@Body material : Material) : SimpleResponse
     @POST("language/update")
     suspend fun updateLanguage(@Body language : Language) : SimpleResponse
+    @POST("category/update")
+    suspend fun updateCategory(@Body category: Category): SimpleResponse
+    @POST("subcategory/update")
+    suspend fun updateSubcategory(@Body category: SubCategory): SimpleResponse
 
     @GET("order/all")
     suspend fun getPaginatedOrders(@Query("page") page : Int) : PagedOrders
