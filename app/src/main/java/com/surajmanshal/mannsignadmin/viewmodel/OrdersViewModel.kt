@@ -3,10 +3,16 @@ package com.surajmanshal.mannsignadmin.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
+import androidx.paging.liveData
 import com.surajmanshal.mannsignadmin.data.model.*
 import com.surajmanshal.mannsignadmin.data.model.auth.User
 import com.surajmanshal.mannsignadmin.data.model.ordering.Order
 import com.surajmanshal.mannsignadmin.network.NetworkService
+import com.surajmanshal.mannsignadmin.paging.OrderPagingSource
 import com.surajmanshal.mannsignadmin.repository.Repository
 import com.surajmanshal.response.SimpleResponse
 import kotlinx.coroutines.CoroutineScope
@@ -22,6 +28,10 @@ class OrdersViewModel : ViewModel() {
 
     private val _allOrders = MutableLiveData<List<Order>>(emptyList())
     val allOrders: LiveData<List<Order>> get() = _allOrders
+
+    //paginated orders
+    //val pagedOrders = getPagedOrdersLiveData().cachedIn(viewModelScope)
+
 
     val isEmptyList = MutableLiveData<Boolean>(false)
     var isLoading = MutableLiveData<Boolean>(true)
@@ -52,6 +62,7 @@ class OrdersViewModel : ViewModel() {
 
     companion object {
         val repository = Repository()
+        val db = NetworkService
     }
 
     fun setupViewModelDataMembers() {
@@ -242,4 +253,8 @@ class OrdersViewModel : ViewModel() {
 
     }
 
+    private fun getPagedOrdersLiveData() = Pager(
+        config = PagingConfig(pageSize = 10, maxSize = 40),
+        pagingSourceFactory = { OrderPagingSource(db = db)}
+    ).liveData
 }
