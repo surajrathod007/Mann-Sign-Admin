@@ -5,12 +5,12 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.FileProvider
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.itextpdf.kernel.pdf.PdfDocument
 import com.itextpdf.kernel.pdf.PdfWriter
@@ -87,9 +87,8 @@ class ProductReportFragment : Fragment() {
 
             val p = vm.products.value!!
             val orders = vm.allOrders.value
-            val path =
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
-                    .toString()
+//            val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString()
+            val path = requireActivity().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)?.toString()
             val file = File(path, "product_report${System.currentTimeMillis()}.pdf")
             val output = FileOutputStream(file)
 
@@ -169,7 +168,11 @@ class ProductReportFragment : Fragment() {
             )
             document.close()
             Toast.makeText(requireContext(), "Report Created", Toast.LENGTH_SHORT).show()
-            openFile(file, path)
+            if (path != null) {
+                openFile(file, path)
+            }else{
+                Toast.makeText(requireContext(), "Access Denied to External storage", Toast.LENGTH_SHORT).show()
+            }
         } catch (e: Exception) {
             Functions.makeToast(requireContext(), "Exceptions : ${e.message}")
         }

@@ -5,7 +5,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +13,7 @@ import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.Toast
 import androidx.core.content.FileProvider
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
@@ -234,7 +234,8 @@ class OrderReportFragment : Fragment() {
 
             var lst = vm.allOrders.value
 
-            val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString()
+//            val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString()
+            val path = requireActivity().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)?.toString()
             val file = File(path,"order_report${System.currentTimeMillis()}.pdf")
             val output = FileOutputStream(file)
 
@@ -303,7 +304,11 @@ class OrderReportFragment : Fragment() {
             document.add(Paragraph("Report Generated At : $d").setFontSize(8f).setTextAlignment(TextAlignment.RIGHT))
             document.close()
             Toast.makeText(requireContext(),"Report Created",Toast.LENGTH_SHORT).show()
-            openFile(file,path)
+            if (path != null) {
+                openFile(file, path)
+            }else{
+                Toast.makeText(requireContext(), "Access Denied to External storage", Toast.LENGTH_SHORT).show()
+            }
 
         }catch (e : Exception){
             Toast.makeText(requireContext(),e.message,Toast.LENGTH_SHORT).show()
