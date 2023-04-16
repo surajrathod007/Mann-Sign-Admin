@@ -38,15 +38,16 @@
                 <LinearLayout
                     android:id="@+id/llMainOrderCount"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingTop="@dimen/padding_medium">
 
                     <com.google.android.material.card.MaterialCardView
                         android:clickable="true"
                         android:id="@+id/cardPendingOrdersNew"
                         android:foreground="?attr/selectableItemBackground"
                         android:layout_width="match_parent"
-                        android:layout_height="120dp"
+                        android:layout_height="64dp"
                         android:layout_marginHorizontal="12dp">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -54,13 +55,13 @@
                             android:layout_height="match_parent">
 
                             <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="0dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="64dp"
                                 android:fontFamily="@font/satoshi_bold"
                                 android:gravity="center"
                                 android:text="Pending Orders"
                                 android:textColor="@color/title_text_color"
-                                android:textSize="26sp"
+                                android:textSize="20sp"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -69,15 +70,16 @@
                             <TextView
                                 android:id="@+id/txtPendingNew"
                                 android:visibility="gone"
+                                android:textSize="13sp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
                                 android:layout_marginRight="8dp"
                                 android:background="@drawable/new_order_bg"
                                 android:fontFamily="@font/satoshi_medium"
-                                android:paddingHorizontal="6dp"
+                                android:paddingHorizontal="8dp"
                                 android:paddingBottom="2dp"
-                                android:text="New order !"
+                                android:text="New"
                                 android:textColor="@color/white"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -91,7 +93,7 @@
                         android:id="@+id/cardConfirmedOrdersNew"
                         android:foreground="?attr/selectableItemBackground"
                         android:layout_width="match_parent"
-                        android:layout_height="120dp"
+                        android:layout_height="64dp"
                         android:layout_marginHorizontal="12dp"
                         android:layout_marginTop="16dp">
 
@@ -100,13 +102,13 @@
                             android:layout_height="match_parent">
 
                             <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="0dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="64dp"
                                 android:fontFamily="@font/satoshi_bold"
                                 android:gravity="center"
                                 android:text="Confirmed Orders"
                                 android:textColor="@color/title_text_color"
-                                android:textSize="26sp"
+                                android:textSize="20sp"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -114,6 +116,7 @@
 
                             <TextView
                                 android:visibility="gone"
+                                android:textSize="13sp"
                                 android:id="@+id/txtConfirmedNew"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -121,9 +124,9 @@
                                 android:layout_marginRight="8dp"
                                 android:background="@drawable/new_order_bg"
                                 android:fontFamily="@font/satoshi_medium"
-                                android:paddingHorizontal="6dp"
+                                android:paddingHorizontal="8dp"
                                 android:paddingBottom="2dp"
-                                android:text="New order !"
+                                android:text="New"
                                 android:textColor="@color/white"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -137,7 +140,7 @@
                         android:id="@+id/cardProcecingOrdersNew"
                         android:foreground="?attr/selectableItemBackground"
                         android:layout_width="match_parent"
-                        android:layout_height="120dp"
+                        android:layout_height="64dp"
                         android:layout_marginHorizontal="12dp"
                         android:layout_marginTop="16dp">
 
@@ -146,13 +149,13 @@
                             android:layout_height="match_parent">
 
                             <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="0dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="64dp"
                                 android:fontFamily="@font/satoshi_bold"
                                 android:gravity="center"
                                 android:text="Processing Orders"
                                 android:textColor="@color/title_text_color"
-                                android:textSize="26sp"
+                                android:textSize="20sp"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -160,6 +163,7 @@
 
                             <TextView
                                 android:visibility="gone"
+                                android:textSize="13sp"
                                 android:id="@+id/txtProcessingNew"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -167,9 +171,9 @@
                                 android:layout_marginRight="8dp"
                                 android:background="@drawable/new_order_bg"
                                 android:fontFamily="@font/satoshi_medium"
-                                android:paddingHorizontal="6dp"
+                                android:paddingHorizontal="8dp"
                                 android:paddingBottom="2dp"
-                                android:text="New order !"
+                                android:text="New"
                                 android:textColor="@color/white"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -183,7 +187,7 @@
                         android:id="@+id/cardReadyOrdersNew"
                         android:foreground="?attr/selectableItemBackground"
                         android:layout_width="match_parent"
-                        android:layout_height="120dp"
+                        android:layout_height="64dp"
                         android:layout_marginHorizontal="12dp"
                         android:layout_marginTop="16dp">
 
@@ -192,13 +196,13 @@
                             android:layout_height="match_parent">
 
                             <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="0dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="64dp"
                                 android:fontFamily="@font/satoshi_bold"
                                 android:gravity="center"
                                 android:text="Ready Orders"
                                 android:textColor="@color/title_text_color"
-                                android:textSize="26sp"
+                                android:textSize="20sp"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -206,6 +210,7 @@
 
                             <TextView
                                 android:visibility="gone"
+                                android:textSize="13sp"
                                 android:id="@+id/txtReadyNew"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -213,9 +218,9 @@
                                 android:layout_marginRight="8dp"
                                 android:background="@drawable/new_order_bg"
                                 android:fontFamily="@font/satoshi_medium"
-                                android:paddingHorizontal="6dp"
+                                android:paddingHorizontal="8dp"
                                 android:paddingBottom="2dp"
-                                android:text="New order !"
+                                android:text="New"
                                 android:textColor="@color/white"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -229,7 +234,7 @@
                         android:id="@+id/cardOutOrdersNew"
                         android:foreground="?attr/selectableItemBackground"
                         android:layout_width="match_parent"
-                        android:layout_height="120dp"
+                        android:layout_height="64dp"
                         android:layout_marginHorizontal="12dp"
                         android:layout_marginTop="16dp">
 
@@ -238,13 +243,13 @@
                             android:layout_height="match_parent">
 
                             <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="0dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="64dp"
                                 android:fontFamily="@font/satoshi_bold"
                                 android:gravity="center"
                                 android:text="Out for delivery Orders"
                                 android:textColor="@color/title_text_color"
-                                android:textSize="26sp"
+                                android:textSize="20sp"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -252,6 +257,7 @@
 
                             <TextView
                                 android:visibility="gone"
+                                android:textSize="13sp"
                                 android:id="@+id/txtOutNew"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -259,9 +265,9 @@
                                 android:layout_marginRight="8dp"
                                 android:background="@drawable/new_order_bg"
                                 android:fontFamily="@font/satoshi_medium"
-                                android:paddingHorizontal="6dp"
+                                android:paddingHorizontal="8dp"
                                 android:paddingBottom="2dp"
-                                android:text="New order !"
+                                android:text="New"
                                 android:textColor="@color/white"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -275,7 +281,7 @@
                         android:id="@+id/cardDeliveredOrdersNew"
                         android:foreground="?attr/selectableItemBackground"
                         android:layout_width="match_parent"
-                        android:layout_height="120dp"
+                        android:layout_height="64dp"
                         android:layout_marginHorizontal="12dp"
                         android:layout_marginTop="16dp">
 
@@ -284,13 +290,13 @@
                             android:layout_height="match_parent">
 
                             <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="0dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="64dp"
                                 android:fontFamily="@font/satoshi_bold"
                                 android:gravity="center"
                                 android:text="Delivered Orders"
                                 android:textColor="@color/title_text_color"
-                                android:textSize="26sp"
+                                android:textSize="20sp"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -299,15 +305,16 @@
                             <TextView
                                 android:id="@+id/txtDeliveredNew"
                                 android:visibility="gone"
+                                android:textSize="13sp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
                                 android:layout_marginRight="8dp"
                                 android:background="@drawable/new_order_bg"
                                 android:fontFamily="@font/satoshi_medium"
-                                android:paddingHorizontal="6dp"
+                                android:paddingHorizontal="8dp"
                                 android:paddingBottom="2dp"
-                                android:text="New order !"
+                                android:text="New"
                                 android:textColor="@color/white"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -321,7 +328,7 @@
                         android:id="@+id/cardCanceledOrdersNew"
                         android:foreground="?attr/selectableItemBackground"
                         android:layout_width="match_parent"
-                        android:layout_height="120dp"
+                        android:layout_height="64dp"
                         android:layout_marginHorizontal="12dp"
                         android:layout_marginTop="16dp">
 
@@ -330,13 +337,13 @@
                             android:layout_height="match_parent">
 
                             <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="0dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="64dp"
                                 android:fontFamily="@font/satoshi_bold"
                                 android:gravity="center"
                                 android:text="Canceled Orders"
                                 android:textColor="@color/title_text_color"
-                                android:textSize="26sp"
+                                android:textSize="20sp"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -345,15 +352,16 @@
                             <TextView
                                 android:id="@+id/txtCanceledNew"
                                 android:visibility="gone"
+                                android:textSize="13sp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
                                 android:layout_marginRight="8dp"
                                 android:background="@drawable/new_order_bg"
                                 android:fontFamily="@font/satoshi_medium"
-                                android:paddingHorizontal="6dp"
+                                android:paddingHorizontal="8dp"
                                 android:paddingBottom="2dp"
-                                android:text="New order !"
+                                android:text="New"
                                 android:textColor="@color/white"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
