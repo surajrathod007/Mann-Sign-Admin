@@ -12,6 +12,7 @@ import com.onesignal.OneSignal
 import com.surajmanshal.mannsignadmin.adapter.MainViewPagerAdapter
 import com.surajmanshal.mannsignadmin.databinding.ActivityMainBinding
 import com.surajmanshal.mannsignadmin.ui.fragments.DashboardFragment
+import com.surajmanshal.mannsignadmin.ui.fragments.MainOrdersFragment
 import com.surajmanshal.mannsignadmin.ui.fragments.OrdersFragment
 import com.surajmanshal.mannsignadmin.ui.fragments.ReportsFragment
 
@@ -47,7 +48,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun setupViewPager() {
-        val fragmentList = listOf(DashboardFragment(),OrdersFragment(),ReportsFragment())
+        val fragmentList = listOf(DashboardFragment(),MainOrdersFragment(),ReportsFragment())
         binding.viewPager.isUserInputEnabled = false
         binding.viewPager.adapter = MainViewPagerAdapter(fragmentList,this)
         binding.bottomNavigationView.setupWithViewPager2(binding.viewPager)

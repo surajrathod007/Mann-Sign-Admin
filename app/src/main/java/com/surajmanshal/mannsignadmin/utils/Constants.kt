@@ -32,4 +32,7 @@ object Constants {
     const val DATASTORE_EMAIL = "emailId"
     const val LOCKED_FOR = "isLocked"
 
+    //get shared of count
+    const val ORDER_COUNTS_PREF = "orderCountsPref"
+    const val ORDER_COUNT = "orderCount"
 }

@@ -199,4 +199,9 @@ interface NetworkCallsInterface {
     @GET("order/all")
     suspend fun getPaginatedOrders(@Query("page") page : Int) : PagedOrders
 
+    @GET("order/count")
+    fun getOrderCount() : Call<List<Int>>
+
+    @POST("order/status")
+    fun getOrdersByStatus(@Query("status") status : String) : Call<List<Order>>
 }

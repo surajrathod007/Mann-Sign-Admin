@@ -254,7 +254,7 @@ class OrdersViewModel : ViewModel() {
     }
 
     private fun getPagedOrdersLiveData() = Pager(
-        config = PagingConfig(pageSize = 10, maxSize = 40),
+        config = PagingConfig(pageSize = 10, maxSize = 15),
         pagingSourceFactory = { OrderPagingSource(db = db)}
     ).liveData
 }
