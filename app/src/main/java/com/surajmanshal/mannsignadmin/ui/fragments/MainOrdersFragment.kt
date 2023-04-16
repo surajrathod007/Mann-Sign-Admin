@@ -47,6 +47,10 @@ class MainOrdersFragment : Fragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        getOrdersCount()
+    }
     private fun setupClickListeners() {
         with(binding) {
             cardPendingOrdersNew.setOnClickListener {

@@ -33,6 +33,11 @@ class OrderListActivity : AppCompatActivity() {
         setContentView(binding.root)
     }
 
+    override fun onResume() {
+        super.onResume()
+        orderStatus?.let { loadOrders(it) }
+    }
+
     private fun loadOrders(orderStatus: Int) {
         binding.progressLoadingOrders.visibility = View.VISIBLE
         val r = NetworkService.networkInstance.getOrdersByStatus(orderStatus.toString())
