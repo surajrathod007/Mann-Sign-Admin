@@ -232,8 +232,12 @@ class MainOrdersFragment : Fragment() {
         val diffList = mutableListOf<Int>()
         for (i in count.indices) {
             val dif = count[i] - list[i]
-            diffList.add(dif)
+            if(dif<0)
+                diffList.add(0)
+            else
+                diffList.add(dif)
         }
+        makeToast(requireContext(),diffList.toString())
         if (diffList[0] > 0) {
             binding.txtPendingNew.visibility = View.VISIBLE
         } else {
