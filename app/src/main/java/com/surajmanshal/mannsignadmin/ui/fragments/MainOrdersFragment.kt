@@ -3,13 +3,10 @@ package com.surajmanshal.mannsignadmin.ui.fragments
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.children
-import androidx.core.view.forEachIndexed
-import com.google.android.material.card.MaterialCardView
+import androidx.fragment.app.Fragment
 import com.surajmanshal.mannsignadmin.R
 import com.surajmanshal.mannsignadmin.databinding.FragmentMainOrdersBinding
 import com.surajmanshal.mannsignadmin.network.NetworkService
@@ -237,7 +234,8 @@ class MainOrdersFragment : Fragment() {
             else
                 diffList.add(dif)
         }
-        makeToast(requireContext(),diffList.toString())
+//        makeToast(requireContext(),diffList.toString())
+        println(diffList.toString())
         if (diffList[0] > 0) {
             binding.txtPendingNew.visibility = View.VISIBLE
         } else {
