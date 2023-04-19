@@ -27,8 +27,10 @@ class OrderListActivity : AppCompatActivity() {
         binding = ActivityOrderListBinding.inflate(layoutInflater)
         db = LocalDatabase.getDatabase(this).orderCountDao()
         orderStatus = intent.getIntExtra("orderStatus",-1)
-        if(orderStatus!=-1){
+        if(orderStatus!=-1 && NetworkService.checkForInternet(this)){
             loadOrders(orderStatus!!)
+        }else{
+            makeToast(this,"Some error , or no internet connection")
         }
         setContentView(binding.root)
     }

@@ -39,7 +39,12 @@ class MainOrdersFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_main_orders, container, false)
         binding = FragmentMainOrdersBinding.bind(view)
 
-        getOrdersCount()
+        if(NetworkService.checkForInternet(requireContext())){
+            getOrdersCount()
+        }else{
+            makeToast(requireContext(),"No Internet connection")
+        }
+
         setupClickListeners()
         return binding.root
     }
