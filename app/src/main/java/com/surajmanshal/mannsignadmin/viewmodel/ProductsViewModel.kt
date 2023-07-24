@@ -24,23 +24,25 @@ class ProductsViewModel : ViewModel() {
     val _currentProductSubCategory = MutableLiveData<SubCategory>()
     val _currentProductMaterial = MutableLiveData<Material>()
     val _currentProductLanguage = MutableLiveData<Language>()
-//    val currentProduct : LiveData<Product> get() = _currentProduct
+    var quoteReq: List<String>? = null
+    //    val currentProduct : LiveData<Product> get() = _currentProduct
 
     fun getPosters() {
         val response = repository.fetchPosters()
         response.enqueue(object : Callback<List<Product>> {
             override fun onResponse(call: Call<List<Product>>, response: Response<List<Product>>) {
-                response.body()?.let { _products.value = it}
+                response.body()?.let { _products.value = it }
             }
+
             override fun onFailure(call: Call<List<Product>>, t: Throwable) {
                 println(t.toString())
             }
         })
     }
 
-    fun getCategoryById(id : Int){
+    fun getCategoryById(id: Int) {
         val response = repository.getCategoryById(id)
-        response.enqueue(object : Callback<Category>{
+        response.enqueue(object : Callback<Category> {
             override fun onResponse(call: Call<Category>, response: Response<Category>) {
                 println(response.body())
                 response.body()?.let { _currentProductCategory.value = it }
@@ -53,39 +55,42 @@ class ProductsViewModel : ViewModel() {
         })
     }
 
-    fun getSubCategoryById(id : Int){
+    fun getSubCategoryById(id: Int) {
         val response = repository.getSubCategoryById(id)
-        response.enqueue(object : Callback<SubCategory>{
+        response.enqueue(object : Callback<SubCategory> {
             override fun onResponse(call: Call<SubCategory>, response: Response<SubCategory>) {
                 println(response.body())
                 response.body()?.let { _currentProductSubCategory.value = it }
             }
+
             override fun onFailure(call: Call<SubCategory>, t: Throwable) {
 //                TODO("Not yet implemented")
             }
         })
     }
 
-    fun getMaterialById(id : Int){
+    fun getMaterialById(id: Int) {
         val response = repository.getMaterialById(id)
-        response.enqueue(object : Callback<Material>{
+        response.enqueue(object : Callback<Material> {
             override fun onResponse(call: Call<Material>, response: Response<Material>) {
                 println(response.body())
                 response.body()?.let { _currentProductMaterial.value = it }
             }
+
             override fun onFailure(call: Call<Material>, t: Throwable) {
 //                TODO("Not yet implemented")
             }
         })
     }
 
-    fun getLanguageById(id : Int){
+    fun getLanguageById(id: Int) {
         val response = repository.getLanguageById(id)
-        response.enqueue(object : Callback<Language>{
+        response.enqueue(object : Callback<Language> {
             override fun onResponse(call: Call<Language>, response: Response<Language>) {
                 println(response.body())
                 response.body()?.let { _currentProductLanguage.value = it }
             }
+
             override fun onFailure(call: Call<Language>, t: Throwable) {
 //                TODO("Not yet implemented")
             }

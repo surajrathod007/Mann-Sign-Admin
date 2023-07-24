@@ -63,8 +63,20 @@
         </activity>
         <activity
             android:name=".ui.activity.ProductsActivity"
-            android:exported="false"
+            android:exported="true"
             android:screenOrientation="portrait">
+
+            <intent-filter >
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="mannsign.com"
+                    android:scheme="https" />
+            </intent-filter>
+
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

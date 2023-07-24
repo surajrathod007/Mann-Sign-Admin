@@ -43,40 +43,9 @@ class ProductDetailsFragment : Fragment() {
         _binding = ActivityProductManagementBinding.bind(view)
         val languageList = mutableListOf<Language>()
         mVM._currentProduct.value?.let { product->
-            with(binding){
-            // Calls for resources -------------------------------------------------------
-            with(mVM){
 
-                getCategoryById(product.category!!)
-                getSubCategoryById(product.subCategory!!)
-                product.languages?.forEach { getLanguageById(it) }
-                product.materials?.forEach { getMaterialById(it) }
-                _currentProductCategory.observe(viewLifecycleOwner, Observer {
-                    setupCategoryView(it.name)
-                })
-                _currentProductSubCategory.observe(viewLifecycleOwner, Observer {
-                    setupSubCategoryView(it.name)
-                })
-                _currentProductMaterial.observe(viewLifecycleOwner, Observer {
-                    it?.let { setupMaterialViews(it.name) }
-                })
-                _currentProductLanguage.observe(viewLifecycleOwner, Observer { language ->
-                    language?.let {
-                        setupLanguageViews(language.name)
-                        languageList.add(language)
-//                        if (languageList.size == (product.images?.size ?: 0)) {
-                        if (languageList.size == product.languages!!.size) {
-                            rvProductImages.adapter = product.images?.let { it1 ->
-                                ProductDetailsImageAdapter(it1.map { image -> Pair(image.url
-                                    ,languageList.find { it.id == image.languageId }?.name ?:
-                                    Language(0,"Unavailable").name
-                                )
-                                })
-                            }
-                        }
-                    }
-                })
-            }
+
+            with(binding){
 
             // Set up Views  ----------------------------------------------------------------
                 rvProductImages.apply {
@@ -100,7 +69,8 @@ class ProductDetailsFragment : Fragment() {
                 product.posterDetails!!.long_desc?.let { etLongDescription.setText(it) }
                 etProductCode.setText(product.productCode)*/
                 tvBasePrice.text = "${tvBasePrice.text} ${product.basePrice}"
-                product.sizes?.forEach { setupSizesViews(it) }
+                if(mVM.quoteReq == null) product.sizes?.forEach { setupSizesViews(it) }
+                else setupSizesViews(product.sizes?.find { it.sid == mVM.quoteReq!![2].toInt() }!!)
                 activity?.let { activity ->
                     toolbar.apply {
                         ivBack.setOnClickListener {
@@ -115,7 +85,47 @@ class ProductDetailsFragment : Fragment() {
                         tvToolBarTitle.text = getString(R.string.product_details)
                     }
                 }
+                // Calls for resources -------------------------------------------------------
+                mVM.apply {
+
+                    _currentProductCategory.observe(viewLifecycleOwner, Observer {
+                        setupCategoryView(it.name)
+                    })
+                    _currentProductSubCategory.observe(viewLifecycleOwner, Observer {
+                        setupSubCategoryView(it.name)
+                    })
+                    _currentProductMaterial.observe(viewLifecycleOwner, Observer {
+                        it?.let { setupMaterialViews(it.name) }
+                    })
+                    _currentProductLanguage.observe(viewLifecycleOwner, Observer { language ->
+                        language?.let {
+                            setupLanguageViews(language.name)
+                            languageList.add(language)
+//                        if (languageList.size == (product.images?.size ?: 0)) {
+                            if (languageList.size == product.languages!!.size) {
+                                rvProductImages.adapter = product.images?.let { it1 ->
+                                    ProductDetailsImageAdapter(it1.map { image -> Pair(image.url
+                                        ,languageList.find { it.id == image.languageId }?.name ?:
+                                        Language(0,"Unavailable").name
+                                    )
+                                    })
+                                }
+                            }
+                        }
+                    })
+
+                    getCategoryById(product.category!!)
+                    getSubCategoryById(product.subCategory!!)
+                    if(quoteReq != null){
+                        getLanguageById(quoteReq!![3].toInt())
+                        getMaterialById(quoteReq!![2].toInt())
+                        return@apply
+                    }
+                    product.languages?.forEach { getLanguageById(it) }
+                    product.materials?.forEach { getMaterialById(it) }
+                }
             }
+
         }
 
         return binding.root

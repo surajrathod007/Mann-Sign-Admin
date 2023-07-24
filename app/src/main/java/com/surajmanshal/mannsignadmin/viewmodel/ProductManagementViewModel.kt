@@ -96,7 +96,7 @@ class ProductManagementViewModel : ResourcesViewModel() {
             _serverResponse.postValue(response)
             _imageUploadResponse.postValue(response)
         }catch (e : Exception){
-            println("$e ${serverResponse.value?.message}")
+            println("${this.javaClass.name}$e ${serverResponse.value?.message}")
         }
     }
     fun addImage(uri : Uri,languageId : Int){

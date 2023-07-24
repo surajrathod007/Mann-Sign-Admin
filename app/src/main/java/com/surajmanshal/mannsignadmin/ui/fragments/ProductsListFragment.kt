@@ -33,11 +33,7 @@ class ProductsListFragment : Fragment() {
         arguments?.let {
 
         }
-        mVM.products.observe(requireActivity(), Observer {
-            if(binding.rvProducts.adapter == null)
-                setAdapterWithList(it)
-        })
-        mVM.getPosters()
+
     }
 
     override fun onCreateView(
@@ -48,7 +44,10 @@ class ProductsListFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_products_list, container, false)
         _binding = FragmentProductsListBinding.bind(view)
         binding.rvProducts.layoutManager = GridLayoutManager(activity,columCount)
-
+        mVM.products.observe(requireActivity(), Observer {
+            if(binding.rvProducts.adapter == null)
+                setAdapterWithList(it)
+        })
         // Views Setup
         with(binding){
             btnAddProduct.setOnClickListener {
