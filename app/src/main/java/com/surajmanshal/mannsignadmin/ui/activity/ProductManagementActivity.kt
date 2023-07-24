@@ -98,16 +98,35 @@ class ProductManagementActivity : AppCompatActivity() {
                                 }
                                 productCode = this.toString()
                             }
-                            sizes = getSelectedSizes(gvSizes)
-                            materials = getSelectedMaterialsIds(gvMaterials)
-                            typeId = Constants.TYPE_POSTER
-                            subCategory = selectedCategory
-                            category = vm.subCategories.value?.get(binding.categorySpinner.selectedItemPosition)?.mainCategoryId
+                            if(etTitle.text.isNullOrEmpty()){
+                                Toast.makeText(this@ProductManagementActivity, "Title is required", Toast.LENGTH_SHORT).show()
+                                etTitle.requestFocus()
+                                return@setOnClickListener
+                            }
+                            if(etLongDescription.text.toString().length < 64 ){
+                                Toast.makeText(this@ProductManagementActivity, "Write At least 64 characters", Toast.LENGTH_SHORT).show()
+                                etLongDescription.requestFocus()
+                                return@setOnClickListener
+                            }
                             posterDetails = Poster(
                                 title = textOf(etTitle),
                                 short_desc = textOf(etShortDescription),
                                 long_desc = textOf(etLongDescription)
                             )
+                            sizes = getSelectedSizes(gvSizes)
+                            if(sizes.isNullOrEmpty()) {
+                                Toast.makeText(this@ProductManagementActivity, "Select At least one size", Toast.LENGTH_SHORT).show()
+                                return@setOnClickListener
+                            }
+                            materials = getSelectedMaterialsIds(gvMaterials)
+                            if(materials.isNullOrEmpty()) {
+                                Toast.makeText(this@ProductManagementActivity, "Select At least one Material", Toast.LENGTH_SHORT).show()
+                                return@setOnClickListener
+                            }
+                            typeId = Constants.TYPE_POSTER
+                            subCategory = selectedCategory
+                            category = vm.subCategories.value?.get(binding.categorySpinner.selectedItemPosition)?.mainCategoryId
+
 
                             if(mProduct.productId==0) {
                                 languages = getSelectedLanguagesIds(gvLanguages)   // May be reason of wrong language reference

@@ -81,13 +81,15 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etShortDescription"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:maxLength="6"/>
 
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Long Description (optional)"
-            android:textColor="@color/text_normal_color"/>
+            android:textColor="@color/text_normal_color"
+            />
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etLongDescription"
