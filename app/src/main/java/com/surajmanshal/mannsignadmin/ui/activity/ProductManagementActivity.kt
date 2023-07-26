@@ -103,7 +103,7 @@ class ProductManagementActivity : AppCompatActivity() {
                                 etTitle.requestFocus()
                                 return@setOnClickListener
                             }
-                            if(etLongDescription.text.toString().length < 64 ){
+                            if(etLongDescription.text.toString().length < 64 && !etLongDescription.text.isNullOrEmpty()){
                                 Toast.makeText(this@ProductManagementActivity, "Write At least 64 characters", Toast.LENGTH_SHORT).show()
                                 etLongDescription.requestFocus()
                                 return@setOnClickListener
