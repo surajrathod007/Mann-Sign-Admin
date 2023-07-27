@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
@@ -25,6 +26,7 @@ import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
+import java.io.FileOutputStream
 
 class ChatActivity : AppCompatActivity() {
 
@@ -95,7 +97,16 @@ class ChatActivity : AppCompatActivity() {
             if (!id.isNullOrEmpty() && !email.isNullOrEmpty()) {
 
                 if (imageUri != null) {
-                    val file = File(URIPathHelper().getPath(this@ChatActivity,imageUri!!))
+                    val file = if(Build.VERSION.SDK_INT > Build.VERSION_CODES.Q)
+                        File(URIPathHelper().getPath(this@ChatActivity,imageUri!!))
+                    else
+                        File(applicationContext.filesDir, "image.jpg").apply {
+                            val outputStream = FileOutputStream(this)
+                            contentResolver.openInputStream(imageUri!!)?.let {
+                                it.copyTo(outputStream)
+                                it.close()
+                            }
+                        }
                     val requestBody = RequestBody.create(MediaType.parse("image/jpg"), file)
                     val part = MultipartBody.Part.createFormData("product", file.name, requestBody)
                     CoroutineScope(Dispatchers.IO).launch {
