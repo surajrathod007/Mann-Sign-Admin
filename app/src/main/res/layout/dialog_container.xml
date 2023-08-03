@@ -5,6 +5,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingHorizontal="24dp">
+    android:paddingHorizontal="24dp"
+    android:paddingVertical="@dimen/padding_medium"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <FrameLayout
+        android:id="@+id/chooseImageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivResource"
+            android:layout_width="match_parent"
+            android:layout_height="240dp"
+            app:shapeAppearance="@style/ShapeAppearanceOverlay.Material3.Chip"
+            android:scaleType="centerCrop"
+            android:background="@color/bg_color"
+            />
+
+        <TextView
+            android:id="@+id/tvChooseImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Choose Image"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:textSize="32sp"/>
+
+    </FrameLayout>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

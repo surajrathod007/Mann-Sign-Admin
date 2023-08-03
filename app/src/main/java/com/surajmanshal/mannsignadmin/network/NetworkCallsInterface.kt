@@ -204,4 +204,11 @@ interface NetworkCallsInterface {
 
     @POST("order/status")
     fun getOrdersByStatus(@Query("status") status : String) : Call<List<Order>>
+
+    @Multipart
+    @POST("categoryImage/upload")
+    suspend fun uploadCategoryImage(@Part image: MultipartBody.Part) : SimpleResponse
+    @Multipart
+    @POST("subcategoryImage/upload")
+    suspend fun uploadSubCategoryImage(@Part image: MultipartBody.Part) : SimpleResponse
 }

@@ -6,13 +6,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.surajmanshal.mannsignadmin.data.model.Language
 import com.surajmanshal.mannsignadmin.data.model.Material
 import com.surajmanshal.mannsignadmin.data.model.Size
-import com.surajmanshal.mannsignadmin.databinding.DeletableItemCardBinding
+import com.surajmanshal.mannsignadmin.databinding.ResourceItemCardBinding
 import com.surajmanshal.mannsignadmin.utils.show
 
 class ResourceItemsAdapter(val list : List<Any>, private val deleter : (Any) -> Unit, private val editor : (Any) -> Unit) :
     RecyclerView.Adapter<ResourceItemsAdapter.ViewHolder>() {
 
-    class ViewHolder (binding : DeletableItemCardBinding) : RecyclerView.ViewHolder(binding.root){
+    class ViewHolder (binding : ResourceItemCardBinding) : RecyclerView.ViewHolder(binding.root){
         val name = binding.tvName
         val btnDelete = binding.ivDelete
         val btnEdit = binding.ivEdit
@@ -20,7 +20,7 @@ class ResourceItemsAdapter(val list : List<Any>, private val deleter : (Any) -> 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            return ViewHolder(DeletableItemCardBinding.inflate(LayoutInflater.from(parent.context),parent,false))
+            return ViewHolder(ResourceItemCardBinding.inflate(LayoutInflater.from(parent.context),parent,false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

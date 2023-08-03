@@ -39,7 +39,7 @@ class CategoryViewModel:ViewModel() {
 
                 response.body()?.let {
                     clearList(LiveDataCode.Categories)
-                    addAllCategories(it)
+                    addAllCategories(it.reversed())
                     refreshLiveData(LiveDataCode.Categories)}
 
             }

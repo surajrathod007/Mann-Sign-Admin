@@ -6,14 +6,17 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.surajmanshal.mannsignadmin.R
-import com.surajmanshal.mannsignadmin.databinding.DeletableItemCardBinding
+import com.surajmanshal.mannsignadmin.databinding.ResourceItemCardBinding
+import com.surajmanshal.mannsignadmin.utils.Functions
+import com.surajmanshal.mannsignadmin.utils.hide
 import com.surajmanshal.mannsignadmin.utils.show
 import com.surajmanshal.mannsignadmin.viewmodel.CategoryViewModel
 
 open class CategoryAdapter(private val vm: CategoryViewModel , val editor : (Any) -> Unit) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
 
-    class CategoryViewHolder(binding: DeletableItemCardBinding):RecyclerView.ViewHolder(binding.root){
+    class CategoryViewHolder(val binding: ResourceItemCardBinding):RecyclerView.ViewHolder(binding.root){
         val name = binding.tvName
         val btnDelete = binding.ivDelete
         val btnEdit = binding.ivEdit
@@ -31,6 +34,11 @@ open class CategoryAdapter(private val vm: CategoryViewModel , val editor : (Any
         println(category)
         Log.d("category","$category")
         with(holder){
+            binding.resourceImageView.show()
+            category.imgUrl?.let{
+                Glide.with(binding.root).load(Functions.urlMaker(it)).into(binding.ivResource)
+                binding.tvNoImage.hide()
+            }
             name.text = category.name
             btnDelete.setOnClickListener {
                 vm.onDeleteAlert(category)
@@ -50,7 +58,7 @@ open class CategoryAdapter(private val vm: CategoryViewModel , val editor : (Any
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         return CategoryViewHolder(
-            DeletableItemCardBinding.inflate(
+            ResourceItemCardBinding.inflate(
                 LayoutInflater.from(
                     parent.context
                 ), parent, false

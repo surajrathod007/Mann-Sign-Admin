@@ -17,8 +17,11 @@ import com.surajmanshal.mannsignadmin.data.model.Category
 import com.surajmanshal.mannsignadmin.data.model.SubCategory
 import com.surajmanshal.mannsignadmin.databinding.DialogContainerBinding
 import com.surajmanshal.mannsignadmin.databinding.FragmentCategoryBinding
+import com.surajmanshal.mannsignadmin.ui.activity.CategoryManagementActivity
 import com.surajmanshal.mannsignadmin.ui.fragments.AdapterFragment
+import com.surajmanshal.mannsignadmin.utils.ResourceType
 import com.surajmanshal.mannsignadmin.utils.hide
+import com.surajmanshal.mannsignadmin.utils.show
 import com.surajmanshal.mannsignadmin.viewmodel.CategoryViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -30,6 +33,10 @@ open class CategoryFragment : AdapterFragment() {
     protected lateinit var _binding : FragmentCategoryBinding
     val binding get() = _binding
     lateinit var vm : CategoryViewModel
+    val imageUploading by lazy {
+        (requireActivity() as CategoryManagementActivity).imageUploading
+    }
+    lateinit var dialogBinding : DialogContainerBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,17 +92,35 @@ open class CategoryFragment : AdapterFragment() {
         val dialog = AlertDialog.Builder(requireContext())
         dialog.setTitle("Add New Category")
         val etName = EditText(requireContext())
-        dialog.setView(DialogContainerBinding.inflate(layoutInflater).also {
-            it.dialogContainer.addView(etName)
-        }.root)
-        dialog.setPositiveButton("Add", object : DialogInterface.OnClickListener {
-            override fun onClick(p0: DialogInterface?, p1: Int) {
-                CoroutineScope(Dispatchers.IO).launch {
-                    vm.addNewCategory(Category(name = etName.text.toString()))
-                    vm.getCategories()
-                }
+        dialogBinding = DialogContainerBinding.inflate(layoutInflater).apply {
+            chooseImageView.show()
+            chooseImageView.setOnClickListener {
+                imageUploading.chooseImageFromGallary()
             }
-        })
+            root.addView(etName)
+            dialog.setView(root)
+            dialog.setPositiveButton("Add", object : DialogInterface.OnClickListener {
+                override fun onClick(p0: DialogInterface?, p1: Int) {
+                    imageUploading.imageUploadResponse.observe(viewLifecycleOwner){
+                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                        if (it.success){
+                            val imgUrl = it.data as String
+                            CoroutineScope(Dispatchers.IO).launch {
+                                vm.addNewCategory(Category(name = etName.text.toString(), imgUrl = imgUrl))
+                                vm.getCategories()
+                            }
+                        }
+                    }
+                    CoroutineScope(Dispatchers.IO).launch {
+                        imageUploading.sendImage(
+                            ResourceType.Category,
+                            imageUploading.createImageMultipart()
+                        )
+                    }
+                }
+            })
+        }
+
         return dialog
     }
 

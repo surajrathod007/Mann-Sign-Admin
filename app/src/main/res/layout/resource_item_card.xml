@@ -10,6 +10,38 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <FrameLayout
+            android:id="@+id/resourceImageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/ivResource"
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                app:shapeAppearance="@style/ShapeAppearanceOverlay.Material3.Chip"
+                android:scaleType="centerCrop"
+                android:background="@color/bg_color"
+                />
+
+            <TextView
+                android:id="@+id/tvNoImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No Image"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:textSize="32sp"/>
+
+        </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="48dp"
         android:orientation="horizontal"
         android:weightSum="10"
@@ -49,4 +81,5 @@
 
     </LinearLayout>
 
+    </LinearLayout>
 </FrameLayout>

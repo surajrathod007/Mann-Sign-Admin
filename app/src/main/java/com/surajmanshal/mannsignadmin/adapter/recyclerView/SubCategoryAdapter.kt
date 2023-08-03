@@ -2,7 +2,7 @@ package com.surajmanshal.mannsignadmin.adapter.recyclerView
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.surajmanshal.mannsignadmin.databinding.DeletableItemCardBinding
+import com.surajmanshal.mannsignadmin.databinding.ResourceItemCardBinding
 import com.surajmanshal.mannsignadmin.viewmodel.CategoryViewModel
 
 class SubCategoryAdapter(val vm: CategoryViewModel, editor : (Any) -> Unit) : CategoryAdapter(vm,editor) {
@@ -25,6 +25,6 @@ class SubCategoryAdapter(val vm: CategoryViewModel, editor : (Any) -> Unit) : Ca
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
-        return CategoryViewHolder(DeletableItemCardBinding.inflate(LayoutInflater.from(parent.context),parent,false))
+        return CategoryViewHolder(ResourceItemCardBinding.inflate(LayoutInflater.from(parent.context),parent,false))
     }
 }

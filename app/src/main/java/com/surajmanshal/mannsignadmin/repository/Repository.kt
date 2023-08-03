@@ -1,6 +1,12 @@
 package com.surajmanshal.mannsignadmin.repository
 
-import com.surajmanshal.mannsignadmin.data.model.*
+import com.surajmanshal.mannsignadmin.data.model.Area
+import com.surajmanshal.mannsignadmin.data.model.Category
+import com.surajmanshal.mannsignadmin.data.model.DiscountCoupon
+import com.surajmanshal.mannsignadmin.data.model.Language
+import com.surajmanshal.mannsignadmin.data.model.Material
+import com.surajmanshal.mannsignadmin.data.model.Size
+import com.surajmanshal.mannsignadmin.data.model.SubCategory
 import com.surajmanshal.mannsignadmin.data.model.ordering.Order
 import com.surajmanshal.mannsignadmin.data.model.product.Product
 import com.surajmanshal.mannsignadmin.network.NetworkService
@@ -83,4 +89,6 @@ open class Repository() {
     suspend fun updateLanguage(language : Language) = server.updateLanguage(language)
     suspend fun updateCategory(category: Category) = server.updateCategory(category)
     suspend fun updateSubcategory(category: SubCategory) = server.updateSubcategory(category)
+    suspend fun uploadCategoryImage(part: MultipartBody.Part) = server.uploadCategoryImage(part)
+    suspend fun uploadSubCategoryImage(part: MultipartBody.Part) = server.uploadSubCategoryImage(part)
 }
