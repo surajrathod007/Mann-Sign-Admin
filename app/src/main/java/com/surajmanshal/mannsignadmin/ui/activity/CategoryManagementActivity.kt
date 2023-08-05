@@ -11,12 +11,17 @@ class CategoryManagementActivity : AdapterActivity() {
     private lateinit var _binding : ActivityCategoryManagementBinding
     val binding get() = _binding
     /*lateinit var vm : CategoryViewModel*/
-    val imageUploading = ImageUploading(this)
+    lateinit var imageUploading : ImageUploading
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityCategoryManagementBinding.inflate(layoutInflater)
+        initImageUploader()
         setContentView(binding.root)
+    }
+
+    fun initImageUploader(){
+        imageUploading = ImageUploading(this)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

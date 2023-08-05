@@ -19,10 +19,12 @@ import com.surajmanshal.mannsignadmin.databinding.DialogContainerBinding
 import com.surajmanshal.mannsignadmin.databinding.FragmentCategoryBinding
 import com.surajmanshal.mannsignadmin.ui.activity.CategoryManagementActivity
 import com.surajmanshal.mannsignadmin.ui.fragments.AdapterFragment
+import com.surajmanshal.mannsignadmin.utils.ImageUploading
 import com.surajmanshal.mannsignadmin.utils.ResourceType
 import com.surajmanshal.mannsignadmin.utils.hide
 import com.surajmanshal.mannsignadmin.utils.show
 import com.surajmanshal.mannsignadmin.viewmodel.CategoryViewModel
+import com.surajmanshal.response.SimpleResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -33,14 +35,15 @@ open class CategoryFragment : AdapterFragment() {
     protected lateinit var _binding: FragmentCategoryBinding
     val binding get() = _binding
     lateinit var vm: CategoryViewModel
-    val imageUploading by lazy {
-        (requireActivity() as CategoryManagementActivity).imageUploading
-    }
+    lateinit var imageUploading : ImageUploading
+
     var dialogBinding: DialogContainerBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         vm = ViewModelProvider(this)[CategoryViewModel::class.java]
+        (requireActivity() as CategoryManagementActivity).initImageUploader()
+        imageUploading = (requireActivity() as CategoryManagementActivity).imageUploading
     }
 
     override fun onCreateView(
@@ -51,7 +54,6 @@ open class CategoryFragment : AdapterFragment() {
         _binding = FragmentCategoryBinding.bind(view)
         vm.getCategories()
         binding.rvCategories.layoutManager = LinearLayoutManager(activity)
-
 
         with(binding) {
             btnCancel.setOnClickListener {
@@ -76,6 +78,7 @@ open class CategoryFragment : AdapterFragment() {
             }
         }
         vm.categories.observe(viewLifecycleOwner, Observer { it ->
+//            print(it.toString())
             setAdapterWithList(it, binding.rvCategories, CategoryAdapter(vm) {
                 setupUpdateDialog(it as Category).show()
             })
@@ -87,16 +90,18 @@ open class CategoryFragment : AdapterFragment() {
             Toast.makeText(activity, it.message, Toast.LENGTH_SHORT).show()
         })
 
-        imageUploading.imageUri.observe(viewLifecycleOwner) {
+        return binding.root
+    }
+
+    protected fun setupInputDialog(): AlertDialog.Builder {
+        (requireActivity() as CategoryManagementActivity).initImageUploader()
+        imageUploading = (requireActivity() as CategoryManagementActivity).imageUploading
+        imageUploading.imageUri.observe(viewLifecycleOwner){
             dialogBinding?.apply {
                 ivResource.setImageURI(it)
                 tvChooseImage.hide()
             }
         }
-        return binding.root
-    }
-
-    protected fun setupInputDialog(): AlertDialog.Builder {
         val dialog = AlertDialog.Builder(requireContext())
         dialog.setTitle("Add New Category")
         val etName = EditText(requireContext())
@@ -108,22 +113,25 @@ open class CategoryFragment : AdapterFragment() {
             root.addView(etName)
             dialog.setView(root)
             dialog.setPositiveButton("Add", object : DialogInterface.OnClickListener {
-                override fun onClick(p0: DialogInterface?, p1: Int) {
-                    imageUploading.imageUploadResponse.observe(viewLifecycleOwner) {
-                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
-                        if (it.success) {
-                            val imgUrl = it.data as String
-                            CoroutineScope(Dispatchers.IO).launch {
-                                vm.addNewCategory(
-                                    Category(
-                                        name = etName.text.toString(),
-                                        imgUrl = imgUrl
-                                    )
+                val imageUploadObserver = { it : SimpleResponse ->
+                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                    if (it.success) {
+                        val imgUrl = it.data as String
+                        CoroutineScope(Dispatchers.IO).launch {
+                            vm.addNewCategory(
+                                Category(
+                                    name = etName.text.toString(),
+                                    imgUrl = imgUrl
                                 )
-                                vm.getCategories()
-                            }
+                            )
+                            vm.getCategories()
                         }
                     }
+                    imageUploading.imageUploadResponse.removeObservers(viewLifecycleOwner)
+                }
+                override fun onClick(p0: DialogInterface?, p1: Int) {
+
+                    imageUploading.imageUploadResponse.observe(viewLifecycleOwner,imageUploadObserver)
                     CoroutineScope(Dispatchers.IO).launch {
                         imageUploading.sendImage(
                             ResourceType.Category,
@@ -178,5 +186,4 @@ open class CategoryFragment : AdapterFragment() {
         })
         return dialog
     }
-
 }

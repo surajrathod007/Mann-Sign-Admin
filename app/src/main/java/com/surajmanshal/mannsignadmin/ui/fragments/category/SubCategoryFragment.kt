@@ -9,17 +9,16 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.surajmanshal.mannsignadmin.R
 import com.surajmanshal.mannsignadmin.adapter.recyclerView.SubCategoryAdapter
 import com.surajmanshal.mannsignadmin.data.model.SubCategory
 import com.surajmanshal.mannsignadmin.databinding.DialogContainerBinding
 import com.surajmanshal.mannsignadmin.databinding.FragmentCategoryBinding
+import com.surajmanshal.mannsignadmin.ui.activity.CategoryManagementActivity
 import com.surajmanshal.mannsignadmin.utils.ResourceType
 import com.surajmanshal.mannsignadmin.utils.hide
 import com.surajmanshal.mannsignadmin.utils.show
-import com.surajmanshal.mannsignadmin.viewmodel.CategoryViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,15 +26,16 @@ import kotlinx.coroutines.launch
 
 class SubCategoryFragment : CategoryFragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+//    override lateinit var imageUploading : ImageUploading
+    /*override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        vm = ViewModelProvider(this)[CategoryViewModel::class.java]
-    }
+    }*/
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        super.onCreate(savedInstanceState)
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_category, container, false)
         _binding = FragmentCategoryBinding.bind(view)
@@ -57,6 +57,14 @@ class SubCategoryFragment : CategoryFragment() {
                 vm.onDeletionCancelOrDone()
             }
             btnAddCategory.setOnClickListener {
+                (requireActivity() as CategoryManagementActivity).initImageUploader()
+                imageUploading = (requireActivity() as CategoryManagementActivity).imageUploading
+                imageUploading.imageUri.observe(viewLifecycleOwner){
+                    dialogBinding?.apply {
+                        ivResource.setImageURI(it)
+                        tvChooseImage.hide()
+                    }
+                }
                 val dialog = AlertDialog.Builder(activity)
                 dialog.setTitle("New Subcategory")
                 val etName = EditText(activity)
@@ -70,7 +78,6 @@ class SubCategoryFragment : CategoryFragment() {
                 }.root)
                 dialog.setPositiveButton("Add", object : DialogInterface.OnClickListener {
                     override fun onClick(p0: DialogInterface?, p1: Int) {
-
                         imageUploading.imageUploadResponse.observe(viewLifecycleOwner) {
                             Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                             if (it.success) {
@@ -86,6 +93,8 @@ class SubCategoryFragment : CategoryFragment() {
                                     vm.getSubCategories(id)
                                 }
                             }
+                            imageUploading.imageUploadResponse.removeObservers(viewLifecycleOwner)
+
                         }
                         CoroutineScope(Dispatchers.IO).launch {
                             imageUploading.sendImage(
@@ -104,6 +113,7 @@ class SubCategoryFragment : CategoryFragment() {
             }
         }
         vm.subCategories.observe(viewLifecycleOwner, Observer { it ->
+//            print(it.toString())
             setAdapterWithList(it, binding.rvCategories, SubCategoryAdapter(vm) {
                 setupUpdateDialog(it, id).show()
             })
@@ -114,12 +124,6 @@ class SubCategoryFragment : CategoryFragment() {
         vm.serverResponse.observe(viewLifecycleOwner, Observer {
             Toast.makeText(activity, it.message, Toast.LENGTH_SHORT).show()
         })
-        imageUploading.imageUri.observe(viewLifecycleOwner){
-            dialogBinding?.apply {
-                ivResource.setImageURI(it)
-                tvChooseImage.hide()
-            }
-        }
         return binding.root
     }
 

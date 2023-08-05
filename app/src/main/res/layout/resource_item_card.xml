@@ -18,15 +18,17 @@
             android:id="@+id/resourceImageView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone">
+            android:visibility="gone"
+            android:background="@drawable/button_bg"
+            android:backgroundTint="@color/bg_color">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/ivResource"
                 android:layout_width="match_parent"
-                android:layout_height="240dp"
+                android:layout_height="156dp"
                 app:shapeAppearance="@style/ShapeAppearanceOverlay.Material3.Chip"
-                android:scaleType="centerCrop"
-                android:background="@color/bg_color"
+                android:scaleType="fitCenter"
+                android:padding="@dimen/margin_medium"
                 />
 
             <TextView

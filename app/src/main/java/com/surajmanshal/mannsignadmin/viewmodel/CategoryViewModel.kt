@@ -63,7 +63,7 @@ class CategoryViewModel:ViewModel() {
 
                 response.body()?.let {
                     clearList(LiveDataCode.SubCategories)
-                    addAllSubCategories(it)
+                    addAllSubCategories(it.reversed())
                     refreshLiveData(LiveDataCode.SubCategories)}
             }
             override fun onFailure(call: Call<List<SubCategory>>, t: Throwable) {
