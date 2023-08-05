@@ -13,7 +13,7 @@
         android:id="@+id/chooseImageView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ivResource"

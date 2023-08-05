@@ -16,7 +16,9 @@ import com.surajmanshal.mannsignadmin.adapter.recyclerView.SubCategoryAdapter
 import com.surajmanshal.mannsignadmin.data.model.SubCategory
 import com.surajmanshal.mannsignadmin.databinding.DialogContainerBinding
 import com.surajmanshal.mannsignadmin.databinding.FragmentCategoryBinding
+import com.surajmanshal.mannsignadmin.utils.ResourceType
 import com.surajmanshal.mannsignadmin.utils.hide
+import com.surajmanshal.mannsignadmin.utils.show
 import com.surajmanshal.mannsignadmin.viewmodel.CategoryViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -40,8 +42,8 @@ class SubCategoryFragment : CategoryFragment() {
         binding.rvCategories.layoutManager = LinearLayoutManager(requireContext())
         val id = arguments?.getInt("id")
         vm.getSubCategories(id)
-        if(id==null) activity?.onBackPressed()
-        with(binding){
+        if (id == null) activity?.onBackPressed()
+        with(binding) {
             btnCancel.setOnClickListener {
                 vm.onDeletionCancelOrDone()
             }
@@ -49,7 +51,7 @@ class SubCategoryFragment : CategoryFragment() {
                 vm.onDeletionCancelOrDone()
             }
             btnDelete.setOnClickListener {
-                CoroutineScope(Dispatchers.IO).launch{
+                CoroutineScope(Dispatchers.IO).launch {
                     vm.deletionSubCategory.value?.let { it1 -> vm.removeSubCategory(it1) }
                 }
                 vm.onDeletionCancelOrDone()
@@ -58,14 +60,38 @@ class SubCategoryFragment : CategoryFragment() {
                 val dialog = AlertDialog.Builder(activity)
                 dialog.setTitle("New Subcategory")
                 val etName = EditText(activity)
-                dialog.setView(DialogContainerBinding.inflate(layoutInflater).also {
-                    it.dialogContainer.addView(etName)
+                dialog.setView(DialogContainerBinding.inflate(layoutInflater).apply {
+                    chooseImageView.show()
+                    chooseImageView.setOnClickListener {
+                        imageUploading.chooseImageFromGallary()
+                    }
+                    dialogContainer.addView(etName)
+                    dialogBinding = this
                 }.root)
                 dialog.setPositiveButton("Add", object : DialogInterface.OnClickListener {
                     override fun onClick(p0: DialogInterface?, p1: Int) {
+
+                        imageUploading.imageUploadResponse.observe(viewLifecycleOwner) {
+                            Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                            if (it.success) {
+                                val imgUrl = it.data as String
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    vm.addNewSubCategory(
+                                        SubCategory(
+                                            mainCategoryId = id!!,
+                                            name = etName.text.toString(),
+                                            imgUrl = imgUrl
+                                        )
+                                    )
+                                    vm.getSubCategories(id)
+                                }
+                            }
+                        }
                         CoroutineScope(Dispatchers.IO).launch {
-                            vm.addNewSubCategory(SubCategory(mainCategoryId = id!!, name = etName.text.toString()))
-                            vm.getSubCategories(id)
+                            imageUploading.sendImage(
+                                ResourceType.Subcategory,
+                                imageUploading.createImageMultipart()
+                            )
                         }
                     }
                 })
@@ -78,8 +104,8 @@ class SubCategoryFragment : CategoryFragment() {
             }
         }
         vm.subCategories.observe(viewLifecycleOwner, Observer { it ->
-            setAdapterWithList(it,binding.rvCategories, SubCategoryAdapter(vm){
-                setupUpdateDialog(it,id).show()
+            setAdapterWithList(it, binding.rvCategories, SubCategoryAdapter(vm) {
+                setupUpdateDialog(it, id).show()
             })
         })
         vm.isDeleting.observe(viewLifecycleOwner, Observer {
@@ -88,6 +114,12 @@ class SubCategoryFragment : CategoryFragment() {
         vm.serverResponse.observe(viewLifecycleOwner, Observer {
             Toast.makeText(activity, it.message, Toast.LENGTH_SHORT).show()
         })
+        imageUploading.imageUri.observe(viewLifecycleOwner){
+            dialogBinding?.apply {
+                ivResource.setImageURI(it)
+                tvChooseImage.hide()
+            }
+        }
         return binding.root
     }
 

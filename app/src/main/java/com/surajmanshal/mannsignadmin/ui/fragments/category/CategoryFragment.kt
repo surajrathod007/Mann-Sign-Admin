@@ -30,13 +30,13 @@ import kotlinx.coroutines.launch
 
 open class CategoryFragment : AdapterFragment() {
 
-    protected lateinit var _binding : FragmentCategoryBinding
+    protected lateinit var _binding: FragmentCategoryBinding
     val binding get() = _binding
-    lateinit var vm : CategoryViewModel
+    lateinit var vm: CategoryViewModel
     val imageUploading by lazy {
         (requireActivity() as CategoryManagementActivity).imageUploading
     }
-    lateinit var dialogBinding : DialogContainerBinding
+    var dialogBinding: DialogContainerBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +53,7 @@ open class CategoryFragment : AdapterFragment() {
         binding.rvCategories.layoutManager = LinearLayoutManager(activity)
 
 
-        with(binding){
+        with(binding) {
             btnCancel.setOnClickListener {
                 vm.onDeletionCancelOrDone()
             }
@@ -61,7 +61,7 @@ open class CategoryFragment : AdapterFragment() {
                 vm.onDeletionCancelOrDone()
             }
             btnDelete.setOnClickListener {
-                CoroutineScope(Dispatchers.IO).launch{
+                CoroutineScope(Dispatchers.IO).launch {
                     vm.deletionCategory.value?.let { it1 -> vm.deleteFromDB(it1) }
                 }
                 vm.onDeletionCancelOrDone()
@@ -76,7 +76,7 @@ open class CategoryFragment : AdapterFragment() {
             }
         }
         vm.categories.observe(viewLifecycleOwner, Observer { it ->
-            setAdapterWithList(it,binding.rvCategories, CategoryAdapter(vm){
+            setAdapterWithList(it, binding.rvCategories, CategoryAdapter(vm) {
                 setupUpdateDialog(it as Category).show()
             })
         })
@@ -86,8 +86,16 @@ open class CategoryFragment : AdapterFragment() {
         vm.serverResponse.observe(viewLifecycleOwner, Observer {
             Toast.makeText(activity, it.message, Toast.LENGTH_SHORT).show()
         })
+
+        imageUploading.imageUri.observe(viewLifecycleOwner) {
+            dialogBinding?.apply {
+                ivResource.setImageURI(it)
+                tvChooseImage.hide()
+            }
+        }
         return binding.root
     }
+
     protected fun setupInputDialog(): AlertDialog.Builder {
         val dialog = AlertDialog.Builder(requireContext())
         dialog.setTitle("Add New Category")
@@ -101,12 +109,17 @@ open class CategoryFragment : AdapterFragment() {
             dialog.setView(root)
             dialog.setPositiveButton("Add", object : DialogInterface.OnClickListener {
                 override fun onClick(p0: DialogInterface?, p1: Int) {
-                    imageUploading.imageUploadResponse.observe(viewLifecycleOwner){
+                    imageUploading.imageUploadResponse.observe(viewLifecycleOwner) {
                         Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
-                        if (it.success){
+                        if (it.success) {
                             val imgUrl = it.data as String
                             CoroutineScope(Dispatchers.IO).launch {
-                                vm.addNewCategory(Category(name = etName.text.toString(), imgUrl = imgUrl))
+                                vm.addNewCategory(
+                                    Category(
+                                        name = etName.text.toString(),
+                                        imgUrl = imgUrl
+                                    )
+                                )
                                 vm.getCategories()
                             }
                         }
@@ -124,34 +137,39 @@ open class CategoryFragment : AdapterFragment() {
         return dialog
     }
 
-    protected fun setupUpdateDialog(category : Any, categoryId : Int? = null): AlertDialog.Builder {
+    protected fun setupUpdateDialog(category: Any, categoryId: Int? = null): AlertDialog.Builder {
         val dialog = AlertDialog.Builder(requireContext())
         val etName = EditText(requireContext())
-        dialog.setTitle("Update ${
-            when (category) {
-                is Category -> {
-                    etName.setText(category.name)
-                    "Category"
+        dialog.setTitle(
+            "Update ${
+                when (category) {
+                    is Category -> {
+                        etName.setText(category.name)
+                        "Category"
+                    }
+
+                    is SubCategory -> {
+                        etName.setText(category.name)
+                        "Subcategory"
+                    }
+
+                    else -> {
+                        ""
+                    }
                 }
-                is SubCategory -> {
-                    etName.setText(category.name)
-                    "Subcategory"
-                }
-                else -> {
-                    ""
-                }
-            }
-        }")
+            }"
+        )
         dialog.setView(DialogContainerBinding.inflate(layoutInflater).also {
+            it.chooseImageView.hide()
             it.dialogContainer.addView(etName)
         }.root)
         dialog.setPositiveButton("Update", object : DialogInterface.OnClickListener {
             override fun onClick(p0: DialogInterface?, p1: Int) {
                 CoroutineScope(Dispatchers.IO).launch {
-                    if(category is Category){
+                    if (category is Category) {
                         vm.updateCategory(category.apply { name = etName.text.toString() })
                         vm.getCategories()
-                    }else if(category is SubCategory){
+                    } else if (category is SubCategory) {
                         vm.updateSubcategory(category.apply { name = etName.text.toString() })
                         vm.getSubCategories(categoryId)
                     }

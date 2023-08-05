@@ -20,7 +20,7 @@ import java.io.FileOutputStream
 
 class ImageUploading(private val activity : Activity) {
 
-    var imageUri : Uri? = null
+    var imageUri = MutableLiveData<Uri>()
     private val repository = Repository()
 
     private val _serverResponse = MutableLiveData<SimpleResponse>()
@@ -47,7 +47,7 @@ class ImageUploading(private val activity : Activity) {
             val file = File(dir, "image.png")
 
             val outputStream = FileOutputStream(file)
-            contentResolver.openInputStream(imageUri!!)?.copyTo(outputStream)
+            contentResolver.openInputStream(imageUri.value!!)?.copyTo(outputStream)
 
             val requestBody = RequestBody.create(MediaType.parse("image/jpg"),file)
             val part = MultipartBody.Part.createFormData("product",file.name,requestBody)

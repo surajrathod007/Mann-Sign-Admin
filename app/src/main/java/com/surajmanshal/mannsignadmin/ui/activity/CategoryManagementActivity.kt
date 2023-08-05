@@ -31,7 +31,7 @@ class CategoryManagementActivity : AdapterActivity() {
             if (requestCode == ImageUploading.CHOOSE_IMAGE_REQ_CODE) {
                 if (data != null) {
                     try {
-                        imageUploading.imageUri = data.data!!
+                        imageUploading.imageUri.postValue((data.data!!))
                     } catch (e: Exception) {
                         e.printStackTrace()
                         Toast.makeText(this, "Image not found", Toast.LENGTH_SHORT).show()
