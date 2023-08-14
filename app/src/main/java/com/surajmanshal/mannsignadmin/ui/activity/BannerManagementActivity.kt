@@ -3,6 +3,7 @@ package com.surajmanshal.mannsignadmin.ui.activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,14 +17,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class BannerManagementActivity : AppCompatActivity(),AdBannerAdapter.BannerClickListener {
+class BannerManagementActivity : AppCompatActivity(), AdBannerAdapter.BannerClickListener {
 
-    lateinit var binding : ActivityBannerManagementBinding
-    lateinit var vm : AdBannerViewModel
+    lateinit var binding: ActivityBannerManagementBinding
+    lateinit var vm: AdBannerViewModel
     val imageUploading: ImageUploading by lazy {
         ImageUploading(this)
     }
-    lateinit var bannerAdapter : AdBannerAdapter
+    lateinit var bannerAdapter: AdBannerAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityBannerManagementBinding.inflate(layoutInflater)
@@ -43,12 +44,12 @@ class BannerManagementActivity : AppCompatActivity(),AdBannerAdapter.BannerClick
             imageUploading.chooseImageFromGallary()
         }
 
-        vm.adBanners.observe(this){
+        vm.adBanners.observe(this) {
             println(it.toString())
             bannerAdapter.setData(it.reversed())
         }
 
-        imageUploading.imageUri.observe(this){
+        imageUploading.imageUri.observe(this) {
             CoroutineScope(Dispatchers.IO).launch {
                 imageUploading.sendImage(
                     ResourceType.AdBanner,
@@ -57,7 +58,7 @@ class BannerManagementActivity : AppCompatActivity(),AdBannerAdapter.BannerClick
             }
         }
 
-        imageUploading.imageUploadResponse.observe(this){
+        imageUploading.imageUploadResponse.observe(this) {
             Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
             if (it.success)
                 vm.getBanners()
@@ -70,7 +71,13 @@ class BannerManagementActivity : AppCompatActivity(),AdBannerAdapter.BannerClick
     }
 
     override fun onDeleteClick(banner: AdBanner) {
-        Toast.makeText(this, "del", Toast.LENGTH_SHORT).show()
+        val dialog = AlertDialog.Builder(this)
+            .setTitle("Alert !")
+            .setMessage("Do you want to delete it ?")
+            .setPositiveButton("Delete") { di, p1 -> vm.deleteBanner(banner) }
+            .setNegativeButton("Cancel") { p0, p1 -> p0?.dismiss() }
+            .setCancelable(true)
+            .show()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -80,7 +87,7 @@ class BannerManagementActivity : AppCompatActivity(),AdBannerAdapter.BannerClick
                 if (data != null) {
                     imageUploading.imageUri.postValue(data.data)
                 }
-            }else{
+            } else {
                 Toast.makeText(this, "Req Cancel", Toast.LENGTH_SHORT).show()
             }
         }
