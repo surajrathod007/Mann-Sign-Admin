@@ -49,9 +49,9 @@ class ResourcesManagementActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMaterialManagementBinding
     lateinit var vm: ResourcesViewModel
-    private lateinit var inputFields : Array<EditText>
-    private lateinit var dialogs : Array<View>
-    private lateinit var viewResButtons : Array<TextView>
+    private lateinit var inputFields: Array<EditText>
+    private lateinit var dialogs: Array<View>
+    private lateinit var viewResButtons: Array<TextView>
     var fileUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,10 +63,11 @@ class ResourcesManagementActivity : AppCompatActivity() {
         with(binding) {
 
             allResLayout.apply {
-                root.layoutParams = FrameLayout.LayoutParams(0,0)
+                root.layoutParams = FrameLayout.LayoutParams(0, 0)
             }
 
-            inputFields = arrayOf(etWidth,
+            inputFields = arrayOf(
+                etWidth,
                 etHeight,
                 etLanguageName,
                 etMaterialName,
@@ -92,30 +93,36 @@ class ResourcesManagementActivity : AppCompatActivity() {
             btnFontResource.setOnClickListener { fontDialog.show(); hideButtons() }
             btnMaterialResource.setOnClickListener { materialDialog.show(); hideButtons() }
             btnLanguageResource.setOnClickListener { languageDialog.show(); hideButtons() }
+            btnAdBannerResource.setOnClickListener {
+                startActivity(
+                    Intent(this@ResourcesManagementActivity, BannerManagementActivity::class.java)
+                )
+            }
 
             dialogs.forEach { it ->
                 it.apply {
-                    setOnClickListener{
+                    setOnClickListener {
                         hideKeyboard();showButtons();hide()
                     }
                 }
             }
 
-            viewResButtons.forEach { textView->
+            viewResButtons.forEach { textView ->
                 textView.setOnClickListener {
                     hideDialogs()
                     allResLayout.apply {
                         root.layoutParams = FrameLayout.LayoutParams(
                             ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.MATCH_PARENT)
-                        tvToolbar.text = when(viewResButtons.indexOf(textView)){
+                            ViewGroup.LayoutParams.MATCH_PARENT
+                        )
+                        tvToolbar.text = when (viewResButtons.indexOf(textView)) {
                             0 -> "Sizes"
                             1 -> "Materials"
                             2 -> "Languages"
                             3 -> "Fonts"
                             else -> "Resources"
                         }
-                        when(viewResButtons.indexOf(textView)){
+                        when (viewResButtons.indexOf(textView)) {
                             0 -> vm.getSizes()
                             1 -> vm.getMaterials(Constants.TYPE_ALL)
                             2 -> vm.getLanguages()
@@ -141,7 +148,7 @@ class ResourcesManagementActivity : AppCompatActivity() {
                                 0,
                                 etMaterialName.text.toString(),
                                 etMaterialPrice.text.toString().toFloat(),
-                                when(radioGroupProductType.checkedRadioButtonId){
+                                when (radioGroupProductType.checkedRadioButtonId) {
                                     productTypePoster.id -> Constants.TYPE_POSTER
                                     productTypeBanner.id -> Constants.TYPE_BANNER
                                     else -> Constants.TYPE_POSTER
@@ -194,30 +201,33 @@ class ResourcesManagementActivity : AppCompatActivity() {
                 }
             }
         }
-        with(vm){
+        with(vm) {
             serverResponse.observe(this@ResourcesManagementActivity) {
-                if(it.success) clearFieldsAndHideDialogs()
-                Toast.makeText(this@ResourcesManagementActivity, it.message, Toast.LENGTH_SHORT).show()
+                if (it.success) clearFieldsAndHideDialogs()
+                Toast.makeText(this@ResourcesManagementActivity, it.message, Toast.LENGTH_SHORT)
+                    .show()
             }
 
             deletionResponse.observe(this@ResourcesManagementActivity) {
-                if(it.success)
+                if (it.success)
                     fetchResources(resourceMode.value)
-                Toast.makeText(this@ResourcesManagementActivity, it.message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ResourcesManagementActivity, it.message, Toast.LENGTH_SHORT)
+                    .show()
             }
             updateResponse.observe(this@ResourcesManagementActivity) {
-                if(it.success)
+                if (it.success)
                     fetchResources(resourceMode.value)
-                Toast.makeText(this@ResourcesManagementActivity, it.message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ResourcesManagementActivity, it.message, Toast.LENGTH_SHORT)
+                    .show()
             }
 
-            sizes.observe(this@ResourcesManagementActivity){
+            sizes.observe(this@ResourcesManagementActivity) {
                 setAllResAdapter(it)
             }
-            materials.observe(this@ResourcesManagementActivity){
+            materials.observe(this@ResourcesManagementActivity) {
                 setAllResAdapter(it)
             }
-            languages.observe(this@ResourcesManagementActivity){
+            languages.observe(this@ResourcesManagementActivity) {
                 setAllResAdapter(it)
             }
 
@@ -225,13 +235,14 @@ class ResourcesManagementActivity : AppCompatActivity() {
 
     }
 
-    fun fetchResources(res : Any?){
-        when(res){
+    fun fetchResources(res: Any?) {
+        when (res) {
             is Size -> vm.getSizes()
             is Material -> vm.getMaterials(Constants.TYPE_ALL)
             is Language -> vm.getLanguages()
         }
     }
+
     private suspend fun setupFile() {
 
         val dir = applicationContext.filesDir
@@ -327,19 +338,19 @@ class ResourcesManagementActivity : AppCompatActivity() {
         Toast.LENGTH_SHORT
     ).show()
 
-    fun clearFieldsAndHideDialogs(){
+    fun clearFieldsAndHideDialogs() {
         clearFields()
         hideKeyboard()
         hideDialogs()
         showButtons()
     }
 
-    fun clearFields(){
+    fun clearFields() {
         inputFields.forEach { it.clear() }
     }
 
-    fun hideDialogs(){
-        with(binding){
+    fun hideDialogs() {
+        with(binding) {
             fontDialog.hide()
             languageDialog.hide()
             materialDialog.hide()
@@ -347,17 +358,17 @@ class ResourcesManagementActivity : AppCompatActivity() {
         }
     }
 
-    fun hideKeyboard(){
+    fun hideKeyboard() {
         this.currentFocus?.let { view ->
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             imm?.hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
 
-    fun setAllResAdapter(list: List<Any>){
+    fun setAllResAdapter(list: List<Any>) {
         binding.allResLayout.rvItems.adapter = ResourceItemsAdapter(list,
             { deletable ->
-                CoroutineScope(Dispatchers.IO).launch{
+                CoroutineScope(Dispatchers.IO).launch {
                     vm.deleteResource(deletable)
                 }
             }, { editable ->
@@ -372,20 +383,20 @@ class ResourcesManagementActivity : AppCompatActivity() {
 
         val etField1 = EditText(this@ResourcesManagementActivity)
         val etField2 = EditText(this@ResourcesManagementActivity)
-        var etField1Initial : String = ""
-        var etField2Initial : String = ""
+        var etField1Initial: String = ""
+        var etField2Initial: String = ""
         val dialogContainerView = DialogContainerBinding.inflate(layoutInflater).also {
             it.dialogContainer.addView(etField1)
         }
 
-        when(resource){
-           is Size -> {
+        when (resource) {
+            is Size -> {
                 etField1.apply {
                     hint = "Width"
                     setText(resource.width.toString())
                     etField1Initial = resource.width.toString()
                 }
-                etField2.apply{
+                etField2.apply {
                     hint = "Height"
                     setText(resource.height.toString())
                     etField2Initial = resource.height.toString()
@@ -394,15 +405,17 @@ class ResourcesManagementActivity : AppCompatActivity() {
                 setTypeNumber(etField2)
                 dialogContainerView.dialogContainer.addView(etField2)
             }
-           is Material -> {
-                etField1.apply{
+
+            is Material -> {
+                etField1.apply {
                     hint = "Material"
                     setText(resource.name)
                     etField1Initial = resource.name
                 }
             }
-           is Language -> {
-                etField1.apply{
+
+            is Language -> {
+                etField1.apply {
                     hint = "Language"
                     setText(resource.name)
                     etField1Initial = resource.name
@@ -413,16 +426,18 @@ class ResourcesManagementActivity : AppCompatActivity() {
         dialog.setView(dialogContainerView.root)
         dialog.setPositiveButton("Update", object : DialogInterface.OnClickListener {
             override fun onClick(p0: DialogInterface?, p1: Int) {
-                CoroutineScope(Dispatchers.IO).launch{
+                CoroutineScope(Dispatchers.IO).launch {
                     resource.apply {
-                        when(this){
+                        when (this) {
                             is Size -> {
                                 width = etField1.text.toString().toInt()
                                 height = etField2.text.toString().toInt()
                             }
+
                             is Material -> {
                                 name = etField1.text.toString()
                             }
+
                             is Language -> {
                                 name = etField1.text.toString()
                             }
@@ -435,10 +450,10 @@ class ResourcesManagementActivity : AppCompatActivity() {
         val d = dialog.create()
 
         etField1.doOnTextChanged { _, _, _, _ ->
-            enablePositiveBtnWhenValueChanged(etField1Initial,etField1,d)
+            enablePositiveBtnWhenValueChanged(etField1Initial, etField1, d)
         }
         etField2.doOnTextChanged { _, _, _, _ ->
-            enablePositiveBtnWhenValueChanged(etField2Initial,etField2,d)
+            enablePositiveBtnWhenValueChanged(etField2Initial, etField2, d)
         }
 
         d.show()
@@ -452,9 +467,9 @@ class ResourcesManagementActivity : AppCompatActivity() {
                 buttonsLayout.show()
                 hideDialogs()
                 allResLayout.apply {
-                    root.layoutParams = FrameLayout.LayoutParams(0,0)
+                    root.layoutParams = FrameLayout.LayoutParams(0, 0)
                 }
-            }else super.onBackPressed()
+            } else super.onBackPressed()
         }
     }
 }

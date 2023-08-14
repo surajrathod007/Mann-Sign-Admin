@@ -7,5 +7,6 @@ enum class ResourceType {
     Language,
     Any,
     Category,
-    Subcategory
+    Subcategory,
+    AdBanner
 }

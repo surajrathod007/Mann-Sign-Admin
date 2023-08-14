@@ -61,6 +61,7 @@ class ImageUploading(private val activity : Activity) {
             val response = when(type){
                 ResourceType.Category -> repository.uploadCategoryImage(part)
                 ResourceType.Subcategory -> repository.uploadSubCategoryImage(part)
+                ResourceType.AdBanner -> repository.uploadAdBannerImage(part)
                 else -> SimpleResponse(false,"Can't upload Image for this resource")
             }
             _serverResponse.postValue(response)

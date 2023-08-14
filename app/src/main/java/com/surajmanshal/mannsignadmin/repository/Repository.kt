@@ -11,6 +11,7 @@ import com.surajmanshal.mannsignadmin.data.model.ordering.Order
 import com.surajmanshal.mannsignadmin.data.model.product.Product
 import com.surajmanshal.mannsignadmin.network.NetworkService
 import okhttp3.MultipartBody
+import okhttp3.MultipartBody.Part
 
 open class Repository() {
     private val server = NetworkService.networkInstance
@@ -91,4 +92,6 @@ open class Repository() {
     suspend fun updateSubcategory(category: SubCategory) = server.updateSubcategory(category)
     suspend fun uploadCategoryImage(part: MultipartBody.Part) = server.uploadCategoryImage(part)
     suspend fun uploadSubCategoryImage(part: MultipartBody.Part) = server.uploadSubCategoryImage(part)
+
+    suspend fun uploadAdBannerImage(part: Part) = server.addBanner(part)
 }

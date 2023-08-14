@@ -120,7 +120,6 @@
             android:foreground="?attr/selectableItemBackground"
             app:cardElevation="0dp"
             app:cardCornerRadius="12dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btnSizeResources">
 
@@ -183,6 +182,45 @@
                     android:fontFamily="@font/satoshi_medium"
                     android:gravity="center"
                     android:text="Fonts"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/btnAdBannerResource"
+            android:layout_margin="16dp"
+            android:layout_width="164dp"
+            android:layout_height="164dp"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground"
+            app:cardElevation="0dp"
+            app:cardCornerRadius="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnLanguageResource">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="128dp"
+                    android:layout_height="128dp"
+                    android:padding="24dp"
+                    android:src="@drawable/button_bg"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/satoshi_medium"
+                    android:gravity="center"
+                    android:text="Ad Banner"
                     android:textColor="@color/black"
                     android:textSize="20sp" />
 

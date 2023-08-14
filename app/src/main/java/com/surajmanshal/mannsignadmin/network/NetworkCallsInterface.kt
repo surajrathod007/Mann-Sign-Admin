@@ -211,4 +211,17 @@ interface NetworkCallsInterface {
     @Multipart
     @POST("subcategoryImage/upload")
     suspend fun uploadSubCategoryImage(@Part image: MultipartBody.Part) : SimpleResponse
+
+    @GET("banner/getall")
+    fun getAllBanners() : Call<List<AdBanner>>
+
+    @Multipart
+    @POST("banner/add")
+    suspend fun addBanner(@Part imageFile: MultipartBody.Part): SimpleResponse
+
+    @POST("banner/update")
+    fun updateBanner(@Body banner: AdBanner): Call<SimpleResponse>  // Todo : Have some conflicts
+
+    @POST("banner/delete")
+    fun deleteBanner(@Body banner: AdBanner): Call<SimpleResponse>
 }
