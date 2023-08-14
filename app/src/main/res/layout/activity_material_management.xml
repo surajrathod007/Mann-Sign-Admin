@@ -5,9 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:orientation="vertical"
-    tools:context=".ui.activity.ResourcesManagementActivity"
-    android:animateLayoutChanges="true">
+    tools:context=".ui.activity.ResourcesManagementActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,220 +15,221 @@
         android:orientation="vertical">
 
         <TextView
-            android:layout_marginVertical="16dp"
-            android:text="Resources"
-            android:gravity="center"
-            android:textSize="20sp"
-            android:textColor="@color/title_text_color"
-            android:fontFamily="@font/satoshi_bold"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="16dp"
+            android:fontFamily="@font/satoshi_bold"
+            android:gravity="center"
+            android:text="Resources"
+            android:textColor="@color/title_text_color"
+            android:textSize="20sp" />
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/buttonsLayout"
-        android:layout_gravity="center_horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_high">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/buttonsLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/margin_high">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/btnSizeResources"
-            android:layout_margin="16dp"
-            android:layout_width="164dp"
-            android:layout_height="164dp"
-            android:clickable="true"
-            android:foreground="?attr/selectableItemBackground"
-            app:cardElevation="0dp"
-            app:cardCornerRadius="12dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/btnSizeResources"
+                android:layout_width="164dp"
+                android:layout_height="164dp"
+                android:layout_margin="16dp"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:gravity="center">
-
-                <ImageView
-                    android:layout_width="128dp"
-                    android:layout_height="128dp"
-                    android:padding="18dp"
-                    android:src="@drawable/ruler"
-                    app:tint="@color/gold" />
-
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/satoshi_medium"
+                    android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="@string/sizes"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:orientation="vertical">
 
-            </LinearLayout>
+                    <ImageView
+                        android:layout_width="128dp"
+                        android:layout_height="128dp"
+                        android:padding="18dp"
+                        android:src="@drawable/ruler"
+                        app:tint="@color/gold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/satoshi_medium"
+                        android:gravity="center"
+                        android:text="@string/sizes"
+                        android:textColor="@color/black"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
 
 
-        </com.google.android.material.card.MaterialCardView>
+            </com.google.android.material.card.MaterialCardView>
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/btnMaterialResource"
-            android:layout_margin="16dp"
-            android:layout_width="164dp"
-            android:layout_height="164dp"
-            android:clickable="true"
-            android:foreground="?attr/selectableItemBackground"
-            app:cardElevation="0dp"
-            app:cardCornerRadius="12dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/btnSizeResources"
-            app:layout_constraintTop_toTopOf="parent">
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/btnMaterialResource"
+                android:layout_width="164dp"
+                android:layout_height="164dp"
+                android:layout_margin="16dp"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btnSizeResources"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:gravity="center">
-
-                <ImageView
-                    android:layout_width="128dp"
-                    android:layout_height="128dp"
-                    android:padding="20dp"
-                    android:src="@drawable/ic_fabric"
-                    app:tint="@color/purple_700"
-                    />
-
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/satoshi_medium"
+                    android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="@string/materials"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:orientation="vertical">
 
-            </LinearLayout>
+                    <ImageView
+                        android:layout_width="128dp"
+                        android:layout_height="128dp"
+                        android:padding="20dp"
+                        android:src="@drawable/ic_fabric"
+                        app:tint="@color/purple_700" />
 
-        </com.google.android.material.card.MaterialCardView>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/satoshi_medium"
+                        android:gravity="center"
+                        android:text="@string/materials"
+                        android:textColor="@color/black"
+                        android:textSize="20sp" />
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/btnLanguageResource"
-            android:layout_margin="16dp"
-            android:layout_width="164dp"
-            android:layout_height="164dp"
-            android:clickable="true"
-            android:foreground="?attr/selectableItemBackground"
-            app:cardElevation="0dp"
-            app:cardCornerRadius="12dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btnSizeResources">
+                </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:gravity="center">
+            </com.google.android.material.card.MaterialCardView>
 
-                <ImageView
-                    android:layout_width="128dp"
-                    android:layout_height="128dp"
-                    android:padding="22dp"
-                    android:src="@drawable/ic_languages"
-                    />
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/btnLanguageResource"
+                android:layout_width="164dp"
+                android:layout_height="164dp"
+                android:layout_margin="16dp"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btnSizeResources">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/satoshi_medium"
+                    android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="Languages"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:orientation="vertical">
 
-            </LinearLayout>
+                    <ImageView
+                        android:layout_width="128dp"
+                        android:layout_height="128dp"
+                        android:padding="22dp"
+                        android:src="@drawable/ic_languages" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/satoshi_medium"
+                        android:gravity="center"
+                        android:text="Languages"
+                        android:textColor="@color/black"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
 
 
-        </com.google.android.material.card.MaterialCardView>
+            </com.google.android.material.card.MaterialCardView>
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/btnFontResource"
-            android:layout_margin="16dp"
-            android:layout_width="164dp"
-            android:layout_height="164dp"
-            android:clickable="true"
-            android:foreground="?attr/selectableItemBackground"
-            app:cardElevation="0dp"
-            app:cardCornerRadius="12dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/btnLanguageResource"
-            app:layout_constraintTop_toBottomOf="@id/btnMaterialResource">
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/btnFontResource"
+                android:layout_width="164dp"
+                android:layout_height="164dp"
+                android:layout_margin="16dp"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btnLanguageResource"
+                app:layout_constraintTop_toBottomOf="@id/btnMaterialResource">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:gravity="center">
-
-                <ImageView
-                    android:layout_width="128dp"
-                    android:layout_height="128dp"
-                    android:padding="24dp"
-                    android:src="@drawable/text"
-                    />
-
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/satoshi_medium"
+                    android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="Fonts"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:orientation="vertical">
 
-            </LinearLayout>
+                    <ImageView
+                        android:layout_width="128dp"
+                        android:layout_height="128dp"
+                        android:padding="24dp"
+                        android:src="@drawable/text" />
 
-        </com.google.android.material.card.MaterialCardView>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/satoshi_medium"
+                        android:gravity="center"
+                        android:text="Fonts"
+                        android:textColor="@color/black"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
 
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/btnAdBannerResource"
-            android:layout_margin="16dp"
-            android:layout_width="164dp"
-            android:layout_height="164dp"
-            android:clickable="true"
-            android:foreground="?attr/selectableItemBackground"
-            app:cardElevation="0dp"
-            app:cardCornerRadius="12dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btnLanguageResource">
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/btnAdBannerResource"
+                android:layout_width="164dp"
+                android:layout_height="164dp"
+                android:layout_margin="16dp"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btnLanguageResource">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:gravity="center">
-
-                <ImageView
-                    android:layout_width="128dp"
-                    android:layout_height="128dp"
-                    android:padding="24dp"
-                    android:src="@drawable/button_bg"
-                    />
-
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/satoshi_medium"
+                    android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="Ad Banner"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:orientation="vertical">
 
-            </LinearLayout>
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="16dp"
+                        android:layout_margin="@dimen/margin_medium">
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="84dp"
+                            android:layout_height="84dp"
+                            android:src="@drawable/ad_banner" />
+                    </com.google.android.material.card.MaterialCardView>
 
-        </com.google.android.material.card.MaterialCardView>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/satoshi_medium"
+                        android:gravity="center"
+                        android:text="Ad Banner"
+                        android:textColor="@color/black"
+                        android:textSize="20sp" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
 
@@ -313,19 +314,19 @@
                 android:layout_marginVertical="4dp"
                 android:background="?android:attr/listDivider"
                 android:backgroundTint="@color/black"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/btnViewFonts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="View all"
                 android:gravity="center"
+                android:padding="4dp"
+                android:text="View all"
                 android:textColor="#2288ff"
                 android:textSize="14sp"
-                android:padding="4dp"
                 android:textStyle="bold"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
         </LinearLayout>
 
@@ -376,9 +377,9 @@
                 style="@style/ThemeOverlay.Material3.TextInputEditText.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:endIconMode="clear_text"
                 android:layout_marginHorizontal="@dimen/margin_low"
-                android:layout_marginTop="24dp">
+                android:layout_marginTop="24dp"
+                app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etLanguageName"
@@ -416,12 +417,12 @@
                 android:id="@+id/btnViewLanguages"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="View all"
                 android:gravity="center"
+                android:padding="4dp"
+                android:text="View all"
                 android:textColor="#2288ff"
                 android:textSize="14sp"
-                android:padding="4dp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
         </LinearLayout>
 
@@ -473,8 +474,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_low"
-                app:endIconMode="clear_text"
-                android:layout_marginTop="24dp">
+                android:layout_marginTop="24dp"
+                app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etWidth"
@@ -492,9 +493,9 @@
                 style="@style/ThemeOverlay.Material3.TextInputEditText.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:endIconMode="clear_text"
                 android:layout_marginHorizontal="@dimen/margin_low"
-                android:layout_marginTop="24dp">
+                android:layout_marginTop="24dp"
+                app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etHeight"
@@ -533,12 +534,12 @@
                 android:id="@+id/btnViewSizes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="View all"
                 android:gravity="center"
+                android:padding="4dp"
+                android:text="View all"
                 android:textColor="#2288ff"
                 android:textSize="14sp"
-                android:padding="4dp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
         </LinearLayout>
 
@@ -589,9 +590,9 @@
                 style="@style/ThemeOverlay.Material3.TextInputEditText.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:endIconMode="clear_text"
                 android:layout_marginHorizontal="@dimen/margin_low"
-                android:layout_marginTop="24dp">
+                android:layout_marginTop="24dp"
+                app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etMaterialName"
@@ -608,9 +609,9 @@
                 style="@style/ThemeOverlay.Material3.TextInputEditText.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:endIconMode="clear_text"
                 android:layout_marginHorizontal="@dimen/margin_low"
-                android:layout_marginTop="24dp">
+                android:layout_marginTop="24dp"
+                app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etMaterialPrice"
@@ -622,27 +623,25 @@
                     android:textSize="18sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
-            
+
             <RadioGroup
                 android:id="@+id/radioGroupProductType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-                
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/productTypePoster"
-                    android:text="Poster"
-                    android:checked="true"
-                    />
 
                 <RadioButton
+                    android:id="@+id/productTypePoster"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="Poster" />
+
+                <RadioButton
                     android:id="@+id/productTypeBanner"
-                    android:text="Banner"
-                    />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Banner" />
 
             </RadioGroup>
 
@@ -671,12 +670,12 @@
                 android:id="@+id/btnViewMaterials"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="View all"
                 android:gravity="center"
+                android:padding="4dp"
+                android:text="View all"
                 android:textColor="#2288ff"
                 android:textSize="14sp"
-                android:padding="4dp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
         </LinearLayout>
 
@@ -686,7 +685,6 @@
         android:id="@+id/allResLayout"
         layout="@layout/simple_deletion_recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        android:layout_height="match_parent" />
 
 </FrameLayout>
