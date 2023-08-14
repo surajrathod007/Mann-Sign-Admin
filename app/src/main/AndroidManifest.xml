@@ -107,6 +107,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <activity android:name=".ui.activity.ImageViewingActivity"/>
         <activity
             android:name=".ui.activity.CategoryManagementActivity"
             android:exported="false"

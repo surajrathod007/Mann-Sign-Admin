@@ -67,7 +67,14 @@ class BannerManagementActivity : AppCompatActivity(), AdBannerAdapter.BannerClic
     }
 
     override fun onItemClick(banner: AdBanner) {
-        Toast.makeText(this, "Click", Toast.LENGTH_SHORT).show()
+        startActivity(
+            Intent(
+                this,
+                ImageViewingActivity::class.java
+            ).apply {
+                putExtra("imgUrl",banner.imgUrl)
+            }
+        )
     }
 
     override fun onDeleteClick(banner: AdBanner) {
