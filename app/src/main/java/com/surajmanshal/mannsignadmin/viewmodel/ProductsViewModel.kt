@@ -97,5 +97,6 @@ class ProductsViewModel : ViewModel() {
         })
     }
 
+    suspend fun deleteProduct(product: Product) = repository.deleteProduct(product)
 
 }

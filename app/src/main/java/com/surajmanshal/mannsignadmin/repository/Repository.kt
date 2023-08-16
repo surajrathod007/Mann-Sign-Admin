@@ -94,4 +94,5 @@ open class Repository() {
     suspend fun uploadSubCategoryImage(part: MultipartBody.Part) = server.uploadSubCategoryImage(part)
 
     suspend fun uploadAdBannerImage(part: Part) = server.addBanner(part)
+    suspend fun deleteProduct(product: Product) =  server.deleteProduct(product)
 }

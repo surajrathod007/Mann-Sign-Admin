@@ -1,255 +1,271 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.activity.ProductManagementActivity"
     android:background="@color/white"
-    android:orientation="vertical">
-
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/base_toolbar_layout"
-        android:visibility="gone"
-        />
-
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     >
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingHorizontal="16dp">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvProductImages"
-            android:layout_width="wrap_content"
-            android:layout_height="256dp"
-            android:layout_gravity="center"
-            android:layout_marginVertical="16dp" />
-
-        <View
-            android:id="@+id/divider5"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginVertical="@dimen/margin_low"
-            android:background="?android:attr/listDivider" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Basic information"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@color/title_text_color"
-            android:paddingVertical="8dp"/>
-
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Title"
-            android:textColor="@color/text_normal_color"/>
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Product code"
-            android:textColor="@color/text_normal_color"/>
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etProductCode"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Short Description"
-            android:textColor="@color/text_normal_color"/>
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etShortDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLength="6"/>
-
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Long Description (optional)"
-            android:textColor="@color/text_normal_color"
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/base_toolbar_layout"
+            android:visibility="gone"
             />
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etLongDescription"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent"
+            >
 
-        <View
-            android:id="@+id/divider6"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginVertical="@dimen/margin_low"
-            android:background="?android:attr/listDivider" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Variant Availability"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@color/title_text_color"
-            android:paddingBottom="8dp"/>
-
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sizes"
-            android:textStyle="bold"
-            android:textColor="@color/text_normal_color"/>
-
-        <GridLayout
-            android:id="@+id/gvSizes"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:columnCount="1">
-
-            <!--<androidx.appcompat.widget.AppCompatCheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="size1"/>
-            <androidx.appcompat.widget.AppCompatCheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="size2"/>
-            <androidx.appcompat.widget.AppCompatCheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="size3"/>
-            <androidx.appcompat.widget.AppCompatCheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="size4"/>
-            <androidx.appcompat.widget.AppCompatCheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="size5"/>
-            <androidx.appcompat.widget.AppCompatCheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="size6"/>-->
-
-        </GridLayout>
-
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Materials"
-            android:textStyle="bold"
-            android:textColor="@color/text_normal_color"/>
-
-        <GridLayout
-            android:id="@+id/gvMaterials"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:columnCount="1">
-
-            <!--<androidx.appcompat.widget.AppCompatCheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Material 1"/>
-            <androidx.appcompat.widget.AppCompatCheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Material 2"/>
-            <androidx.appcompat.widget.AppCompatCheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Material 3"/>
-            <androidx.appcompat.widget.AppCompatCheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Material 4"/>
-            <androidx.appcompat.widget.AppCompatCheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Material 5"/>-->
-        </GridLayout>
-
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Language"
-            android:textStyle="bold"
-            android:textColor="@color/text_normal_color"/>
-
-        <GridLayout
-            android:id="@+id/gvLanguages"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:columnCount="1">
-
-        </GridLayout>
-
-        <View
-            android:id="@+id/divider7"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginVertical="@dimen/margin_low"
-            android:background="?android:attr/listDivider" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tvName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Poster Category: "
-            android:textStyle="bold"
-            android:textColor="@color/text_normal_color"/>
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tvSubCategory"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Poster SubCategory: "
-            android:textStyle="bold"
-            android:visibility="gone" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tvBasePrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="Base Price: ₹"
-            android:textStyle="bold"
-            android:textColor="@color/text_normal_color"
-            android:visibility="gone" />
-
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/categorySpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingHorizontal="16dp">
 
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnAddProduct"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/round_button_shape"
-            android:layout_marginVertical="16dp"/>
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvProductImages"
+                    android:layout_width="wrap_content"
+                    android:layout_height="256dp"
+                    android:layout_gravity="center"
+                    android:layout_marginVertical="16dp" />
 
-</ScrollView>
+                <View
+                    android:id="@+id/divider5"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginVertical="@dimen/margin_low"
+                    android:background="?android:attr/listDivider" />
 
-</androidx.appcompat.widget.LinearLayoutCompat>
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Basic information"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/title_text_color"
+                    android:paddingVertical="8dp"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Title"
+                    android:textColor="@color/text_normal_color"/>
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Product code"
+                    android:textColor="@color/text_normal_color"/>
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etProductCode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Short Description"
+                    android:textColor="@color/text_normal_color"/>
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etShortDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="6"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Long Description (optional)"
+                    android:textColor="@color/text_normal_color"
+                    />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etLongDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <View
+                    android:id="@+id/divider6"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginVertical="@dimen/margin_low"
+                    android:background="?android:attr/listDivider" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Variant Availability"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/title_text_color"
+                    android:paddingBottom="8dp"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sizes"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_normal_color"/>
+
+                <GridLayout
+                    android:id="@+id/gvSizes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:columnCount="1">
+
+                    <!--<androidx.appcompat.widget.AppCompatCheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="size1"/>
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="size2"/>
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="size3"/>
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="size4"/>
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="size5"/>
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="size6"/>-->
+
+                </GridLayout>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Materials"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_normal_color"/>
+
+                <GridLayout
+                    android:id="@+id/gvMaterials"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:columnCount="1">
+
+                    <!--<androidx.appcompat.widget.AppCompatCheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Material 1"/>
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Material 2"/>
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Material 3"/>
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Material 4"/>
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Material 5"/>-->
+                </GridLayout>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Language"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_normal_color"/>
+
+                <GridLayout
+                    android:id="@+id/gvLanguages"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:columnCount="1">
+
+                </GridLayout>
+
+                <View
+                    android:id="@+id/divider7"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginVertical="@dimen/margin_low"
+                    android:background="?android:attr/listDivider" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tvName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Poster Category: "
+                    android:textStyle="bold"
+                    android:textColor="@color/text_normal_color"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tvSubCategory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Poster SubCategory: "
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tvBasePrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="Base Price: ₹"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_normal_color"
+                    android:visibility="gone" />
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/categorySpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnAddProduct"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/round_button_shape"
+                    android:layout_marginVertical="16dp"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </ScrollView>
+
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnEdit"
+        android:layout_gravity="end|bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_edit_24"
+        android:layout_margin="@dimen/margin_medium"
+        android:visibility="gone"/>
+
+</FrameLayout>

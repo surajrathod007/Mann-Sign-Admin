@@ -1,5 +1,6 @@
 package com.surajmanshal.mannsignadmin.ui.fragments
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,17 +18,23 @@ import com.surajmanshal.mannsignadmin.R
 import com.surajmanshal.mannsignadmin.adapter.recyclerView.ProductDetailsImageAdapter
 import com.surajmanshal.mannsignadmin.data.model.Language
 import com.surajmanshal.mannsignadmin.data.model.Size
+import com.surajmanshal.mannsignadmin.data.model.product.Product
 import com.surajmanshal.mannsignadmin.databinding.ActivityProductManagementBinding
 import com.surajmanshal.mannsignadmin.ui.activity.ProductManagementActivity
+import com.surajmanshal.mannsignadmin.ui.activity.ProductsActivity
 import com.surajmanshal.mannsignadmin.utils.Functions
 import com.surajmanshal.mannsignadmin.viewmodel.ProductsViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class ProductDetailsFragment : Fragment() {
 
-    private lateinit var _binding : ActivityProductManagementBinding
+    private lateinit var _binding: ActivityProductManagementBinding
     val binding get() = _binding
-    lateinit var mVM : ProductsViewModel
+    lateinit var mVM: ProductsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,47 +51,67 @@ class ProductDetailsFragment : Fragment() {
         val view = inflater.inflate(R.layout.activity_product_management, container, false)
         _binding = ActivityProductManagementBinding.bind(view)
         val languageList = mutableListOf<Language>()
-        mVM._currentProduct.value?.let { product->
+        mVM._currentProduct.value?.let { product ->
 
 
-            with(binding){
+            with(binding) {
 
-            // Set up Views  ----------------------------------------------------------------
+                // Set up Views  ----------------------------------------------------------------
                 rvProductImages.apply {
-                    layoutManager = LinearLayoutManager(requireActivity()
-                        , RecyclerView.HORIZONTAL,false)
+                    layoutManager = LinearLayoutManager(
+                        requireActivity(), RecyclerView.HORIZONTAL, false
+                    )
                 }
 
-                with(Functions){
+                with(Functions) {
                     makeViewVisible(tvSubCategory)
                     makeViewGone(categorySpinner)
                     makeViewGone(btnAddProduct)
                     makeViewVisible(tvBasePrice)
                     makeViewVisible(toolbar.root)
                 }
-                makeETDisableAndSetText(etTitle,product.posterDetails!!.title)
-                makeETDisableAndSetText(etShortDescription,product.posterDetails!!.short_desc)
-                product.posterDetails!!.long_desc?.let { makeETDisableAndSetText(etLongDescription, it) }
+                makeETDisableAndSetText(etTitle, product.posterDetails!!.title)
+                makeETDisableAndSetText(etShortDescription, product.posterDetails!!.short_desc)
+                product.posterDetails!!.long_desc?.let {
+                    makeETDisableAndSetText(
+                        etLongDescription,
+                        it
+                    )
+                }
                 product.productCode?.let { makeETDisableAndSetText(etProductCode, it) }
                 /*etTitle.setText(product.posterDetails!!.title)
                 etShortDescription.setText(product.posterDetails!!.short_desc)
                 product.posterDetails!!.long_desc?.let { etLongDescription.setText(it) }
                 etProductCode.setText(product.productCode)*/
                 tvBasePrice.text = "${tvBasePrice.text} ${product.basePrice}"
-                if(mVM.quoteReq == null) product.sizes?.forEach { setupSizesViews(it) }
+                if (mVM.quoteReq == null) product.sizes?.forEach { setupSizesViews(it) }
                 else setupSizesViews(product.sizes?.find { it.sid == mVM.quoteReq!![2].toInt() }!!)
                 activity?.let { activity ->
                     toolbar.apply {
                         ivBack.setOnClickListener {
                             activity.onBackPressed()
                         }
+                        ivAction.setImageDrawable(
+                            AppCompatResources.getDrawable(
+                                requireContext(),
+                                R.drawable.ic_action_delete2
+                            )
+                        )
                         ivAction.setOnClickListener {
-                            activity.startActivity(Intent(requireContext(),ProductManagementActivity::class.java).apply {
-                                putExtra("product",product)
-                            })
-                            activity.finish()
+                            showDeleteDialog(product)
                         }
                         tvToolBarTitle.text = getString(R.string.product_details)
+                    }
+                    binding.btnEdit.show()
+                    binding.btnEdit.setOnClickListener {
+                        requireActivity().startActivity(
+                            Intent(
+                                requireContext(),
+                                ProductManagementActivity::class.java
+                            ).apply {
+                                putExtra("product", product)
+                            })
+                        requireActivity().finish()
                     }
                 }
                 // Calls for resources -------------------------------------------------------
@@ -104,10 +133,12 @@ class ProductDetailsFragment : Fragment() {
 //                        if (languageList.size == (product.images?.size ?: 0)) {
                             if (languageList.size == product.languages!!.size) {
                                 rvProductImages.adapter = product.images?.let { it1 ->
-                                    ProductDetailsImageAdapter(it1.map { image -> Pair(image.url
-                                        ,languageList.find { it.id == image.languageId }?.name ?:
-                                        Language(0,"Unavailable").name
-                                    )
+                                    ProductDetailsImageAdapter(it1.map { image ->
+                                        Pair(
+                                            image.url,
+                                            languageList.find { it.id == image.languageId }?.name
+                                                ?: Language(0, "Unavailable").name
+                                        )
                                     })
                                 }
                             }
@@ -116,7 +147,7 @@ class ProductDetailsFragment : Fragment() {
 
                     getCategoryById(product.category!!)
                     getSubCategoryById(product.subCategory!!)
-                    if(quoteReq != null){
+                    if (quoteReq != null) {
                         getLanguageById(quoteReq!![3].toInt())
                         getMaterialById(quoteReq!![2].toInt())
                         return@apply
@@ -131,6 +162,45 @@ class ProductDetailsFragment : Fragment() {
         return binding.root
     }
 
+    private fun showDeleteDialog(product: Product) {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Alert !")
+            .setMessage("Do you want to delete it ?")
+            .setPositiveButton("Delete") { di, p1 ->
+                CoroutineScope(Dispatchers.IO).launch {
+                    try {
+                        val simpleResponse = mVM.deleteProduct(product)
+
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(
+                                requireContext(),
+                                simpleResponse.message,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            if (simpleResponse.success){
+                                requireActivity().startActivity(
+                                    Intent(
+                                        requireContext(),
+                                        ProductsActivity::class.java
+                                    ))
+                                requireActivity().finish()
+                            }
+
+                        }
+
+                    } catch (e: Exception) {
+                        withContext(Dispatchers.Main) {
+                            println("$e")
+                            Toast.makeText(requireContext(), "$e", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
+            .setNegativeButton("Cancel") { p0, p1 -> p0?.dismiss() }
+            .setCancelable(true)
+            .show()
+    }
+
     private fun setupCategoryView(name: String) {
         binding.tvName.text = binding.tvName.text.toString() + name
     }
@@ -139,19 +209,20 @@ class ProductDetailsFragment : Fragment() {
         binding.tvSubCategory.text = binding.tvSubCategory.text.toString() + name
     }
 
-    private fun createTextView(text : String): TextView {
+    private fun createTextView(text: String): TextView {
         val textView = TextView(activity)
         textView.text = text
         return textView
     }
 
-    fun setupSizesViews(size: Size) = binding.gvSizes.addView(createTextView("${size.width} x ${size.height}"))
+    fun setupSizesViews(size: Size) =
+        binding.gvSizes.addView(createTextView("${size.width} x ${size.height}"))
 
-    fun setupMaterialViews(name : String) = binding.gvMaterials.addView(createTextView(name))
+    fun setupMaterialViews(name: String) = binding.gvMaterials.addView(createTextView(name))
 
-    fun setupLanguageViews(name : String) = binding.gvLanguages.addView(createTextView(name))
+    fun setupLanguageViews(name: String) = binding.gvLanguages.addView(createTextView(name))
 
-    fun makeETDisableAndSetText(et : EditText,text : String){
+    fun makeETDisableAndSetText(et: EditText, text: String) {
         et.isEnabled = false
         et.setText(text)
     }

@@ -224,4 +224,6 @@ interface NetworkCallsInterface {
 
     @POST("banner/delete")
     fun deleteBanner(@Body banner: AdBanner): Call<SimpleResponse>
+    @POST("product/delete")
+    suspend fun deleteProduct(@Body product: Product): SimpleResponse
 }
