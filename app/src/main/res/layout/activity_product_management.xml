@@ -58,36 +58,38 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Title"
+                    android:text="Title (Max: 200)"
                     android:textColor="@color/text_normal_color"/>
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etTitle"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Product code"
+                    android:text="Product code (Max: 15)"
                     android:textColor="@color/text_normal_color"/>
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etProductCode"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                     />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Short Description"
+                    android:text="Short Description (Max: 64)"
                     android:textColor="@color/text_normal_color"/>
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etShortDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:maxLength="6"/>
+                    android:maxLength="64"/>
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"

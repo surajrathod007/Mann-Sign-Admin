@@ -23,18 +23,19 @@ class ProductManagementViewModel : ResourcesViewModel() {
     private val _subCategories = MutableLiveData<List<SubCategory>>()
     val subCategories: LiveData<List<SubCategory>> get() = _subCategories               //CATEGORIES
     private val _imageUploadResponse = MutableLiveData<SimpleResponse>()
-    val imageUploadResponse : LiveData<SimpleResponse> get() = _imageUploadResponse     // IMAGE UPLOADING PROGRESS
-    private val _productUploadResponse = MutableLiveData<Variant>()
-    val productUploadResponse : LiveData<Variant> get() = _productUploadResponse  // PRODUCT UPLOADING PROGRESS
+    val imageUploadResponse: LiveData<SimpleResponse> get() = _imageUploadResponse     // IMAGE UPLOADING PROGRESS
+    private val _productUploadResponse = MutableLiveData<Pair<Variant, String>>()
+    val productUploadResponse: LiveData<Pair<Variant, String>> get() = _productUploadResponse  // PRODUCT UPLOADING PROGRESS
     private val _posters = MutableLiveData<List<Product>>()
-    val posters : LiveData<List<Product>> get() = _posters                              // POSTERS
+    val posters: LiveData<List<Product>> get() = _posters                              // POSTERS
 
-    private val _productImages = MutableLiveData<MutableList<ImageLanguage>>(mutableListOf(ImageLanguage()))
-    val productImages : LiveData<MutableList<ImageLanguage>> get() = _productImages                 // PRODUCT IMAGES
+    private val _productImages =
+        MutableLiveData<MutableList<ImageLanguage>>(mutableListOf(ImageLanguage()))
+    val productImages: LiveData<MutableList<ImageLanguage>> get() = _productImages                 // PRODUCT IMAGES
 
 
     // -------------- DATA SETUP FUNCTIONS -------------------------------------------
-    suspend fun setupViewModelDataMembers(){
+    suspend fun setupViewModelDataMembers() {
         CoroutineScope(Dispatchers.IO).launch { getSizes() }
         CoroutineScope(Dispatchers.IO).launch { getMaterials(listOf(Constants.TYPE_POSTER)) }
         CoroutineScope(Dispatchers.IO).launch { getLanguages() }
@@ -43,15 +44,18 @@ class ProductManagementViewModel : ResourcesViewModel() {
     }
 
 
-
-    private suspend fun getSubCategories(){
+    private suspend fun getSubCategories() {
         val response = repository.fetchSubCategories()
         println("Response is $response")
         response.enqueue(object : Callback<List<SubCategory>> {
-            override fun onResponse(call: Call<List<SubCategory>>, response: Response<List<SubCategory>>) {
+            override fun onResponse(
+                call: Call<List<SubCategory>>,
+                response: Response<List<SubCategory>>
+            ) {
                 println("Inner Response is $response")
                 response.body()?.let { _subCategories.value = it }
             }
+
             override fun onFailure(call: Call<List<SubCategory>>, t: Throwable) {
                 println("Failure is $t")
             }
@@ -60,10 +64,37 @@ class ProductManagementViewModel : ResourcesViewModel() {
 
     suspend fun addProduct(product: Product) {
         try {
-            val response = repository.sendProduct(product)
-            _productUploadResponse.postValue(response)
-        }catch (e : Exception){
-            println("$e")
+            repository.sendProduct(product).enqueue(object : Callback<Variant?> {
+
+                override fun onResponse(call: Call<Variant?>, response: Response<Variant?>) {
+                    val body = response.body()
+                    if (body == null){
+                        _productUploadResponse.postValue(Pair(Variant(null, -9,
+                            0,
+                            0,
+                            0,0.0f
+                        ), "Null variant returned"))
+                    }else{
+                        _productUploadResponse.postValue(Pair(body, "Uploaded"))
+                    }
+                }
+
+                override fun onFailure(call: Call<Variant?>, t: Throwable) {
+                    println("$t")
+                    _productUploadResponse.postValue(Pair(Variant(null, -9,
+                        0,
+                        0,
+                        0,0.0f
+                    ), t.toString()))
+                }
+            })
+
+        } catch (e: Exception) {
+            _productUploadResponse.postValue(Pair(Variant(null, -9,
+                0,
+                0,
+                0,0.0f
+            ), e.toString()))
         }
     }
 
@@ -72,12 +103,12 @@ class ProductManagementViewModel : ResourcesViewModel() {
         try {
             val response = repository.updateProduct(product)
             _serverResponse.postValue(response)
-        }catch (e : Exception){
+        } catch (e: Exception) {
             println("$e")
         }
     }
 
-    suspend fun getPosters(){
+    suspend fun getPosters() {
         val response = repository.fetchPosters()
         println("Response is $response")
         response.enqueue(object : Callback<List<Product>> {
@@ -85,24 +116,27 @@ class ProductManagementViewModel : ResourcesViewModel() {
                 println("Inner Response is $response")
                 response.body()?.let { _posters.value = it }
             }
+
             override fun onFailure(call: Call<List<Product>>, t: Throwable) {
                 println("Failure is $t")
             }
         })
     }
-    suspend fun sendImage(part: Part,languageId: Int){
+
+    suspend fun sendImage(part: Part, languageId: Int) {
         try {
-            val response = repository.uploadImage(part,languageId)
+            val response = repository.uploadImage(part, languageId)
             _serverResponse.postValue(response)
             _imageUploadResponse.postValue(response)
-        }catch (e : Exception){
+        } catch (e: Exception) {
             println("${this.javaClass.name}$e ${serverResponse.value?.message}")
         }
     }
-    fun addImage(uri : Uri,languageId : Int){
+
+    fun addImage(uri: Uri, languageId: Int) {
         _productImages.value?.apply {
             add(last())
-            set(lastIndexOf(last())-1,ImageLanguage().apply {
+            set(lastIndexOf(last()) - 1, ImageLanguage().apply {
                 fileUri = uri
                 this.languageId = languageId
             })
@@ -110,7 +144,7 @@ class ProductManagementViewModel : ResourcesViewModel() {
         refreshProductImages()
     }
 
-    fun removeImage(item : ImageLanguage){
+    fun removeImage(item: ImageLanguage) {
         _productImages.value?.remove(item)
         refreshProductImages()
     }

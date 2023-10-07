@@ -2,6 +2,7 @@ package com.surajmanshal.mannsignadmin.ui.activity
 
 import android.Manifest
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -96,10 +97,20 @@ class ProductManagementActivity : AppCompatActivity() {
                                     etProductCode.requestFocus()
                                     return@setOnClickListener
                                 }
+                                if(this.length > 15) {
+                                    Toast.makeText(this@ProductManagementActivity, "Product code is $length long", Toast.LENGTH_SHORT).show()
+                                    etProductCode.requestFocus()
+                                    return@setOnClickListener
+                                }
                                 productCode = this.toString()
                             }
                             if(etTitle.text.isNullOrEmpty()){
                                 Toast.makeText(this@ProductManagementActivity, "Title is required", Toast.LENGTH_SHORT).show()
+                                etTitle.requestFocus()
+                                return@setOnClickListener
+                            }
+                            if (etTitle.text.toString().length > 200){
+                                Toast.makeText(this@ProductManagementActivity, "Title is of ${etTitle.text.toString().length} chars", Toast.LENGTH_SHORT).show()
                                 etTitle.requestFocus()
                                 return@setOnClickListener
                             }
@@ -192,13 +203,17 @@ class ProductManagementActivity : AppCompatActivity() {
             }
         })
         vm.productUploadResponse.observe(this, Observer {
-            if(it.productId > 0){
+            if(it.first.productId > 0){
                 Toast.makeText(this@ProductManagementActivity, "Product Added", Toast.LENGTH_SHORT)
                     .show()
                 lifecycleScope.launch {
                     delay(1500)
                     onBackPressed()
                 }
+            }else{
+                AlertDialog.Builder(this).setTitle("Failed to Upload")
+                    .setMessage( "Take a screen shot and share" + it.second)
+                    .show()
             }
         })
         vm.imageUploadResponse.observe(this, Observer { response ->

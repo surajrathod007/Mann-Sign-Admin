@@ -33,7 +33,7 @@ open class Repository() {
 
     suspend fun updateOrder(order: Order) = server.updateOrder(order)
 
-    suspend fun sendProduct(product: Product) = server.sendProduct(product)
+    fun sendProduct(product: Product) = server.sendProduct(product)
 
     suspend fun updateProduct(product: Product) = server.updateProduct(product)
 

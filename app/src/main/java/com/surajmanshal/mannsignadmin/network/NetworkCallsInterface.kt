@@ -52,7 +52,7 @@ interface NetworkCallsInterface {
 
     @Headers("Content-Type: application/json")
     @POST("product/insert")
-    suspend fun sendProduct(@Body product: Product) : Variant
+    fun sendProduct(@Body product: Product) : Call<Variant>
 
     @POST("product/update")
     suspend fun updateProduct(@Body product: Product) : SimpleResponse
