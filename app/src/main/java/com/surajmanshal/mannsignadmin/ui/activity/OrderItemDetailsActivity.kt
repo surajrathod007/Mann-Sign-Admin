@@ -1,9 +1,9 @@
 package com.surajmanshal.mannsignadmin.ui.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.surajmanshal.mannsignadmin.adapter.recyclerView.ReviewAdapter
@@ -87,6 +87,7 @@ class OrderItemDetailsActivity : AppCompatActivity() {
         with(binding) {
 
             //default items
+            txtProductCode.text = orderItem.product?.productCode ?: "None"
             txtOrderItemDetailsId.text = orderItem.product!!.productId.toString()
             txtOrderItemDetailsTotalPrice.text = "₹" + orderItem.totalPrice.toString() + " (Variant Price x Quantity)"
             txtOrderItemDetailsBasePrice.text ="₹" + orderItem.product!!.basePrice.toString()
