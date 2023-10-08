@@ -67,7 +67,7 @@ class ProductDetailsFragment : Fragment() {
                     makeViewVisible(tvSubCategory)
                     makeViewGone(categorySpinner)
                     makeViewGone(btnAddProduct)
-                    makeViewVisible(tvBasePrice)
+//                    makeViewVisible(tvBasePrice)
                     makeViewVisible(toolbar.root)
                 }
                 makeETDisableAndSetText(etTitle, product.posterDetails!!.title)

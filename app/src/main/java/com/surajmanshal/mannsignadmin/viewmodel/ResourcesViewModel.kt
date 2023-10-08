@@ -62,7 +62,7 @@ open class ResourcesViewModel : ViewModel() {
         response.enqueue(object : Callback<List<Size>> {
             override fun onResponse(call: Call<List<Size>>, response: Response<List<Size>>) {
                 println("Inner Response is $response")
-                response.body()?.let { _sizes.value = it }
+                response.body()?.let { sizes -> _sizes.value = sizes.sortedBy { it.width } }
             }
             override fun onFailure(call: Call<List<Size>>, t: Throwable) {
                 println("Failure is $t")
@@ -76,7 +76,7 @@ open class ResourcesViewModel : ViewModel() {
         response.enqueue(object : Callback<List<Material>> {
             override fun onResponse(call: Call<List<Material>>, response: Response<List<Material>>) {
                 println("Inner Response is $response")
-                response.body()?.let { _materials.value = it }
+                response.body()?.let { materials -> _materials.value = materials.sortedBy { it.name } }
             }
             override fun onFailure(call: Call<List<Material>>, t: Throwable) {
                 println("Failure is $t")

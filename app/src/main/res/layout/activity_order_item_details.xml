@@ -87,7 +87,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:columnCount="2"
-                    android:rowCount="8"
+                    android:rowCount="9"
                     android:useDefaultMargins="true">
 
 
@@ -99,6 +99,17 @@
                     <TextView
                         android:textColor="@color/text_normal_color"
                         android:id="@+id/txtOrderItemDetailsId"
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="" />
+
+                    <TextView
+                        android:textColor="@color/title_text_color"
+                        android:fontFamily="@font/satoshi_medium"
+                        android:text="Product Code : " />
+
+                    <TextView
+                        android:textColor="@color/text_normal_color"
+                        android:id="@+id/txtProductCode"
                         android:fontFamily="@font/satoshi_medium"
                         android:text="" />
 

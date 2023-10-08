@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.forEach
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -80,6 +81,11 @@ class ProductManagementActivity : AppCompatActivity() {
 
             with(mProduct){
                 etProductCode.setText(productCode)
+                etProductCode.setOnFocusChangeListener { view, isFocused ->
+                    if (!isFocused){
+                        binding.tvPCodeExist.isVisible = vm.posters.value!!.find { it.productCode == etProductCode.text.toString().trim() } != null
+                    }
+                }
                 posterDetails?.let {
                     etTitle.setText(it.title)
                     etShortDescription.setText(it.short_desc)
@@ -367,7 +373,10 @@ class ProductManagementActivity : AppCompatActivity() {
     }
     fun setupMaterialViews(){
         vm.materials.value?.forEach {
-            binding.gvMaterials.addView(createCheckBox(it.name,mProduct.materials?.contains(it.id)?: false ))
+            binding.gvMaterials.addView(
+                createCheckBox(it.name,
+                    mProduct.materials?.contains(it.id)?: false
+                ))
         }
     }
     fun setupLanguageViews(){
