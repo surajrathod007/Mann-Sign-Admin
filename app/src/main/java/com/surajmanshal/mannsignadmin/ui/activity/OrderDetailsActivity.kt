@@ -34,6 +34,7 @@ import com.surajmanshal.mannsignadmin.databinding.ActivityOrderDetailsBinding
 import com.surajmanshal.mannsignadmin.utils.Constants
 import com.surajmanshal.mannsignadmin.utils.Functions
 import com.surajmanshal.mannsignadmin.utils.auth.DataStore.preferenceDataStoreAuth
+import com.surajmanshal.mannsignadmin.utils.getTwoDecimalValue
 import com.surajmanshal.mannsignadmin.viewmodel.OrdersViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -298,13 +299,13 @@ class OrderDetailsActivity : AppCompatActivity() {
 
 
             //first table
-            val c: FloatArray = floatArrayOf(220F, 220F, 200F, 180F)
+            val c: FloatArray = floatArrayOf(220F, 220F, 200F)
             val table1 = Table(c)
 
 
             // row 1
-            table1.addCell(Cell().add(Paragraph("Bill to Party ").setFontSize(10.0f)).setBold())
-            table1.addCell(Cell().add(Paragraph("Ship to Party ").setFontSize(10.0f)).setBold())
+            table1.addCell(Cell(0,1).add(Paragraph("Bill to Party ").setFontSize(10.0f)).setBold())
+            //table1.addCell(Cell().add(Paragraph("").setFontSize(10.0f)).setBold())
             table1.addCell(Cell().add(Paragraph("Date : ").setFontSize(10.0f)).setBold())
             table1.addCell(
                 Cell().add(
@@ -314,15 +315,15 @@ class OrderDetailsActivity : AppCompatActivity() {
 
             //row 2
             table1.addCell(Cell(4, 0).add(Paragraph("857,indiranagar -2 ").setFontSize(8.0f)))
-            table1.addCell(Cell(4, 0).add(Paragraph("11, My Queen").setFontSize(8.0f)))
+            //table1.addCell(Cell(4, 0).add(Paragraph("").setFontSize(8.0f)))
             table1.addCell(Cell().add(Paragraph("Invoice No : ").setFontSize(10.0f)))
-            table1.addCell(Cell().add(Paragraph("inv1000").setFontSize(10.0f)))
+            table1.addCell(Cell().add(Paragraph("${order.orderId}").setFontSize(10.0f)))
 
             //row 3
             //table1.addCell(Cell().add(Paragraph("")))
             //table1.addCell(Cell().add(Paragraph("")))
-            table1.addCell(Cell().add(Paragraph("Buyer's Order No. :").setFontSize(10.0f)))
-            table1.addCell(Cell().add(Paragraph("order97777").setFontSize(10.0f)))
+            table1.addCell(Cell().add(Paragraph("Order No. :").setFontSize(10.0f)))
+            table1.addCell(Cell().add(Paragraph("${order.orderId}").setFontSize(10.0f)))
 
             //row 4
             //table1.addCell(Cell().add(Paragraph("")))
@@ -331,9 +332,7 @@ class OrderDetailsActivity : AppCompatActivity() {
             table1.addCell(
                 Cell().add(
                     Paragraph(
-                        "${
-                            LocalDate.now().plusDays(7)
-                        }"
+                        order.orderDate
                     ).setFontSize(10.0f)
                 )
             )
@@ -341,12 +340,12 @@ class OrderDetailsActivity : AppCompatActivity() {
             //row 5
             //table1.addCell(Cell().add(Paragraph("")))
             //table1.addCell(Cell().add(Paragraph("")))
-            table1.addCell(Cell().add(Paragraph("State Code : ").setFontSize(10.0f)))
+            table1.addCell(Cell().add(Paragraph("Pin Code : ").setFontSize(10.0f)))
             table1.addCell(Cell().add(Paragraph("24").setFontSize(10.0f)))
 
             //row 6
-            table1.addCell(Cell().add(Paragraph("State Code : ").setFontSize(8.0f).setBold()))
-            table1.addCell(Cell().add(Paragraph("State Code : ").setFontSize(8.0f).setBold()))
+            table1.addCell(Cell().add(Paragraph("Pin Code : ").setFontSize(8.0f).setBold()))
+            //table1.addCell(Cell().add(Paragraph("").setFontSize(8.0f).setBold()))
             table1.addCell(
                 Cell(0, 2).add(Paragraph("COMPANY GSTIN NO : ").setFontSize(8.0f).setBold())
                     .setTextAlignment(
@@ -358,14 +357,14 @@ class OrderDetailsActivity : AppCompatActivity() {
             //row 7
             table1.addCell(
                 Cell().add(
-                    Paragraph("GSTIN NO : <add here>").setFontSize(8.0f).setBold()
+                    Paragraph("GSTIN NO : ").setFontSize(8.0f).setBold()
                 )
             )
-            table1.addCell(
-                Cell().add(
-                    Paragraph("GSTIN NO : <add here>").setFontSize(8.0f).setBold()
-                )
-            )
+//            table1.addCell(
+//                Cell().add(
+//                    Paragraph("GSTIN NO : <add here>").setFontSize(8.0f).setBold()
+//                )
+//            )
             table1.addCell(
                 Cell(0, 2).add(Paragraph("24BENPP0006B1Z4").setFontSize(8.0f).setBold())
                     .setTextAlignment(
@@ -377,7 +376,7 @@ class OrderDetailsActivity : AppCompatActivity() {
             document.add(table1)
 
             //2nd table
-            val table2 = Table(8)
+            val table2 = Table(6)
             table2.useAllAvailableWidth()
             //row1
             table2.addCell(Cell().add(Paragraph("Sr No.").setBold().setFontSize(10.0f)))
@@ -387,8 +386,8 @@ class OrderDetailsActivity : AppCompatActivity() {
                 )
             )
             table2.addCell(Cell().add(Paragraph("HSN Code").setBold().setFontSize(10.0f)))
-            table2.addCell(Cell().add(Paragraph("UOM").setBold().setFontSize(10.0f)))
-            table2.addCell(Cell().add(Paragraph("Product Type").setBold().setFontSize(10.0f)))
+            //table2.addCell(Cell().add(Paragraph("UOM").setBold().setFontSize(10.0f)))
+            //table2.addCell(Cell().add(Paragraph("Product Type").setBold().setFontSize(10.0f)))
             table2.addCell(Cell().add(Paragraph("Quantity").setBold().setFontSize(10.0f)))
             table2.addCell(Cell().add(Paragraph("Rate").setBold().setFontSize(10.0f)))
             table2.addCell(Cell().add(Paragraph("Amount").setBold().setFontSize(10.0f)))
@@ -402,6 +401,8 @@ class OrderDetailsActivity : AppCompatActivity() {
                     addCell(sr.toString()).setFontSize(10f)
                     addCell(it.product!!.posterDetails!!.title).setFontSize(10f)
                     addCell("Hsn$sr").setFontSize(10f)
+
+                    /*
                     addCell("UOM$sr").setFontSize(10f)
                     //set product type
                     if (it.product!!.posterDetails != null)
@@ -411,9 +412,11 @@ class OrderDetailsActivity : AppCompatActivity() {
                     if (it.product!!.bannerDetails != null)
                         addCell("Banner").setFontSize(10f)
 
+                     */
+
                     addCell("${it.quantity}").setFontSize(10f)
                     addCell("${it.variant!!.variantPrice}").setFontSize(10f)
-                    addCell("${it.totalPrice}").setFontSize(10f)
+                    addCell("${it.totalPrice.getTwoDecimalValue()}").setFontSize(10f)
                     gtotal += it.totalPrice
                     sr++
                 }
@@ -423,8 +426,8 @@ class OrderDetailsActivity : AppCompatActivity() {
                     addCell("").setFontSize(10f)
                     addCell("").setFontSize(10f)
                     addCell("").setFontSize(10f)
-                    addCell("").setFontSize(10f)
-                    addCell("").setFontSize(10f)
+                    //addCell("").setFontSize(10f)
+                    //addCell("").setFontSize(10f)
                     addCell("").setFontSize(10f)
                     addCell("").setFontSize(10f)
                     sr++
@@ -478,7 +481,7 @@ class OrderDetailsActivity : AppCompatActivity() {
             )
             table3.addCell(
                 Cell().add(
-                    Paragraph("$gtotal").setFontSize(10f).setBold().setTextAlignment(
+                    Paragraph(gtotal.getTwoDecimalValue()).setFontSize(10f).setBold().setTextAlignment(
                         TextAlignment.RIGHT
                     )
                 )
@@ -508,7 +511,7 @@ class OrderDetailsActivity : AppCompatActivity() {
             )
             table3.addCell(
                 Cell().add(
-                    Paragraph("$cgst").setFontSize(10f).setBold().setTextAlignment(
+                    Paragraph(cgst.getTwoDecimalValue()).setFontSize(10f).setBold().setTextAlignment(
                         TextAlignment.RIGHT
                     )
                 )
@@ -526,7 +529,7 @@ class OrderDetailsActivity : AppCompatActivity() {
             )
             table3.addCell(
                 Cell().add(
-                    Paragraph("$sgst").setFontSize(10f).setBold().setTextAlignment(
+                    Paragraph(sgst.getTwoDecimalValue()).setFontSize(10f).setBold().setTextAlignment(
                         TextAlignment.RIGHT
                     )
                 )
@@ -544,7 +547,7 @@ class OrderDetailsActivity : AppCompatActivity() {
             )
             table3.addCell(
                 Cell().add(
-                    Paragraph("${cgst + sgst}").setFontSize(10f).setBold().setTextAlignment(
+                    Paragraph((cgst + sgst).getTwoDecimalValue()).setFontSize(10f).setBold().setTextAlignment(
                         TextAlignment.RIGHT
                     )
                 )
@@ -563,7 +566,7 @@ class OrderDetailsActivity : AppCompatActivity() {
             )
             table3.addCell(
                 Cell().add(
-                    Paragraph("${gtotal + cgst + sgst}").setFontSize(10f).setBold()
+                    Paragraph((gtotal + cgst + sgst).getTwoDecimalValue()).setFontSize(10f).setBold()
                         .setTextAlignment(
                             TextAlignment.RIGHT
                         )
@@ -571,7 +574,7 @@ class OrderDetailsActivity : AppCompatActivity() {
             )
 
             //row6
-            table3.addCell(Cell().add(Paragraph("Mode of Transport : By Hand").setFontSize(10f)))
+            table3.addCell(Cell().add(Paragraph("").setFontSize(10f)))
             //table3.addCell(Cell().add(Paragraph("Upi Payment").setFontSize(10f).setBold().setTextAlignment(TextAlignment.CENTER)))
             table3.addCell(
                 Cell().add(
@@ -590,7 +593,7 @@ class OrderDetailsActivity : AppCompatActivity() {
             )
 
             //row7
-            table3.addCell(Cell().add(Paragraph("Veh.No :").setFontSize(10f)))
+            table3.addCell(Cell().add(Paragraph("").setFontSize(10f)))
             table3.addCell(
                 Cell().add(
                     Paragraph("UPI ID: 7405736990@okbizaxis").setFontSize(8f).setBold()
@@ -608,7 +611,7 @@ class OrderDetailsActivity : AppCompatActivity() {
             )
             table3.addCell(
                 Cell().add(
-                    Paragraph("${gtotal + cgst + sgst}").setFontSize(10f).setBold()
+                    Paragraph((gtotal + cgst + sgst).getTwoDecimalValue()).setFontSize(10f).setBold()
                         .setTextAlignment(
                             TextAlignment.RIGHT
                         )

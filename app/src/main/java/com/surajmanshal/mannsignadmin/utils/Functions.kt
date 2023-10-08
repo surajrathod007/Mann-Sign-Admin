@@ -72,3 +72,13 @@ object Functions {
     }
 
 }
+
+fun Float.getTwoDecimalValue(): String {
+    /*
+    val decimalFormat = DecimalFormat("#.##", DecimalFormatSymbols(Locale.ENGLISH))
+    decimalFormat.roundingMode = RoundingMode.DOWN
+    return decimalFormat.format(this)
+
+     */
+    return "Rs "+String.format("%.2f", this)
+}
