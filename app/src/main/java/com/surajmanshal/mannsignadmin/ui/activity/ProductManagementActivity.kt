@@ -367,7 +367,10 @@ class ProductManagementActivity : AppCompatActivity() {
     }
     fun setupMaterialViews(){
         vm.materials.value?.forEach {
-            binding.gvMaterials.addView(createCheckBox(it.name,mProduct.materials?.contains(it.id)?: false ))
+            binding.gvMaterials.addView(
+                createCheckBox(it.name,
+                    mProduct.materials?.contains(it.id)?: false
+                ))
         }
     }
     fun setupLanguageViews(){
