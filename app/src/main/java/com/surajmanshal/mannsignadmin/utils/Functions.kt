@@ -14,10 +14,11 @@ import com.surajmanshal.mannsignadmin.data.model.Material
 import com.surajmanshal.mannsignadmin.data.model.Size
 import java.sql.Timestamp
 import java.time.Instant
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-import java.util.*
+import java.util.Date
 
 object Functions {
 
@@ -69,6 +70,17 @@ object Functions {
     }
     fun enablePositiveBtnWhenValueChanged(initValue : String, editTexts: EditText, d: android.app.AlertDialog) {
         d.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = editTexts.text.toString() != initValue && editTexts.text.isNotEmpty()
+    }
+
+    fun getFinancialYearString(date : LocalDate): String {
+        return "${date.year}-${date.year + 1}"
+    }
+
+    fun getFormatedTimestamp(millis: Long, format: String): String? {
+        val instant = Instant.ofEpochMilli(millis)
+        val formatter = DateTimeFormatter.ofPattern(format)
+            .withZone(ZoneId.systemDefault())
+        return formatter.format(instant)
     }
 
 }

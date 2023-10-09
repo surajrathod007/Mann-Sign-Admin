@@ -274,9 +274,12 @@ class OrderDetailsActivity : AppCompatActivity() {
 
             var lst = order.orderItems
 
-            val path =
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
-                    .toString()
+//            val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString()
+            val path = if (Build.VERSION.SDK_INT == Build.VERSION_CODES.Q){
+                getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)?.toString()
+            }else{
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString()
+            }
             val file = File(path, "mann_invoice${System.currentTimeMillis()}.pdf")
             val output = FileOutputStream(file)
 
@@ -307,9 +310,10 @@ class OrderDetailsActivity : AppCompatActivity() {
             table1.addCell(Cell(0,1).add(Paragraph("Bill to Party ").setFontSize(10.0f)).setBold())
             //table1.addCell(Cell().add(Paragraph("").setFontSize(10.0f)).setBold())
             table1.addCell(Cell().add(Paragraph("Date : ").setFontSize(10.0f)).setBold())
+            val today = Functions.getFormatedTimestamp(System.currentTimeMillis(),"dd-MM-yyyy")
             table1.addCell(
                 Cell().add(
-                    Paragraph(LocalDate.now().toString()).setFontSize(10.0f).setBold()
+                    Paragraph(today?:LocalDate.now().toString()).setFontSize(10.0f).setBold()
                 )
             )
 
@@ -317,13 +321,16 @@ class OrderDetailsActivity : AppCompatActivity() {
             table1.addCell(Cell(4, 0).add(Paragraph("857,indiranagar -2 ").setFontSize(8.0f)))
             //table1.addCell(Cell(4, 0).add(Paragraph("").setFontSize(8.0f)))
             table1.addCell(Cell().add(Paragraph("Invoice No : ").setFontSize(10.0f)))
-            table1.addCell(Cell().add(Paragraph("${order.orderId}").setFontSize(10.0f)))
+//            table1.addCell(Cell().add(Paragraph("${order.orderId}").setFontSize(10.0f)))
+            val invoiceNo = 1
+            val invoiceId = Functions.getFinancialYearString(LocalDate.now()) + "-MS-$invoiceNo"
+            table1.addCell(Cell().add(Paragraph(invoiceId).setFontSize(10.0f)))
 
             //row 3
             //table1.addCell(Cell().add(Paragraph("")))
             //table1.addCell(Cell().add(Paragraph("")))
             table1.addCell(Cell().add(Paragraph("Order No. :").setFontSize(10.0f)))
-            table1.addCell(Cell().add(Paragraph("${order.orderId}").setFontSize(10.0f)))
+            table1.addCell(Cell().add(Paragraph(order.orderId).setFontSize(10.0f)))
 
             //row 4
             //table1.addCell(Cell().add(Paragraph("")))
@@ -379,18 +386,18 @@ class OrderDetailsActivity : AppCompatActivity() {
             val table2 = Table(6)
             table2.useAllAvailableWidth()
             //row1
-            table2.addCell(Cell().add(Paragraph("Sr No.").setBold().setFontSize(10.0f)))
+            table2.addCell(Cell().add(Paragraph("Sr No.").setBold().setFontSize(10.0f))).setTextAlignment(TextAlignment.CENTER)
             table2.addCell(
                 Cell().add(
                     Paragraph("Product Description").setBold().setFontSize(10.0f)
-                )
+                ).setTextAlignment(TextAlignment.CENTER)
             )
-            table2.addCell(Cell().add(Paragraph("HSN Code").setBold().setFontSize(10.0f)))
+            table2.addCell(Cell().add(Paragraph("HSN Code").setBold().setFontSize(10.0f).setTextAlignment(TextAlignment.CENTER)))
             //table2.addCell(Cell().add(Paragraph("UOM").setBold().setFontSize(10.0f)))
             //table2.addCell(Cell().add(Paragraph("Product Type").setBold().setFontSize(10.0f)))
-            table2.addCell(Cell().add(Paragraph("Quantity").setBold().setFontSize(10.0f)))
-            table2.addCell(Cell().add(Paragraph("Rate").setBold().setFontSize(10.0f)))
-            table2.addCell(Cell().add(Paragraph("Amount").setBold().setFontSize(10.0f)))
+            table2.addCell(Cell().add(Paragraph("Quantity").setBold().setFontSize(10.0f).setTextAlignment(TextAlignment.CENTER)))
+            table2.addCell(Cell().add(Paragraph("Rate").setBold().setFontSize(10.0f).setTextAlignment(TextAlignment.CENTER)))
+            table2.addCell(Cell().add(Paragraph("Amount").setBold().setFontSize(10.0f).setTextAlignment(TextAlignment.CENTER)))
 
             //add items
             var sr = 1
@@ -398,9 +405,9 @@ class OrderDetailsActivity : AppCompatActivity() {
             var extraRows = 15 - lst!!.size
             with(table2) {
                 lst!!.forEach {
-                    addCell(sr.toString()).setFontSize(10f)
+                    addCell(sr.toString()).setFontSize(10f).setTextAlignment(TextAlignment.CENTER)
                     addCell(it.product!!.posterDetails!!.title).setFontSize(10f)
-                    addCell("Hsn$sr").setFontSize(10f)
+                    addCell("Hsn$sr").setFontSize(10f).setTextAlignment(TextAlignment.CENTER)
 
                     /*
                     addCell("UOM$sr").setFontSize(10f)
@@ -414,9 +421,9 @@ class OrderDetailsActivity : AppCompatActivity() {
 
                      */
 
-                    addCell("${it.quantity}").setFontSize(10f)
-                    addCell("${it.variant!!.variantPrice}").setFontSize(10f)
-                    addCell("${it.totalPrice.getTwoDecimalValue()}").setFontSize(10f)
+                    addCell("${it.quantity}").setFontSize(10f).setTextAlignment(TextAlignment.CENTER)
+                    addCell("${it.variant!!.variantPrice}").setFontSize(10f).setTextAlignment(TextAlignment.CENTER)
+                    addCell("${it.totalPrice.getTwoDecimalValue()}").setFontSize(10f).setTextAlignment(TextAlignment.CENTER)
                     gtotal += it.totalPrice
                     sr++
                 }
@@ -700,7 +707,9 @@ class OrderDetailsActivity : AppCompatActivity() {
             document.add(table4)
             document.close()
             Toast.makeText(this, "Pdf Created", Toast.LENGTH_SHORT).show()
-            openFile(file, path)
+            if (path != null) {
+                openFile(file, path)
+            }
 
         } catch (e: Exception) {
             Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
