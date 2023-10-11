@@ -20,7 +20,7 @@ class OrderItemsAdapter(val context: Context, val orderItems: List<OrderItem>) :
 
     class OrderItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val txtOrderItemTitle = itemView.findViewById<TextView>(R.id.txtOrderItemTitle)
-        val txtOrderItemBasePrice = itemView.findViewById<TextView>(R.id.txtOrderItemBasePrice)
+//        val txtOrderItemBasePrice = itemView.findViewById<TextView>(R.id.txtOrderItemBasePrice)
         val txtOrderItemQty = itemView.findViewById<TextView>(R.id.txtOrderItemQty)
         val txtOrderItemTotalPrice = itemView.findViewById<TextView>(R.id.txtOrderItemTotalPrice)
         val imgProduct = itemView.findViewById<ImageView>(R.id.imgProduct)
@@ -38,7 +38,7 @@ class OrderItemsAdapter(val context: Context, val orderItems: List<OrderItem>) :
         with(holder) {
             //txtOrderItemTitle.text = o.product!!.productId.toString()       //here we check condition either it is poster,acp or banner
             txtOrderItemQty.text = "Quantity : " + o.quantity.toString()
-            txtOrderItemBasePrice.text = "Base Price : ₹" + o.product!!.basePrice.toString()
+//            txtOrderItemBasePrice.text = "Base Price : ₹" + o.product!!.basePrice.toString()
             txtOrderItemTotalPrice.text = "₹" + o.totalPrice.toString()
             with(o) {
                 if (!product?.images.isNullOrEmpty()) {

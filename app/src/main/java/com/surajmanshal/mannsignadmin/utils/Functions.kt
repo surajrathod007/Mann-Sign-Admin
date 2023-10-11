@@ -1,6 +1,9 @@
 package com.surajmanshal.mannsignadmin.utils
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import android.text.InputType
 import android.view.View
 import android.view.View.GONE
@@ -8,10 +11,12 @@ import android.view.View.VISIBLE
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.FileProvider
 import com.surajmanshal.mannsignadmin.URL
 import com.surajmanshal.mannsignadmin.data.model.Language
 import com.surajmanshal.mannsignadmin.data.model.Material
 import com.surajmanshal.mannsignadmin.data.model.Size
+import java.io.File
 import java.sql.Timestamp
 import java.time.Instant
 import java.time.LocalDate
@@ -93,4 +98,20 @@ fun Float.getTwoDecimalValue(): String {
 
      */
     return "Rs "+String.format("%.2f", this)
+}
+
+fun Context.openFile(file: File, path: String) {
+    val intent = Intent(Intent.ACTION_VIEW)
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        val uri = FileProvider.getUriForFile(this, this.packageName + ".provider", file)
+        intent.setData(uri)
+        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        startActivity(intent)
+    } else {
+        intent.setDataAndType(Uri.parse(path), "application/pdf")
+        val i = Intent.createChooser(intent, "Open File With")
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(i)
+    }
 }

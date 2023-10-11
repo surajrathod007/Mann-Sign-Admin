@@ -35,6 +35,7 @@ import com.surajmanshal.mannsignadmin.utils.Constants
 import com.surajmanshal.mannsignadmin.utils.Functions
 import com.surajmanshal.mannsignadmin.utils.auth.DataStore.preferenceDataStoreAuth
 import com.surajmanshal.mannsignadmin.utils.getTwoDecimalValue
+import com.surajmanshal.mannsignadmin.utils.itext.UsecaseGenerateInvoice
 import com.surajmanshal.mannsignadmin.viewmodel.OrdersViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -123,7 +124,8 @@ class OrderDetailsActivity : AppCompatActivity() {
         }
 
         binding.btnGenerateInvoice.setOnClickListener {
-            makeInvoice()
+//            makeInvoice()
+            UsecaseGenerateInvoice(this).invoke(order)
         }
 
         binding.btnProductBack.setOnClickListener {

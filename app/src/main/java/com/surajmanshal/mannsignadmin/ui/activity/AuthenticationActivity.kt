@@ -2,16 +2,12 @@ package com.surajmanshal.mannsignadmin.ui.activity
 
 import android.app.Dialog
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.Settings
 import android.text.TextUtils
 import android.view.View.INVISIBLE
 import android.widget.TextView
 import android.widget.Toast
-import androidx.biometric.BiometricManager
-import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
-import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
+import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.datastore.preferences.core.edit
@@ -20,8 +16,6 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import com.surajmanshal.mannsign.utils.auth.ExceptionHandler
 import com.surajmanshal.mannsign.utils.auth.LoadingScreen
-import com.surajmanshal.mannsignadmin.utils.auth.DataStore
-import com.surajmanshal.mannsignadmin.utils.auth.DataStore.preferenceDataStoreAuth
 import com.surajmanshal.mannsignadmin.MainActivity
 import com.surajmanshal.mannsignadmin.R
 import com.surajmanshal.mannsignadmin.data.model.auth.LoginRequest
@@ -30,10 +24,16 @@ import com.surajmanshal.mannsignadmin.data.model.auth.User
 import com.surajmanshal.mannsignadmin.databinding.ActivityAuthenticationBinding
 import com.surajmanshal.mannsignadmin.network.NetworkService
 import com.surajmanshal.mannsignadmin.utils.Constants
+import com.surajmanshal.mannsignadmin.utils.auth.DataStore
+import com.surajmanshal.mannsignadmin.utils.auth.DataStore.preferenceDataStoreAuth
 import com.surajmanshal.mannsignadmin.utils.hide
 import com.surajmanshal.mannsignadmin.utils.show
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.concurrent.Executor
 
 class AuthenticationActivity : AppCompatActivity() {
@@ -53,6 +53,7 @@ class AuthenticationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAuthenticationBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        onLoginSuccess()  // todo : enable only in debug mode
         d = LoadingScreen(this)
         dd = d.loadingScreen()
 
