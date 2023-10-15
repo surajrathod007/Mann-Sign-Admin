@@ -35,7 +35,7 @@ import com.surajmanshal.mannsignadmin.utils.Constants
 import com.surajmanshal.mannsignadmin.utils.Functions
 import com.surajmanshal.mannsignadmin.utils.auth.DataStore.preferenceDataStoreAuth
 import com.surajmanshal.mannsignadmin.utils.getTwoDecimalValue
-import com.surajmanshal.mannsignadmin.utils.itext.UsecaseGenerateInvoice
+import com.surajmanshal.mannsignadmin.utils.hide
 import com.surajmanshal.mannsignadmin.viewmodel.OrdersViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -123,12 +123,13 @@ class OrderDetailsActivity : AppCompatActivity() {
             showConfirmDialog()
         }
 
-        binding.btnGenerateInvoice.setOnClickListener {
+        binding.btnGenerateInvoice.hide()
+        /*binding.btnGenerateInvoice.setOnClickListener {
 //            makeInvoice()
             vm.user.value?.let { it1 -> UsecaseGenerateInvoice(this).invoke(order, it1) }?: kotlin.run {
                 Toast.makeText(this, "please try after few minutes", Toast.LENGTH_SHORT).show()
             }
-        }
+        }*/
 
         binding.btnProductBack.setOnClickListener {
             onBackPressed()

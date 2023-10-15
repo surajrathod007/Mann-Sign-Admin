@@ -295,7 +295,8 @@
                     android:text="Generate Invoice"
                     android:textAllCaps="false"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"/>
 
 
                 <com.google.android.material.divider.MaterialDivider

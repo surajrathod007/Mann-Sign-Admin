@@ -86,8 +86,8 @@ class UsecaseGenerateInvoice(private val context : Context) {
                 table1.addCell(Cell().add(Paragraph("Invoice No : ").setFontSize(10.0f)))
 //            table1.addCell(Cell().add(Paragraph("${order.orderId}").setFontSize(10.0f)))
                 val invoiceNo = order.invoiceNo
-                val invoiceId = Functions.getFinancialYearString(LocalDate.now()) + "-MS-$invoiceNo"
-                table1.addCell(Cell().add(Paragraph(invoiceId).setFontSize(10.0f)))
+//                val invoiceId = Functions.getFinancialYearString(LocalDate.now()) + "-MS-$invoiceNo"
+                table1.addCell(Cell().add(Paragraph(invoiceNo).setFontSize(10.0f)))
 
                 //row 3
                 //table1.addCell(Cell().add(Paragraph("")))
