@@ -19,6 +19,7 @@ import com.itextpdf.layout.properties.TextAlignment
 import com.itextpdf.layout.properties.VerticalAlignment
 import com.surajmanshal.mannsignadmin.R
 import com.surajmanshal.mannsignadmin.data.model.GST
+import com.surajmanshal.mannsignadmin.data.model.auth.User
 import com.surajmanshal.mannsignadmin.data.model.ordering.Order
 import com.surajmanshal.mannsignadmin.utils.Functions
 import com.surajmanshal.mannsignadmin.utils.getTwoDecimalValue
@@ -29,7 +30,7 @@ import java.io.FileOutputStream
 import java.time.LocalDate
 
 class UsecaseGenerateInvoice(private val context : Context) {
-    operator fun invoke(order: Order) {
+    operator fun invoke(order: Order,user: User) {
 
             try {
                 var lst = order.orderItems
@@ -78,11 +79,13 @@ class UsecaseGenerateInvoice(private val context : Context) {
                 )
 
                 //row 2
-                table1.addCell(Cell(4, 0).add(Paragraph("857,indiranagar -2 ").setFontSize(8.0f)))
+//                table1.addCell(Cell(4, 0).add(Paragraph("857,indiranagar -2 ").setFontSize(8.0f)))
+                table1.addCell(Cell(4, 0).add(Paragraph("${"Manshal"} ${"Khatri"}\n${"550, Inidiranagr-2, Lambha, Ahemdabad, 382405"}").setFontSize(8.0f)))
+//                table1.addCell(Cell(4, 0).add(Paragraph("${user.firstName} ${user.lastName}\n${user.address}").setFontSize(8.0f)))
                 //table1.addCell(Cell(4, 0).add(Paragraph("").setFontSize(8.0f)))
                 table1.addCell(Cell().add(Paragraph("Invoice No : ").setFontSize(10.0f)))
 //            table1.addCell(Cell().add(Paragraph("${order.orderId}").setFontSize(10.0f)))
-                val invoiceNo = 1
+                val invoiceNo = order.invoiceNo
                 val invoiceId = Functions.getFinancialYearString(LocalDate.now()) + "-MS-$invoiceNo"
                 table1.addCell(Cell().add(Paragraph(invoiceId).setFontSize(10.0f)))
 
@@ -99,7 +102,7 @@ class UsecaseGenerateInvoice(private val context : Context) {
                 table1.addCell(
                     Cell().add(
                         Paragraph(
-                            order.orderDate
+                           order.orderDate.toString()
                         ).setFontSize(10.0f)
                     )
                 )
@@ -108,10 +111,10 @@ class UsecaseGenerateInvoice(private val context : Context) {
                 //table1.addCell(Cell().add(Paragraph("")))
                 //table1.addCell(Cell().add(Paragraph("")))
                 table1.addCell(Cell().add(Paragraph("Pin Code : ").setFontSize(10.0f)))
-                table1.addCell(Cell().add(Paragraph("24").setFontSize(10.0f)))
+                table1.addCell(Cell().add(Paragraph("").setFontSize(10.0f)))
 
                 //row 6
-                table1.addCell(Cell().add(Paragraph("Pin Code : ").setFontSize(8.0f).setBold()))
+                table1.addCell(Cell().add(Paragraph("Pin Code : ${user.pinCode}").setFontSize(8.0f).setBold()))
                 //table1.addCell(Cell().add(Paragraph("").setFontSize(8.0f).setBold()))
                 table1.addCell(
                     Cell(0, 2).add(Paragraph("COMPANY GSTIN NO : ").setFontSize(8.0f).setBold())
@@ -122,16 +125,16 @@ class UsecaseGenerateInvoice(private val context : Context) {
                 //table1.addCell(Cell().add(Paragraph("")))
 
                 //row 7
-                table1.addCell(
+                /*table1.addCell(
                     Cell().add(
                         Paragraph("GSTIN NO : ").setFontSize(8.0f).setBold()
                     )
+                )*/
+            table1.addCell(
+                Cell().add(
+                    Paragraph("GSTIN NO : ${user.gstNo}").setFontSize(8.0f).setBold()
                 )
-//            table1.addCell(
-//                Cell().add(
-//                    Paragraph("GSTIN NO : <add here>").setFontSize(8.0f).setBold()
-//                )
-//            )
+            )
                 table1.addCell(
                     Cell(0, 2).add(Paragraph("24BENPP0006B1Z4").setFontSize(8.0f).setBold())
                         .setTextAlignment(
@@ -190,7 +193,7 @@ class UsecaseGenerateInvoice(private val context : Context) {
                         val gstBreakDownPrice = GST.getInstance(it.variant!!.variantPrice).itemPrice
                         val totalGSTExclusivePrice = it.quantity*gstBreakDownPrice
                         addCell("${it.quantity}").setFontSize(10f).setTextAlignment(TextAlignment.CENTER)
-                        addCell("$gstBreakDownPrice").setFontSize(10f).setTextAlignment(TextAlignment.CENTER)
+                        addCell(gstBreakDownPrice.getTwoDecimalValue()).setFontSize(10f).setTextAlignment(TextAlignment.CENTER)
                         addCell(totalGSTExclusivePrice.getTwoDecimalValue()).setFontSize(10f).setTextAlignment(TextAlignment.CENTER)
                         gtotal += totalGSTExclusivePrice
                         sr++

@@ -125,7 +125,9 @@ class OrderDetailsActivity : AppCompatActivity() {
 
         binding.btnGenerateInvoice.setOnClickListener {
 //            makeInvoice()
-            UsecaseGenerateInvoice(this).invoke(order)
+            vm.user.value?.let { it1 -> UsecaseGenerateInvoice(this).invoke(order, it1) }?: kotlin.run {
+                Toast.makeText(this, "please try after few minutes", Toast.LENGTH_SHORT).show()
+            }
         }
 
         binding.btnProductBack.setOnClickListener {
@@ -341,7 +343,7 @@ class OrderDetailsActivity : AppCompatActivity() {
             table1.addCell(
                 Cell().add(
                     Paragraph(
-                        order.orderDate
+                        Functions.getFormatedTimestamp(order.orderDate.toEpochDay(),"dd-MM-yyyy")
                     ).setFontSize(10.0f)
                 )
             )

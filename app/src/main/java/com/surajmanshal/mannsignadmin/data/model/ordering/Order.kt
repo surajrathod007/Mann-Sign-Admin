@@ -1,11 +1,12 @@
 package com.surajmanshal.mannsignadmin.data.model.ordering
 
 import java.io.Serializable
+import java.time.LocalDate
 
 data class Order(
     val orderId : String,
     val emailId : String,
-    val orderDate : String,
+    val orderDate : LocalDate,
     val orderItems : List<OrderItem>? = null,
     val quantity : Int = 0,
     var trackingUrl : String?=null,
@@ -15,5 +16,6 @@ data class Order(
     var total : Float,
     val discount : Float = 0.0f,
     val totalRecieved : Float,
-    val deliveryCharge : Float
+    val deliveryCharge : Float,
+    val invoiceNo : Int
 ) : Serializable
