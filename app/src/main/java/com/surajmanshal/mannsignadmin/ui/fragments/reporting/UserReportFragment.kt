@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.itextpdf.kernel.pdf.PdfDocument
 import com.itextpdf.kernel.pdf.PdfWriter
@@ -26,6 +27,8 @@ import com.surajmanshal.mannsignadmin.R
 import com.surajmanshal.mannsignadmin.adapter.recyclerView.UserAdapter
 import com.surajmanshal.mannsignadmin.data.model.auth.User
 import com.surajmanshal.mannsignadmin.databinding.FragmentUserReportBinding
+import com.surajmanshal.mannsignadmin.utils.Functions
+import com.surajmanshal.mannsignadmin.utils.viewFullScreen
 import com.surajmanshal.mannsignadmin.viewmodel.StatsViewModel
 import java.io.File
 import java.io.FileOutputStream
@@ -88,7 +91,13 @@ class UserReportFragment : Fragment() {
         val address = sheetView.findViewById<TextView>(R.id.txtUserAddress)
         val pin = sheetView.findViewById<TextView>(R.id.txtUserPinCode)
         val profile =
-            sheetView.findViewById<ImageView>(R.id.imgUserProfile) //todo : set profile picture
+            sheetView.findViewById<ImageView>(R.id.imgUserProfile).apply {
+                val url = Functions.urlMaker(u.profileImage)
+                Glide.with(this).load(url).error(R.drawable.ic_user).into(this)
+                setOnClickListener {
+                    viewFullScreen(requireActivity(),u.profileImage)
+                }
+            } //todo : set profile picture
         val orders = sheetView.findViewById<TextView>(R.id.txtUserOrders)
         val btnClose = sheetView.findViewById<ImageView>(R.id.btnCloseUserProfile)
 

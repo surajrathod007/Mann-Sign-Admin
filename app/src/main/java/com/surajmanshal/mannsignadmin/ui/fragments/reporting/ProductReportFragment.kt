@@ -85,10 +85,15 @@ class ProductReportFragment : Fragment() {
         var sales = 0f
         try {
 
-            val p = vm.products.value!!
+            val p = vm.products.value!!.sortedBy { it.productCode }
             val orders = vm.allOrders.value
 //            val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString()
-            val path = requireActivity().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)?.toString()
+//            val path = requireActivity().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)?.toString()
+            val path = if (Build.VERSION.SDK_INT == Build.VERSION_CODES.Q){
+                requireActivity().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)?.toString()
+            }else{
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString()
+            }
             val file = File(path, "product_report${System.currentTimeMillis()}.pdf")
             val output = FileOutputStream(file)
 
@@ -105,17 +110,21 @@ class ProductReportFragment : Fragment() {
             table.useAllAvailableWidth()
 
             //row1
+            table.addCell(Cell().add(Paragraph("No.").setBold().setFontSize(8f)))
             table.addCell(Cell().add(Paragraph("Product Id").setBold().setFontSize(8f)))
             table.addCell(Cell().add(Paragraph("Product Code").setBold().setFontSize(8f)))
             table.addCell(Cell().add(Paragraph("Title").setBold().setFontSize(8f)))
             table.addCell(Cell().add(Paragraph("Type").setBold().setFontSize(8f)))
             table.addCell(Cell().add(Paragraph("Sub category").setBold().setFontSize(8f)))
             table.addCell(Cell().add(Paragraph("Main category").setBold().setFontSize(8f)))
-            table.addCell(Cell().add(Paragraph("Base price").setBold().setFontSize(8f)))
+//            table.addCell(Cell().add(Paragraph("Base price").setBold().setFontSize(8f)))
             table.addCell(Cell().add(Paragraph("Total sales").setBold().setFontSize(8f)))
 
+            var no = 1
             p.forEach {
                 with(table) {
+
+                    addCell(no++.toString()).setFontSize(8f)
                     addCell(it.productId.toString()).setFontSize(8f)
                     addCell("${it.productCode.toString()}").setFontSize(8f)
 
@@ -136,7 +145,7 @@ class ProductReportFragment : Fragment() {
 
                     addCell(it.subCategory.toString()).setFontSize(8f)
                     addCell(it.category.toString()).setFontSize(8f)
-                    addCell(it.basePrice.toString()).setFontSize(8f)
+//                    addCell(it.basePrice.toString()).setFontSize(8f)
                     if (!orders.isNullOrEmpty()) {
                         var c = 0
                         orders.forEach { order ->
