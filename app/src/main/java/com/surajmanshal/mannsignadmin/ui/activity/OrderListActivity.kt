@@ -1,12 +1,10 @@
 package com.surajmanshal.mannsignadmin.ui.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import com.surajmanshal.mannsignadmin.R
+import androidx.appcompat.app.AppCompatActivity
 import com.surajmanshal.mannsignadmin.adapter.recyclerView.OrdersAdapter
 import com.surajmanshal.mannsignadmin.data.model.ordering.Order
-import com.surajmanshal.mannsignadmin.databinding.ActivityOrderDetailsBinding
 import com.surajmanshal.mannsignadmin.databinding.ActivityOrderListBinding
 import com.surajmanshal.mannsignadmin.network.NetworkService
 import com.surajmanshal.mannsignadmin.room.LocalDatabase
@@ -46,10 +44,13 @@ class OrderListActivity : AppCompatActivity() {
         r.enqueue(object : Callback<List<Order>?> {
             override fun onResponse(call: Call<List<Order>?>, response: Response<List<Order>?>) {
                 if(response.body() != null){
-                    val l = response.body()
-                    if(!l.isNullOrEmpty())
-                        binding.rvOrdersNew.adapter = OrdersAdapter(this@OrderListActivity,l!!,db)
-                    else
+                    var l = response.body()
+                    if(!l.isNullOrEmpty()) {
+                        if (orderStatus == 2) { // If status is Processing
+                            l = l.reversed()
+                        }
+                        binding.rvOrdersNew.adapter = OrdersAdapter(this@OrderListActivity, l!!, db)
+                    } else
                         binding.txtNoOrders.visibility = View.VISIBLE
                     //makeToast(this@OrderListActivity,l.toString())
                 }
