@@ -5,6 +5,7 @@
     <string name="couponCode">Coupon Code</string>
     <string name="Quantity">Quantity</string>
 
+    <string name="onesignal_notification_accent_color">03DA05</string>
     <string name="generalErrorMsg">Something went wrong</string>
     <string name="attempts_left">Attempts left :</string>
     <string name="pinCode">PIN Code</string>
