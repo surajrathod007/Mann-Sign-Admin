@@ -25,11 +25,16 @@ import com.itextpdf.layout.element.Table
 import com.itextpdf.layout.properties.TextAlignment
 import com.surajmanshal.mannsignadmin.R
 import com.surajmanshal.mannsignadmin.adapter.recyclerView.UserAdapter
+import com.surajmanshal.mannsignadmin.data.model.USD
 import com.surajmanshal.mannsignadmin.data.model.auth.User
 import com.surajmanshal.mannsignadmin.databinding.FragmentUserReportBinding
+import com.surajmanshal.mannsignadmin.network.NetworkService
 import com.surajmanshal.mannsignadmin.utils.Functions
 import com.surajmanshal.mannsignadmin.utils.viewFullScreen
 import com.surajmanshal.mannsignadmin.viewmodel.StatsViewModel
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
 import java.io.FileOutputStream
 import java.time.LocalDateTime
@@ -84,6 +89,19 @@ class UserReportFragment : Fragment() {
         bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.BottomSheetTheme)
         val sheetView =
             LayoutInflater.from(requireContext()).inflate(R.layout.user_detail_bottomsheet, null)
+
+        NetworkService.networkInstance.getUSDByEmail(u.emailId).enqueue(object : Callback<USD?> {
+            override fun onResponse(call: Call<USD?>, response: Response<USD?>) {
+                response.body()?.let {
+                    sheetView.findViewById<TextView>(R.id.tvCreatedOn).text = it.ro
+                    sheetView.findViewById<TextView>(R.id.tvpu).text = it.pua
+                }
+            }
+
+            override fun onFailure(call: Call<USD?>, t: Throwable) {
+                // TODO("Not yet implemented")
+            }
+        })
 
         val userName = sheetView.findViewById<TextView>(R.id.txtUserName)
         val userEmail = sheetView.findViewById<TextView>(R.id.txtUserEmail)

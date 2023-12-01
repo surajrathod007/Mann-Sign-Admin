@@ -226,4 +226,7 @@ interface NetworkCallsInterface {
     fun deleteBanner(@Body banner: AdBanner): Call<SimpleResponse>
     @POST("product/delete")
     suspend fun deleteProduct(@Body product: Product): SimpleResponse
+
+    @GET("usd/getByEmail")
+    fun getUSDByEmail(@Query("email") email : String) : Call<USD>
 }

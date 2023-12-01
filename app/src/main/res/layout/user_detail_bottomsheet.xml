@@ -63,6 +63,7 @@
             android:layout_marginBottom="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+
         <ImageView
             android:id="@+id/imgUserProfile"
             android:layout_marginTop="10dp"
@@ -179,6 +180,64 @@
                 android:textColor="@color/text_normal_color"
                 />
 
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Account Created: "
+                android:textSize="14sp"
+                android:fontFamily="@font/satoshi_medium"
+                android:textColor="@color/title_text_color"
+                />
+
+            <TextView
+                android:id="@+id/tvCreatedOn"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textSize="14sp"
+                android:text="Not available"
+                android:fontFamily="@font/satoshi_medium"
+                android:textColor="@color/text_normal_color"
+                />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Profile Updated: "
+                android:textSize="14sp"
+                android:fontFamily="@font/satoshi_medium"
+                android:textColor="@color/title_text_color"
+                />
+
+            <TextView
+                android:text="Not available"
+                android:id="@+id/tvpu"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textSize="14sp"
+                android:fontFamily="@font/satoshi_medium"
+                android:textColor="@color/text_normal_color"
+                />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="lo: "
+                android:textSize="14sp"
+                android:fontFamily="@font/satoshi_medium"
+                android:textColor="@color/title_text_color"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/tvlo"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:text="0"
+                android:textSize="14sp"
+                android:fontFamily="@font/satoshi_medium"
+                android:textColor="@color/text_normal_color"
+                />
 
         </GridLayout>
 
