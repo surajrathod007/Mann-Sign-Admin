@@ -141,11 +141,43 @@
                     android:textStyle="bold"
                     android:textColor="@color/text_normal_color"/>
 
-                <GridLayout
-                    android:id="@+id/gvSizes"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:columnCount="1">
+                    android:layout_height="wrap_content">
+
+                    <GridLayout
+                        android:id="@+id/gvSizes"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:columnCount="1"
+                        android:layout_weight="1"/>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:id="@+id/autoSelectors"
+                        android:layout_width="64dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+
+                        >
+
+                        <CheckBox
+                            android:id="@+id/cbStandardPortrait"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="SP"
+                            android:layout_marginBottom="64dp"/>
+
+                        <CheckBox
+                            android:id="@+id/cbStandardLandscape"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="SL"
+                            android:layout_marginBottom="64dp"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
 
                     <!--<androidx.appcompat.widget.AppCompatCheckBox
                         android:layout_width="wrap_content"
@@ -172,8 +204,6 @@
                         android:layout_height="wrap_content"
                         android:text="size6"/>-->
 
-                </GridLayout>
-
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -181,11 +211,32 @@
                     android:textStyle="bold"
                     android:textColor="@color/text_normal_color"/>
 
-                <GridLayout
-                    android:id="@+id/gvMaterials"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:columnCount="1">
+                    android:layout_height="wrap_content">
+
+                    <GridLayout
+                        android:id="@+id/gvMaterials"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:columnCount="1"
+                        android:layout_weight="1"
+                        />
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="64dp"
+                            android:layout_height="match_parent">
+
+                            <CheckBox
+                                android:id="@+id/cbUVVinyl"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="U+V"
+                                android:layout_marginBottom="64dp"/>
+
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                </LinearLayout>
 
                     <!--<androidx.appcompat.widget.AppCompatCheckBox
                         android:layout_width="wrap_content"
@@ -207,8 +258,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Material 5"/>-->
-                </GridLayout>
-
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
