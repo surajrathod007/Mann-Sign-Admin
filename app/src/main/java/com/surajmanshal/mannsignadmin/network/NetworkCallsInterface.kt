@@ -229,4 +229,11 @@ interface NetworkCallsInterface {
 
     @GET("usd/getByEmail")
     fun getUSDByEmail(@Query("email") email : String) : Call<USD>
+
+    @GET("products/{page}")
+    fun getProducts(@Path("page") page: Int): Call<List<Product>>
+
+    @GET("products/search")
+    suspend fun queryProducts(@Query("query") query: String?): List<Product>?
+
 }

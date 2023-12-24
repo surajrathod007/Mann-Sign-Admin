@@ -44,6 +44,15 @@
             android:layout_marginTop="@dimen/margin_low"
             />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvSearchRes"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/margin_low"
+            android:background="@color/white"
+            />
+
         <TextView
             android:id="@+id/tvNoProducts"
             android:layout_width="match_parent"
@@ -68,6 +77,34 @@
             android:gravity="center"
             android:textColor="@color/white"
             android:layout_margin="24dp"/>
+
+        <FrameLayout
+            android:id="@+id/loaderLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            >
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="72dp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Searching"
+                android:layout_marginBottom="32dp"
+                android:textSize="16sp"
+                android:textColor="@color/title_text_color"
+                android:background="@color/white"
+
+                />
+
+        </FrameLayout>
 
     </FrameLayout>
 

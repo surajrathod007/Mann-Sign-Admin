@@ -178,7 +178,7 @@ class ProductManagementActivity : AppCompatActivity() {
                                 vm.subCategories.value?.get(binding.categorySpinner.selectedItemPosition)?.mainCategoryId
 
 
-                            if (mProduct.productId == 0) {
+                            if (mProduct.productId == 0) { // Insert
                                 languages =
                                     getSelectedLanguagesIds(gvLanguages)   // May be reason of wrong language reference
                                 CoroutineScope(Dispatchers.IO).launch {
@@ -187,7 +187,7 @@ class ProductManagementActivity : AppCompatActivity() {
                                             setupImage(it) // Passively calls insert product after image insertion
                                     }
                                 }
-                            } else {
+                            } else { // Update
                                 CoroutineScope(Dispatchers.IO).launch {
                                     vm.updateProduct(mProduct)
                                 }

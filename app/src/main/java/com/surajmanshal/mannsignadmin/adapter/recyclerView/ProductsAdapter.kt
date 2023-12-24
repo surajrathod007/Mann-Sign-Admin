@@ -9,7 +9,9 @@ import com.surajmanshal.mannsignadmin.databinding.ItemProductLayoutBinding
 import com.surajmanshal.mannsignadmin.ui.activity.ProductsActivity
 import com.surajmanshal.mannsignadmin.utils.Functions
 
-class ProductsAdapter(val productList : List<Product>,val activity: ProductsActivity)  : RecyclerView.Adapter<ProductsAdapter.ProductsViewHolder>(){
+class ProductsAdapter( val activity: ProductsActivity)  : RecyclerView.Adapter<ProductsAdapter.ProductsViewHolder>(){
+
+    var productList : MutableList<Product> = mutableListOf()
 
     class ProductsViewHolder(binding : ItemProductLayoutBinding) : RecyclerView.ViewHolder(binding.root){
         val image = binding.ivProduct
@@ -39,8 +41,27 @@ class ProductsAdapter(val productList : List<Product>,val activity: ProductsActi
         }
     }
 
+    fun submitData(products : List<Product>){
+        val oldSize = productList.size
+        productList.addAll(products)
+        when(products.size){
+            0 -> {}
+            1 -> { notifyItemInserted(oldSize + 1) }
+            else -> { notifyItemRangeInserted(oldSize,products.size)  }
+        }
+        println(productList.size)
+    }
+
     override fun getItemCount(): Int {
         return productList.size
+    }
+
+    fun changeDate(resultList: List<Product>) {
+        val oldSize = productList.size
+        productList.clear()
+        notifyItemRangeRemoved(0,oldSize)
+        productList.addAll(resultList)
+        notifyItemRangeInserted(0,resultList.size)
     }
 
 }

@@ -1,5 +1,6 @@
 package com.surajmanshal.mannsignadmin.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,12 +9,14 @@ import com.surajmanshal.mannsignadmin.data.model.Language
 import com.surajmanshal.mannsignadmin.data.model.Material
 import com.surajmanshal.mannsignadmin.data.model.SubCategory
 import com.surajmanshal.mannsignadmin.data.model.product.Product
+import com.surajmanshal.mannsignadmin.network.NetworkService
 import com.surajmanshal.mannsignadmin.repository.Repository
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class ProductsViewModel : ViewModel() {
+    var isLoading = false
     private val repository = Repository()
 
     // -------------- LIVE DATA -------------------------------------------
@@ -36,6 +39,34 @@ class ProductsViewModel : ViewModel() {
 
             override fun onFailure(call: Call<List<Product>>, t: Throwable) {
                 println(t.toString())
+            }
+        })
+    }
+
+    var loadedPage = 0
+    fun getMorePosters(){
+        if (loadedPage < 0) {
+            return
+        }
+        val pageNumber : Int = loadedPage + 1
+        val response = NetworkService.networkInstance.getProducts(pageNumber)
+        response.enqueue(object : Callback<List<Product>?> {
+            override fun onResponse(
+                call: Call<List<Product>?>,
+                response: Response<List<Product>?>
+            ) {
+                response.body()?.let {
+                    loadedPage += 1
+                    if (it.isNotEmpty()) {
+                        _products.value = it
+                    }else{
+                        loadedPage = -1
+                    }
+                    Log.e("GetPosters", "pageNo:$pageNumber $it")
+                }
+            }
+            override fun onFailure(call: Call<List<Product>?>, t: Throwable) {
+                Log.e("GetPosters", "pageNo:$pageNumber $t")
             }
         })
     }
@@ -98,5 +129,6 @@ class ProductsViewModel : ViewModel() {
     }
 
     suspend fun deleteProduct(product: Product) = repository.deleteProduct(product)
+    suspend fun searchProducts(query: String?): List<Product>? = NetworkService.networkInstance.queryProducts(query)
 
 }

@@ -26,7 +26,10 @@ class ProductsActivity : AppCompatActivity() {
         _binding = ActivityProductsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         vm = ViewModelProvider(this)[ProductsViewModel::class.java]
-        vm.getPosters()
+
+//        vm.getPosters() // removed for paging
+//        vm.getPosters(1) // removed for paging
+        getMorePosters()
 
         val quoteReq = intent?.data?.pathSegments?.let {
             val params: List<String> = intent?.data?.pathSegments ?: listOf()
@@ -65,6 +68,11 @@ class ProductsActivity : AppCompatActivity() {
         if (supportFragmentManager.backStackEntryCount == 0) finish()
         vm._currentProductLanguage.value = null
         vm._currentProductMaterial.value = null
+    }
+
+    fun getMorePosters() {
+        vm.isLoading = true
+        vm.getMorePosters()
     }
 
 }
