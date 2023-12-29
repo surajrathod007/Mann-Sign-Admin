@@ -29,10 +29,10 @@ class ProductManagementViewModel : ResourcesViewModel() {
     private val _posters = MutableLiveData<List<Product>>()
     val posters: LiveData<List<Product>> get() = _posters                              // POSTERS
 
-    private val _productImages =
+     val _productImages =
         MutableLiveData<MutableList<ImageLanguage>>(mutableListOf(ImageLanguage()))
     val productImages: LiveData<MutableList<ImageLanguage>> get() = _productImages                 // PRODUCT IMAGES
-
+    var activeImage : ImageLanguage? = null
 
     // -------------- DATA SETUP FUNCTIONS -------------------------------------------
     suspend fun setupViewModelDataMembers() {
@@ -135,11 +135,19 @@ class ProductManagementViewModel : ResourcesViewModel() {
 
     fun addImage(uri: Uri, languageId: Int) {
         _productImages.value?.apply {
-            add(last())
-            set(lastIndexOf(last()) - 1, ImageLanguage().apply {
-                fileUri = uri
-                this.languageId = languageId
-            })
+            if (activeImage == null) { // Insertion
+                add(last())
+                set(lastIndexOf(last()) - 1, ImageLanguage().apply {
+                    fileUri = uri
+                    this.languageId = languageId
+                })
+            }else{ // Update
+                set(lastIndexOf(activeImage), ImageLanguage().apply {
+                    fileUri = uri
+                    this.languageId = languageId
+                })
+                activeImage = null
+            }
         }
         refreshProductImages()
     }

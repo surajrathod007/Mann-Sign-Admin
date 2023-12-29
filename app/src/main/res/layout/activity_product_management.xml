@@ -224,6 +224,7 @@
                         />
 
                         <androidx.appcompat.widget.LinearLayoutCompat
+                            android:id="@+id/material_auto_selectors"
                             android:layout_width="64dp"
                             android:layout_height="match_parent">
 

@@ -23,6 +23,7 @@ import com.surajmanshal.mannsignadmin.databinding.ActivityProductManagementBindi
 import com.surajmanshal.mannsignadmin.ui.activity.ProductManagementActivity
 import com.surajmanshal.mannsignadmin.ui.activity.ProductsActivity
 import com.surajmanshal.mannsignadmin.utils.Functions
+import com.surajmanshal.mannsignadmin.utils.hide
 import com.surajmanshal.mannsignadmin.viewmodel.ProductsViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -62,7 +63,8 @@ class ProductDetailsFragment : Fragment() {
                         requireActivity(), RecyclerView.HORIZONTAL, false
                     )
                 }
-
+                autoSelectors.hide()
+                materialAutoSelectors.hide()
                 with(Functions) {
                     makeViewVisible(tvSubCategory)
                     makeViewGone(categorySpinner)
@@ -111,7 +113,7 @@ class ProductDetailsFragment : Fragment() {
                             ).apply {
                                 putExtra("product", product)
                             })
-                        requireActivity().finish()
+//                        requireActivity().finish()
                     }
                 }
                 // Calls for resources -------------------------------------------------------

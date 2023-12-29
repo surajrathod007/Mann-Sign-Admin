@@ -29,6 +29,9 @@ object Constants {
     const val CHOOSE_PRODUCT_IMAGE = 104
     const val READ_EXTERNAL_STORAGE = 102
     const val CHOOSE_IMAGE_REQ_CODE = 101
+    const val INSERT_IMAGE_REQ_CODE = 1000
+    const val UPSERT_IMAGE_REQ_CODE = 1500
+    const val UPDATE_IMAGE_REQ_CODE = 2000
     const val READ_EXTERNAL_STORAGE_REQ_CODE = 102
     const val CHOOSE_FONT_REQ_CODE = 103
     const val AUTH_CREDENTIALS_REQ_CODE = 104

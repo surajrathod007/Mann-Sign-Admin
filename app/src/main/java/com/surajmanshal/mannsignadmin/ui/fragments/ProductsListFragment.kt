@@ -39,17 +39,10 @@ class ProductsListFragment : Fragment() {
     val productsAdapter: ProductsAdapter by lazy {
         ProductsAdapter(activity = parent)
     }
-    val productsLayoutManager: GridLayoutManager by lazy {
-        GridLayoutManager(parent, columCount)
-    }
 
     val searchAdapter: ProductsAdapter by lazy {
         ProductsAdapter(activity = parent)
     }
-    val searchLayoutManager: GridLayoutManager by lazy {
-        GridLayoutManager(parent, columCount)
-    }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,7 +61,11 @@ class ProductsListFragment : Fragment() {
         _binding = FragmentProductsListBinding.bind(view)
         parent = requireActivity() as ProductsActivity
 
-        binding.rvProducts.layoutManager = productsLayoutManager
+        try {
+            binding.rvProducts.layoutManager = GridLayoutManager(parent, columCount)
+        }catch (e : IllegalArgumentException){
+
+        }
         binding.rvProducts.adapter = productsAdapter
         binding.rvProducts.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -80,7 +77,7 @@ class ProductsListFragment : Fragment() {
                     val pastCount =
                         (binding.rvProducts.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
 
-                    val threshHold = visibleCount + pastCount + 2
+                    val threshHold = visibleCount + pastCount + 8
                     if (threshHold >= totalCount && !mVM.isLoading) {
                         parent.getMorePosters()
                     }
@@ -96,21 +93,21 @@ class ProductsListFragment : Fragment() {
         // Views Setup
         with(binding) {
             btnAddProduct.setOnClickListener {
-                startActivity(Intent(activity, ProductManagementActivity::class.java))
-                activity?.finish()
+//                startActivity(Intent(requireContext(), ProductManagementActivity::class.java))
+                requireActivity().startActivityForResult(Intent(requireContext(), ProductManagementActivity::class.java),1020)
+//                requireActivity().finish()
             }
         }
 
         with(binding) {
             etSearch.setOnQueryTextFocusChangeListener { view, b ->
                 if (binding.rvSearchRes.adapter  == null){
-                    binding.rvSearchRes.layoutManager = searchLayoutManager
+                    binding.rvSearchRes.layoutManager = GridLayoutManager(parent, columCount)
                     binding.rvSearchRes.adapter = searchAdapter
                 }
                 rvProducts.isVisible = !b
                 rvProducts.isVisible = etSearch.query.isBlank()
-                rvSearchRes.isVisible = b
-                rvProducts.isVisible = !etSearch.query.isNullOrBlank()
+                rvSearchRes.isVisible = !etSearch.query.isNullOrBlank() || b
             }
             etSearch.setOnQueryTextListener(object :
                 androidx.appcompat.widget.SearchView.OnQueryTextListener {

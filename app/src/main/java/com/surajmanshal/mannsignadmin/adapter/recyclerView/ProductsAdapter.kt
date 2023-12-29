@@ -64,4 +64,10 @@ class ProductsAdapter( val activity: ProductsActivity)  : RecyclerView.Adapter<P
         notifyItemRangeInserted(0,resultList.size)
     }
 
+    fun clearProducts() {
+        val size = productList.size
+        productList.clear()
+        notifyItemRangeRemoved(0,size)
+    }
+
 }

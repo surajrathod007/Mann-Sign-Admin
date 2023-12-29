@@ -64,9 +64,11 @@ class ProductsViewModel : ViewModel() {
                     }
                     Log.e("GetPosters", "pageNo:$pageNumber $it")
                 }
+                isLoading = false
             }
             override fun onFailure(call: Call<List<Product>?>, t: Throwable) {
                 Log.e("GetPosters", "pageNo:$pageNumber $t")
+                isLoading = false
             }
         })
     }

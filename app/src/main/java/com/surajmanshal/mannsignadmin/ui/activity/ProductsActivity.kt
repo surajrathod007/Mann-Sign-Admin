@@ -1,5 +1,6 @@
 package com.surajmanshal.mannsignadmin.ui.activity
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN
@@ -18,6 +19,7 @@ import kotlinx.coroutines.withContext
 class ProductsActivity : AppCompatActivity() {
 
 
+    private lateinit var productsListFrag: ProductsListFragment
     private lateinit var _binding: ActivityProductsBinding
     val binding get() = _binding
     lateinit var vm: ProductsViewModel
@@ -28,7 +30,6 @@ class ProductsActivity : AppCompatActivity() {
         vm = ViewModelProvider(this)[ProductsViewModel::class.java]
 
 //        vm.getPosters() // removed for paging
-//        vm.getPosters(1) // removed for paging
         getMorePosters()
 
         val quoteReq = intent?.data?.pathSegments?.let {
@@ -53,7 +54,10 @@ class ProductsActivity : AppCompatActivity() {
 
     fun replaceFragment(code: Int, product: Product?) {
         product?.let { vm._currentProduct.value = product }
-        val fragment = if (code == 0) ProductsListFragment.newInstance(vm, this)
+        val fragment = if (code == 0) {
+            productsListFrag = ProductsListFragment.newInstance(vm, this)
+            productsListFrag
+        }
         else ProductDetailsFragment.newInstance(vm)
         supportFragmentManager.beginTransaction().setTransition(TRANSIT_FRAGMENT_OPEN)
             .addToBackStack(null)
@@ -75,4 +79,14 @@ class ProductsActivity : AppCompatActivity() {
         vm.getMorePosters()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1020) {
+            if (resultCode == RESULT_OK) {
+                productsListFrag.productsAdapter.clearProducts()
+                vm.loadedPage = 0
+                vm.getMorePosters()
+            }
+        }
+    }
 }

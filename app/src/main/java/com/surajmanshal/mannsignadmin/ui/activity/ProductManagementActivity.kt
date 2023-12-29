@@ -27,7 +27,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.internal.LinkedTreeMap
-import com.surajmanshal.mannsignadmin.adapter.recyclerView.ProductDetailsImageAdapter
 import com.surajmanshal.mannsignadmin.adapter.recyclerView.ProductImageAdapter
 import com.surajmanshal.mannsignadmin.data.model.*
 import com.surajmanshal.mannsignadmin.data.model.product.Poster
@@ -99,100 +98,116 @@ class ProductManagementActivity : AppCompatActivity() {
 
             btnAddProduct.apply {
                 setOnClickListener {
-                    mProduct.also { product ->
-                        with(product) {
-                            etProductCode.text.apply {
-                                if (isNullOrBlank()) {
-                                    Toast.makeText(
-                                        this@ProductManagementActivity,
-                                        "Product code is required",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                    etProductCode.requestFocus()
-                                    return@setOnClickListener
-                                }
-                                if (this.length > 15) {
-                                    Toast.makeText(
-                                        this@ProductManagementActivity,
-                                        "Product code is $length long",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                    etProductCode.requestFocus()
-                                    return@setOnClickListener
-                                }
-                                productCode = this.toString()
-                            }
-                            if (etTitle.text.isNullOrEmpty()) {
+                    mProduct.apply {
+                        // Validations ---------------------------------------------------------------
+                        etProductCode.text.apply {
+                            if (isNullOrBlank()) {
                                 Toast.makeText(
                                     this@ProductManagementActivity,
-                                    "Title is required",
+                                    "Product code is required",
                                     Toast.LENGTH_SHORT
                                 ).show()
-                                etTitle.requestFocus()
+                                etProductCode.requestFocus()
                                 return@setOnClickListener
                             }
-                            if (etTitle.text.toString().length > 200) {
+                            if (this.length > 15) {
                                 Toast.makeText(
                                     this@ProductManagementActivity,
-                                    "Title is of ${etTitle.text.toString().length} chars",
+                                    "Product code is $length long",
                                     Toast.LENGTH_SHORT
                                 ).show()
-                                etTitle.requestFocus()
+                                etProductCode.requestFocus()
                                 return@setOnClickListener
                             }
-                            if (etLongDescription.text.toString().length < 64 && !etLongDescription.text.isNullOrEmpty()) {
-                                Toast.makeText(
-                                    this@ProductManagementActivity,
-                                    "Write At least 64 characters",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                etLongDescription.requestFocus()
-                                return@setOnClickListener
-                            }
-                            posterDetails = Poster(
-                                title = textOf(etTitle),
-                                short_desc = textOf(etShortDescription),
-                                long_desc = textOf(etLongDescription)
-                            )
-                            sizes = getSelectedSizes(gvSizes)
-                            if (sizes.isNullOrEmpty()) {
-                                Toast.makeText(
-                                    this@ProductManagementActivity,
-                                    "Select At least one size",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                return@setOnClickListener
-                            }
-                            materials = getSelectedMaterialsIds(gvMaterials)
-                            if (materials.isNullOrEmpty()) {
-                                Toast.makeText(
-                                    this@ProductManagementActivity,
-                                    "Select At least one Material",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                return@setOnClickListener
-                            }
-                            typeId = Constants.TYPE_POSTER
-                            subCategory = selectedCategory
-                            category =
-                                vm.subCategories.value?.get(binding.categorySpinner.selectedItemPosition)?.mainCategoryId
+                            productCode = this.toString()
+                        }
+                        if (etTitle.text.isNullOrEmpty()) {
+                            Toast.makeText(
+                                this@ProductManagementActivity,
+                                "Title is required",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            etTitle.requestFocus()
+                            return@setOnClickListener
+                        }
+                        if (etTitle.text.toString().length > 200) {
+                            Toast.makeText(
+                                this@ProductManagementActivity,
+                                "Title is of ${etTitle.text.toString().length} chars",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            etTitle.requestFocus()
+                            return@setOnClickListener
+                        }
+                        if (etLongDescription.text.toString().length < 64 && !etLongDescription.text.isNullOrEmpty()) {
+                            Toast.makeText(
+                                this@ProductManagementActivity,
+                                "Write At least 64 characters",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            etLongDescription.requestFocus()
+                            return@setOnClickListener
+                        }
+                        posterDetails = Poster(
+                            title = textOf(etTitle),
+                            short_desc = textOf(etShortDescription),
+                            long_desc = textOf(etLongDescription)
+                        )
+                        sizes = getSelectedSizes(gvSizes)
+                        if (sizes.isNullOrEmpty()) {
+                            Toast.makeText(
+                                this@ProductManagementActivity,
+                                "Select At least one size",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            return@setOnClickListener
+                        }
+                        materials = getSelectedMaterialsIds(gvMaterials)
+                        if (materials.isNullOrEmpty()) {
+                            Toast.makeText(
+                                this@ProductManagementActivity,
+                                "Select At least one Material",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            return@setOnClickListener
+                        }
+                        typeId = Constants.TYPE_POSTER
+                        subCategory = selectedCategory
+                        category =
+                            vm.subCategories.value?.get(binding.categorySpinner.selectedItemPosition)?.mainCategoryId
 
+                        languages =
+                            getSelectedLanguagesIds(gvLanguages)   // May be reason of wrong language reference
 
-                            if (mProduct.productId == 0) { // Insert
-                                languages =
-                                    getSelectedLanguagesIds(gvLanguages)   // May be reason of wrong language reference
-                                CoroutineScope(Dispatchers.IO).launch {
-                                    vm.productImages.value?.forEach {
-                                        if (it.fileUri != null)
-                                            setupImage(it) // Passively calls insert product after image insertion
+                        if (mProduct.productId == 0) { // Insert
+                            CoroutineScope(Dispatchers.IO).launch {
+                                vm.productImages.value?.forEach {
+                                    if (it.fileUri != null)
+                                        setupImage(it) // Passively calls insert product after image insertion
+                                }
+                            }
+                        } else { // Update
+                            CoroutineScope(Dispatchers.IO).launch {
+                                val existingImages =
+                                    vm.productImages.value?.filter { it.imgUrl != null }
+                                val newImages =
+                                    vm.productImages.value?.filter { it.fileUri != null }
+
+                                existingImages?.forEach { imgLang ->
+                                    val img = mProduct.images?.find { it.url == imgLang.imgUrl }
+                                    if (img != null) {
+                                        mImages.add(img)
                                     }
                                 }
-                            } else { // Update
-                                CoroutineScope(Dispatchers.IO).launch {
+                                if (!newImages.isNullOrEmpty()) {
+                                    newImages.forEach {
+                                        setupImage(it)
+                                    }
+                                } else {
+                                    mProduct.images = mImages
                                     vm.updateProduct(mProduct)
                                 }
                             }
-
                         }
                     }
                 }
@@ -217,12 +232,24 @@ class ProductManagementActivity : AppCompatActivity() {
             setupMaterialViews()
         })
         vm.languages.observe(this, Observer { languages ->
+            val isExistingProduct = !mProduct.isNewProduct()
+            if (isExistingProduct) {
+                mProduct.images?.map {
+                    ImageLanguage().apply {
+                        languageId = it.languageId
+                        imgUrl = it.url
+                    }
+                }?.toMutableList()?.let {
+                    it.add(ImageLanguage())
+                    vm._productImages.value = it
+                }
+            }
             binding.rvProductImages.adapter = vm.productImages.value?.let {
-                ProductImageAdapter(vm) {
+                ProductImageAdapter(vm, isExistingProduct) {
                     chooseImage()
                 }
             }
-            if (!mProduct.isNewProduct()) {
+            /*if (!mProduct.isNewProduct()) {
                 binding.rvProductImages.adapter = mProduct.images?.let { it1 ->
                     ProductDetailsImageAdapter(it1.map { image ->
                         Pair(
@@ -234,7 +261,7 @@ class ProductManagementActivity : AppCompatActivity() {
                         )
                     })
                 }
-            }
+            }*/
         })
         vm.subCategories.observe(this, Observer {
             setupSubcategoryViews()
@@ -255,6 +282,8 @@ class ProductManagementActivity : AppCompatActivity() {
                     .show()
                 lifecycleScope.launch {
                     delay(1500)
+                    //---set the data to pass back using intent ---
+                    setResult(RESULT_OK, Intent())
                     onBackPressed()
                 }
             } else {
@@ -278,27 +307,24 @@ class ProductManagementActivity : AppCompatActivity() {
                 mProduct.also {
                     it.images = mImages
                 }
-                if (vm.productImages.value!!.size - 1 == mImages.size)
-                    vm.addProduct(mProduct)
+                if (vm.productImages.value!!.size - 1 == mImages.size) {
+                    if (mProduct.isNewProduct()) {
+                        vm.addProduct(mProduct)
+                    } else {
+                        vm.updateProduct(mProduct)
+                    }
+                }
             }
         })
 
-        if (mProduct.isNewProduct()) {
-            vm.productImages.observe(this) {
-                binding.rvProductImages.apply {
-                    adapter = ProductImageAdapter(vm) {
-                        chooseImage()
-                    }
-//                pagerIndicator.setItemsCount(it.size)
-////                removeItemDecoration(pagerIndicator)
-//                invalidateItemDecorations()
-//                addItemDecoration(pagerIndicator)
-//                onResume()
+        vm.productImages.observe(this) {
+            binding.rvProductImages.apply {
+                adapter = ProductImageAdapter(vm, editMode = !mProduct.isNewProduct()) {
+                    chooseImage()
                 }
-                setupLanguageViews()
             }
+            setupLanguageViews()
         }
-
         val sp = listOf(
             "12 x 18",
             "18 x 24",
@@ -339,11 +365,10 @@ class ProductManagementActivity : AppCompatActivity() {
         }
     }
 
-    override fun onBackPressed() {
+    /*override fun onBackPressed() {
         startActivity(Intent(this, ProductsActivity::class.java))
         finish()
-        super.onBackPressed()
-    }
+    }*/
 
     // Utilities
     private suspend fun setupImage(imageLanguage: ImageLanguage) {
@@ -446,6 +471,7 @@ class ProductManagementActivity : AppCompatActivity() {
             }
         } else {
             Toast.makeText(this, "Req canceled", Toast.LENGTH_SHORT).show()
+            vm.activeImage = null
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
