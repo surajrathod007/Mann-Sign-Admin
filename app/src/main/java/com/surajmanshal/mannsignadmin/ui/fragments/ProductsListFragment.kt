@@ -19,6 +19,7 @@ import com.surajmanshal.mannsignadmin.data.model.product.Product
 import com.surajmanshal.mannsignadmin.databinding.FragmentProductsListBinding
 import com.surajmanshal.mannsignadmin.ui.activity.ProductManagementActivity
 import com.surajmanshal.mannsignadmin.ui.activity.ProductsActivity
+import com.surajmanshal.mannsignadmin.utils.Constants
 import com.surajmanshal.mannsignadmin.utils.hide
 import com.surajmanshal.mannsignadmin.utils.show
 import com.surajmanshal.mannsignadmin.viewmodel.ProductsViewModel
@@ -43,6 +44,8 @@ class ProductsListFragment : Fragment() {
     val searchAdapter: ProductsAdapter by lazy {
         ProductsAdapter(activity = parent)
     }
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,7 +97,8 @@ class ProductsListFragment : Fragment() {
         with(binding) {
             btnAddProduct.setOnClickListener {
 //                startActivity(Intent(requireContext(), ProductManagementActivity::class.java))
-                requireActivity().startActivityForResult(Intent(requireContext(), ProductManagementActivity::class.java),1020)
+                requireActivity().startActivityForResult(Intent(requireContext(), ProductManagementActivity::class.java),
+                    Constants.PRODUCT_INSERT_REQ)
 //                requireActivity().finish()
             }
         }

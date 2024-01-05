@@ -292,6 +292,20 @@ class ProductManagementActivity : AppCompatActivity() {
                     .show()
             }
         })
+        vm.productUpdateResponse.observe(this, Observer {
+            if (it.success) {
+                lifecycleScope.launch {
+                    delay(1500)
+                    //---set the data to pass back using intent ---
+                    setResult(RESULT_OK, Intent().putExtra(Constants.PRODUCT, mProduct))
+                    onBackPressed()
+                }
+            } else {
+                AlertDialog.Builder(this).setTitle("Failed to Upload")
+                    .setMessage("Take a screen shot and share" + it.message)
+                    .show()
+            }
+        })
         vm.imageUploadResponse.observe(this, Observer { response ->
             // todo : show some loading/progress ui
 //            Toast.makeText(this@ProductManagementActivity, response.message, Toast.LENGTH_SHORT).show()
@@ -451,7 +465,6 @@ class ProductManagementActivity : AppCompatActivity() {
                                     }
                                 }
                             }
-
                         dialogContentLayout.addView(imageLanguageSelectionBinding.root)
 
                         dialog.setView(dialogContentLayout)

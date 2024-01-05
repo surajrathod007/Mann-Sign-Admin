@@ -26,6 +26,9 @@ class ProductManagementViewModel : ResourcesViewModel() {
     val imageUploadResponse: LiveData<SimpleResponse> get() = _imageUploadResponse     // IMAGE UPLOADING PROGRESS
     private val _productUploadResponse = MutableLiveData<Pair<Variant, String>>()
     val productUploadResponse: LiveData<Pair<Variant, String>> get() = _productUploadResponse  // PRODUCT UPLOADING PROGRESS
+
+     private val _productUpdateResponse = MutableLiveData<SimpleResponse>()
+    val productUpdateResponse: LiveData<SimpleResponse> get() = _productUpdateResponse  // PRODUCT UPLOADING PROGRESS
     private val _posters = MutableLiveData<List<Product>>()
     val posters: LiveData<List<Product>> get() = _posters                              // POSTERS
 
@@ -103,6 +106,7 @@ class ProductManagementViewModel : ResourcesViewModel() {
         try {
             val response = repository.updateProduct(product)
             _serverResponse.postValue(response)
+            _productUpdateResponse.postValue(response)
         } catch (e: Exception) {
             println("$e")
         }

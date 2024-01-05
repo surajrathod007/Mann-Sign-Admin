@@ -3,6 +3,10 @@ package com.surajmanshal.mannsignadmin.utils
 object Constants {
 
 
+    val REFRESH_PRODUCTS = 7878
+    val LOAD_PRODUCTS = 8989
+    const val PRODUCT_UPDATE_REQ = 2323
+    const val PRODUCT_INSERT_REQ = 1212
     const val TYPE_POSTER = 1
     const val TYPE_BANNER = 2
     const val TYPE_ACP_BOARD = 3

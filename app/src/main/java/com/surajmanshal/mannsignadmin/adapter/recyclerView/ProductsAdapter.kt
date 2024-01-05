@@ -35,7 +35,7 @@ class ProductsAdapter( val activity: ProductsActivity)  : RecyclerView.Adapter<P
                 Glide.with(image.context).load(urls).centerCrop().into(image)
                 title.text = posterDetails!!.title
                 card.setOnClickListener {
-                    activity.replaceFragment(1,product)
+                    activity.replaceFragment(1, product)
                 }
             }
         }

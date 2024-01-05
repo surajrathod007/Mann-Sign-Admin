@@ -9,6 +9,7 @@ import com.surajmanshal.mannsignadmin.data.model.product.Product
 import com.surajmanshal.mannsignadmin.databinding.ActivityProductsBinding
 import com.surajmanshal.mannsignadmin.ui.fragments.ProductDetailsFragment
 import com.surajmanshal.mannsignadmin.ui.fragments.ProductsListFragment
+import com.surajmanshal.mannsignadmin.utils.Constants
 import com.surajmanshal.mannsignadmin.viewmodel.ProductsViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,6 +24,10 @@ class ProductsActivity : AppCompatActivity() {
     private lateinit var _binding: ActivityProductsBinding
     val binding get() = _binding
     lateinit var vm: ProductsViewModel
+    private val productDetailsFrag: ProductDetailsFragment by lazy {
+        ProductDetailsFragment.newInstance(vm)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityProductsBinding.inflate(layoutInflater)
@@ -46,7 +51,10 @@ class ProductsActivity : AppCompatActivity() {
             }
             withContext(Dispatchers.Main){
                 if(quoteReq==null) replaceFragment(0, null)
-                else replaceFragment(1, vm.products.value!!.find { it.productId == quoteReq.first().toInt() })
+                else replaceFragment(
+                    1,
+                    vm.products.value!!.find { it.productId == quoteReq.first().toInt() }
+                )
                 vm.quoteReq = quoteReq
             }
         }
@@ -56,9 +64,12 @@ class ProductsActivity : AppCompatActivity() {
         product?.let { vm._currentProduct.value = product }
         val fragment = if (code == 0) {
             productsListFrag = ProductsListFragment.newInstance(vm, this)
+//            productsListFrag.actionFlag = reqFlag
             productsListFrag
         }
-        else ProductDetailsFragment.newInstance(vm)
+        else {
+            productDetailsFrag
+        }
         supportFragmentManager.beginTransaction().setTransition(TRANSIT_FRAGMENT_OPEN)
             .addToBackStack(null)
             .replace(
@@ -81,11 +92,15 @@ class ProductsActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 1020) {
+        if (requestCode == Constants.PRODUCT_INSERT_REQ) {
             if (resultCode == RESULT_OK) {
                 productsListFrag.productsAdapter.clearProducts()
                 vm.loadedPage = 0
                 vm.getMorePosters()
+            }
+        }else if (requestCode == Constants.PRODUCT_UPDATE_REQ) {
+            if (resultCode == RESULT_OK) {
+                finish()
             }
         }
     }

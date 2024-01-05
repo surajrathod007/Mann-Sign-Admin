@@ -22,6 +22,7 @@ import com.surajmanshal.mannsignadmin.data.model.product.Product
 import com.surajmanshal.mannsignadmin.databinding.ActivityProductManagementBinding
 import com.surajmanshal.mannsignadmin.ui.activity.ProductManagementActivity
 import com.surajmanshal.mannsignadmin.ui.activity.ProductsActivity
+import com.surajmanshal.mannsignadmin.utils.Constants
 import com.surajmanshal.mannsignadmin.utils.Functions
 import com.surajmanshal.mannsignadmin.utils.hide
 import com.surajmanshal.mannsignadmin.viewmodel.ProductsViewModel
@@ -52,72 +53,50 @@ class ProductDetailsFragment : Fragment() {
         val view = inflater.inflate(R.layout.activity_product_management, container, false)
         _binding = ActivityProductManagementBinding.bind(view)
         val languageList = mutableListOf<Language>()
-        mVM._currentProduct.value?.let { product ->
 
-
-            with(binding) {
-
-                // Set up Views  ----------------------------------------------------------------
+        binding.apply {
+            autoSelectors.hide()
+            materialAutoSelectors.hide()
+            with(Functions) {
+                makeViewVisible(tvSubCategory)
+                makeViewGone(categorySpinner)
+                makeViewGone(btnAddProduct)
+//                    makeViewVisible(tvBasePrice)
+                makeViewVisible(toolbar.root)
                 rvProductImages.apply {
                     layoutManager = LinearLayoutManager(
                         requireActivity(), RecyclerView.HORIZONTAL, false
                     )
                 }
-                autoSelectors.hide()
-                materialAutoSelectors.hide()
-                with(Functions) {
-                    makeViewVisible(tvSubCategory)
-                    makeViewGone(categorySpinner)
-                    makeViewGone(btnAddProduct)
-//                    makeViewVisible(tvBasePrice)
-                    makeViewVisible(toolbar.root)
-                }
-                makeETDisableAndSetText(etTitle, product.posterDetails!!.title)
-                makeETDisableAndSetText(etShortDescription, product.posterDetails!!.short_desc)
-                product.posterDetails!!.long_desc?.let {
-                    makeETDisableAndSetText(
-                        etLongDescription,
-                        it
-                    )
-                }
-                product.productCode?.let { makeETDisableAndSetText(etProductCode, it) }
-                /*etTitle.setText(product.posterDetails!!.title)
-                etShortDescription.setText(product.posterDetails!!.short_desc)
-                product.posterDetails!!.long_desc?.let { etLongDescription.setText(it) }
-                etProductCode.setText(product.productCode)*/
-                tvBasePrice.text = "${tvBasePrice.text} ${product.basePrice}"
-                if (mVM.quoteReq == null) product.sizes?.forEach { setupSizesViews(it) }
-                else setupSizesViews(product.sizes?.find { it.sid == mVM.quoteReq!![2].toInt() }!!)
-                activity?.let { activity ->
-                    toolbar.apply {
-                        ivBack.setOnClickListener {
-                            activity.onBackPressed()
-                        }
-                        ivAction.setImageDrawable(
-                            AppCompatResources.getDrawable(
-                                requireContext(),
-                                R.drawable.ic_action_delete2
-                            )
+            }
+
+            activity?.let { activity ->
+                toolbar.apply {
+                    ivBack.setOnClickListener {
+                        activity.onBackPressed()
+                    }
+                    ivAction.setImageDrawable(
+                        AppCompatResources.getDrawable(
+                            requireContext(),
+                            R.drawable.ic_action_delete2
                         )
-                        ivAction.setOnClickListener {
-                            showDeleteDialog(product)
-                        }
-                        tvToolBarTitle.text = getString(R.string.product_details)
-                    }
-                    binding.btnEdit.show()
-                    binding.btnEdit.setOnClickListener {
-                        requireActivity().startActivity(
-                            Intent(
-                                requireContext(),
-                                ProductManagementActivity::class.java
-                            ).apply {
-                                putExtra("product", product)
-                            })
-//                        requireActivity().finish()
-                    }
+                    )
+
+                    tvToolBarTitle.text = getString(R.string.product_details)
                 }
+                binding.btnEdit.show()
+            }
+        }
+        mVM._currentProduct.value?.let { product ->
+
+            with(binding) {
+
                 // Calls for resources -------------------------------------------------------
                 mVM.apply {
+
+                    _currentProduct.observe(viewLifecycleOwner){
+                        setUpProductDetails(product)
+                    }
 
                     _currentProductCategory.observe(viewLifecycleOwner, Observer {
                         setupCategoryView(it.name)
@@ -164,6 +143,38 @@ class ProductDetailsFragment : Fragment() {
         return binding.root
     }
 
+    private fun setUpProductDetails(product: Product) {
+        binding.apply {
+            makeETDisableAndSetText(etTitle, product.posterDetails!!.title)
+            makeETDisableAndSetText(etShortDescription, product.posterDetails!!.short_desc)
+            product.posterDetails!!.long_desc?.let {
+                makeETDisableAndSetText(
+                    etLongDescription,
+                    it
+                )
+            }
+            product.productCode?.let { makeETDisableAndSetText(etProductCode, it) }
+            tvBasePrice.text = "${tvBasePrice.text} ${product.basePrice}"
+            if (mVM.quoteReq == null) product.sizes?.forEach { setupSizesViews(it) }
+            else setupSizesViews(product.sizes?.find { it.sid == mVM.quoteReq!![2].toInt() }!!)
+
+            toolbar.ivAction.setOnClickListener {
+                showDeleteDialog(product)
+            }
+            btnEdit.setOnClickListener {
+                requireActivity().startActivityForResult(
+                    Intent(
+                        requireContext(),
+                        ProductManagementActivity::class.java
+                    ).apply {
+                        putExtra("product", product)
+                    },
+                    Constants.PRODUCT_UPDATE_REQ
+                )
+            }
+        }
+    }
+
     private fun showDeleteDialog(product: Product) {
         AlertDialog.Builder(requireContext())
             .setTitle("Alert !")
@@ -179,12 +190,13 @@ class ProductDetailsFragment : Fragment() {
                                 simpleResponse.message,
                                 Toast.LENGTH_SHORT
                             ).show()
-                            if (simpleResponse.success){
+                            if (simpleResponse.success) {
                                 requireActivity().startActivity(
                                     Intent(
                                         requireContext(),
                                         ProductsActivity::class.java
-                                    ))
+                                    )
+                                )
                                 requireActivity().finish()
                             }
 
