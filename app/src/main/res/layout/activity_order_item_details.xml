@@ -157,7 +157,7 @@
                         android:fontFamily="@font/satoshi_medium"
                         android:text="" />
 
-                    <TextView
+                    <!--<TextView
                         android:textColor="@color/title_text_color"
                         android:fontFamily="@font/satoshi_medium"
                         android:text="Product Base Price : " />
@@ -166,7 +166,7 @@
                         android:textColor="@color/text_normal_color"
                         android:id="@+id/txtOrderItemDetailsBasePrice"
                         android:fontFamily="@font/satoshi_medium"
-                        android:text="" />
+                        android:text="" />-->
 
                     <TextView
                         android:textColor="@color/title_text_color"

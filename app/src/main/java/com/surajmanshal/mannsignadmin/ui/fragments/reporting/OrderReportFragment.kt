@@ -65,7 +65,7 @@ class OrderReportFragment : Fragment() {
 
 
         vm.allOrders.observe(viewLifecycleOwner){
-            binding.rvOrderReport.adapter = OrdersAdapter(requireContext(),it)
+            binding.rvOrderReport.adapter = OrdersAdapter(requireContext(),it.sortedByDescending { it.orderDate })
         }
 
         vm.isLoading.observe(viewLifecycleOwner) {

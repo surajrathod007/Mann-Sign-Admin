@@ -90,7 +90,7 @@ class OrderItemDetailsActivity : AppCompatActivity() {
             txtProductCode.text = orderItem.product?.productCode ?: "None"
             txtOrderItemDetailsId.text = orderItem.product!!.productId.toString()
             txtOrderItemDetailsTotalPrice.text = "₹" + orderItem.totalPrice.toString() + " (Variant Price x Quantity)"
-            txtOrderItemDetailsBasePrice.text ="₹" + orderItem.product!!.basePrice.toString()
+            // txtOrderItemDetailsBasePrice.text ="₹" + orderItem.product!!.basePrice.toString()
             txtOrderItemDetailsQty.text = orderItem.quantity.toString()
             txtOrderItemDetailsVariantPrice.text = "₹" +orderItem.variant!!.variantPrice.toString()
 
