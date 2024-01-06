@@ -60,6 +60,9 @@ interface NetworkCallsInterface {
     @GET("product/posters")
     fun fetchAllPosters() : Call<List<Product>>
 
+    @GET("product/codes")
+    fun fetchAllPosterCodes() : Call<List<String>>
+
     @GET("order/getall")
     fun fetchAllOrders() : Call<List<Order>>
 

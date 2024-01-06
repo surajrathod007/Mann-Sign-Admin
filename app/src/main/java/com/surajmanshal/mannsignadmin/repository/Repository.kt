@@ -38,6 +38,7 @@ open class Repository() {
     suspend fun updateProduct(product: Product) = server.updateProduct(product)
 
     fun fetchPosters() = server.fetchAllPosters()
+    fun fetchPosterCodes() = server.fetchAllPosterCodes()
 
     suspend fun uploadImage(part: MultipartBody.Part, languageId: Int) = server.uploadImage(part,languageId)
 

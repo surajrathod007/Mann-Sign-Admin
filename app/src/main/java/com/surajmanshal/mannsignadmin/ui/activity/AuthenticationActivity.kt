@@ -53,7 +53,7 @@ class AuthenticationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAuthenticationBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        onLoginSuccess()  // todo : enable only in debug mode
+//        onLoginSuccess()  // todo : enable only in debug mode
         d = LoadingScreen(this)
         dd = d.loadingScreen()
 

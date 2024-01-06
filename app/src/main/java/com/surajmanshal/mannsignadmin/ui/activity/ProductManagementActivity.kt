@@ -84,8 +84,8 @@ class ProductManagementActivity : AppCompatActivity() {
                 etProductCode.setText(productCode)
                 etProductCode.setOnFocusChangeListener { view, isFocused ->
                     if (!isFocused) {
-                        binding.tvPCodeExist.isVisible = vm.posters.value!!.find {
-                            it.productCode == etProductCode.text.toString().trim()
+                        binding.tvPCodeExist.isVisible = vm.posterCodes.value!!.find {
+                            it == etProductCode.text.toString().trim()
                         } != null
                     }
                 }
@@ -119,7 +119,7 @@ class ProductManagementActivity : AppCompatActivity() {
                                 etProductCode.requestFocus()
                                 return@setOnClickListener
                             }
-                            productCode = this.toString()
+                            productCode = this.toString().trim()
                         }
                         if (etTitle.text.isNullOrEmpty()) {
                             Toast.makeText(

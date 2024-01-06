@@ -31,6 +31,8 @@ class ProductManagementViewModel : ResourcesViewModel() {
     val productUpdateResponse: LiveData<SimpleResponse> get() = _productUpdateResponse  // PRODUCT UPLOADING PROGRESS
     private val _posters = MutableLiveData<List<Product>>()
     val posters: LiveData<List<Product>> get() = _posters                              // POSTERS
+    private val _posterCodes = MutableLiveData<List<String>>()
+    val posterCodes: LiveData<List<String>> get() = _posterCodes                              // POSTERS
 
      val _productImages =
         MutableLiveData<MutableList<ImageLanguage>>(mutableListOf(ImageLanguage()))
@@ -43,7 +45,8 @@ class ProductManagementViewModel : ResourcesViewModel() {
         CoroutineScope(Dispatchers.IO).launch { getMaterials(listOf(Constants.TYPE_POSTER)) }
         CoroutineScope(Dispatchers.IO).launch { getLanguages() }
         CoroutineScope(Dispatchers.IO).launch { getSubCategories() }
-        CoroutineScope(Dispatchers.IO).launch { getPosters() }
+//        CoroutineScope(Dispatchers.IO).launch { getPosters() }
+        CoroutineScope(Dispatchers.IO).launch { getPosterCodes() }
     }
 
 
@@ -122,6 +125,21 @@ class ProductManagementViewModel : ResourcesViewModel() {
             }
 
             override fun onFailure(call: Call<List<Product>>, t: Throwable) {
+                println("Failure is $t")
+            }
+        })
+    }
+
+    suspend fun getPosterCodes() {
+        val response = repository.fetchPosterCodes()
+        println("Response is $response")
+        response.enqueue(object : Callback<List<String>> {
+            override fun onResponse(call: Call<List<String>>, response: Response<List<String>>) {
+                println("Inner Response is $response")
+                response.body()?.let { _posterCodes.value = it }
+            }
+
+            override fun onFailure(call: Call<List<String>>, t: Throwable) {
                 println("Failure is $t")
             }
         })
